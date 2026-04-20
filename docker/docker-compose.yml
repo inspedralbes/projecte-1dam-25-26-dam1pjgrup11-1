@@ -1,46 +1,53 @@
 services:
-  # Servidor web Apache amb PHP i suport MySQL
+
+  mysql:
+    image: mysql:8.0
+    container_name: incidencies_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: incidencies
+      MYSQL_USER: usuari
+      MYSQL_PASSWORD: usuari12345
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  
   web:
-    build: ./web
-    container_name: incidencies-web
+    image: php:8.2-apache
+    container_name: web
+    restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
-      - ./web:/var/www/html
+      - ./app:/var/www/html
     depends_on:
-      - db
+      - mysql
     networks:
-      - app-network
+      - app_network
 
-  # Servidor de base de dades MySQL
-  db:
-    image: mysql:8.0
-    container_name: incidencies-db
-    environment:
-      MYSQL_ROOT_PASSWORD: root1234
-      MYSQL_DATABASE: incidencies
-      MYSQL_USER: usuari
-      MYSQL_PASSWORD: usuari1234
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
-    networks:
-      - app-network
-
-  # Adminer per gestionar la base de dades
-  adminer:
-    image: adminer
-    container_name: incidencies-adminer
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
     ports:
-      - "8081:8080"
+      - "8082:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
     depends_on:
-      - db
+      - mysql
     networks:
-      - app-network
+      - app_network
 
 volumes:
-  mysql-data:
+  mysql_data:
 
 networks:
-  app-network:
+  app_network:
     driver: bridge
