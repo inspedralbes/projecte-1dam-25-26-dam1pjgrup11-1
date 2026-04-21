@@ -20,12 +20,12 @@ CREATE DATABASE IF NOT EXISTS incidencies
 
 -- Donem permisos a l'usuari 'usuari' per accedir a la base de dades 'persones'
 -- sinó, aquest usuari no podrà veure la base de dades i no podrà accedir a les taules
-GRANT ALL PRIVILEGES ON persones.* TO 'usuari'@'%';
+GRANT ALL PRIVILEGES ON incidencies.* TO 'usuari'@'%';
 FLUSH PRIVILEGES;
 
 
 -- Després de crear la base de dades, cal seleccionar-la per treballar-hi
-USE persones;
+USE incidencies;
 
 
 DROP TABLE IF EXISTS actuacio;
@@ -35,40 +35,40 @@ DROP TABLE IF EXISTS tipologia;
 DROP TABLE IF EXISTS departament;
 
 CREATE TABLE departament (
-                             departament_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                             nom VARCHAR(200)
+    departament_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200)
 );
 
 CREATE TABLE tipologia (
-                           tipologia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                           nom VARCHAR(200)
+    tipologia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200)
 );
 
 CREATE TABLE tecnic (
-                        tecnic_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                        nom VARCHAR(200),
-                        cognom VARCHAR(200)
+    tecnic_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200),
+    cognom VARCHAR(200)
 );
 
 CREATE TABLE incidencia (
-                            incidencia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                            departament_id INT(11),
-                            descripcio_incidencia VARCHAR(200),
-                            data_incidencia DATE,
-                            data_final DATE,
-                            prioritat ENUM('Alta', 'Mitja', 'Baixa'),
-                            tecnic_id INT(11),
-                            tipologia_id INT(11)
+    incidencia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    departament_id INT(11),
+    descripcio_incidencia VARCHAR(200),
+    data_incidencia DATE,
+    data_final DATE,
+    prioritat ENUM('Alta', 'Mitja', 'Baixa'),
+    tecnic_id INT(11),
+    tipologia_id INT(11)
 );
 
 CREATE TABLE actuacio (
-                          actuacio_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                          incidencia_id INT(11),
-                          tecnic_id INT(11),
-                          temps VARCHAR(30),
-                          data_actuacio DATE,
-                          descripcio_actuacio VARCHAR(200),
-                          visible INT(1)
+    actuacio_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    incidencia_id INT(11),
+    tecnic_id INT(11),
+    temps VARCHAR(30),
+    data_actuacio DATE,
+    descripcio_actuacio VARCHAR(200),
+    visible INT(1)
 );
 
 -- INCIDENCIA -> DEPARTAMENT
