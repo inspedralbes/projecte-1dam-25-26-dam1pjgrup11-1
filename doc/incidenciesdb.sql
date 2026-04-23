@@ -35,7 +35,7 @@ CREATE TABLE actuacio (
     actuacio_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     incidencia_id INT(11),
     tecnic_id INT(11),
-    temps VARCHAR(30),
+    temps INT(6),
     data_actuacio DATE,
     descripcio_actuacio VARCHAR(200),
     visible INT(1)
