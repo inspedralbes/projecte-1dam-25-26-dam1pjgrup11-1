@@ -24,7 +24,7 @@ CREATE TABLE incidencia (
     incidencia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     departament_id INT(11),
     descripcio_incidencia VARCHAR(200),
-    data_incidencia DATE,
+    data_incidencia DATE DEFAULT CURRENT_TIMESTAMP,
     data_final DATE,
     prioritat ENUM('Alta', 'Mitja', 'Baixa'),
     tecnic_id INT(11),
@@ -35,7 +35,7 @@ CREATE TABLE actuacio (
     actuacio_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     incidencia_id INT(11),
     tecnic_id INT(11),
-    temps VARCHAR(30),
+    temps INT(6),
     data_actuacio DATE,
     descripcio_actuacio VARCHAR(200),
     visible INT(1)

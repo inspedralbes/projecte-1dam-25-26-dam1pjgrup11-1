@@ -25,13 +25,13 @@ services:
     # Tota la informació d'aquesta imatge està https://dockerhub.com/_/mysql
     image: mysql:9.3
     environment:
-      MYSQL_ROOT_PASSWORD: passwordDeRoot
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       # És millor no crear la BBDD aquí, ja que no pots control·lar la codificació
       # de caràcters i aleshores donarà problemes amb accents i caràcters especials
       # La BBDD es crearà a l'inici del contenidor amb els script d'inicialització
       # MYSQL_DATABASE: persones
       MYSQL_USER: usuari
-      MYSQL_PASSWORD: usuari12345
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       LANG: C.UTF-8
     #    El mysql no s'exposa a l'exterior
     #    L'aplicació web hi accedirà per la xarxa interna de docker
