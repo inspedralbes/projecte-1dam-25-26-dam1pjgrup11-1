@@ -9,7 +9,7 @@
 // Configuració de la connexió a la base de dades
 $servername = "db"; // Nom del servei definit al docker-compose.yaml
 $username = "usuari"; // Usuari definit al docker-compose.yaml
-$password = "paraula_de_pas"; // Contrasenya definida al docker-compose.yaml
+$password = getenv('DB_PASSWORD') ?: '' ; // Contrasenya definida al docker-compose.yaml
 $dbname = "persones"; // Nom de la base de dades
 
 // Quan ja tingueu un codi una mica depurat, i vulgueu fer la gestió dels errors

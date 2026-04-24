@@ -1,6 +1,6 @@
 <?php
 
-include "conexio.php";
+include "'/docker/php/conexio.php'";
 
 if (isset($_GET['id_tecnic'])) {
 
