@@ -4,6 +4,7 @@
 <h4>Posa el teu nom:</h4>
 <form action="">
     <input type="text" name="nom" id="nom" value="Toni">
+    <input type="submit" value="Llistar les incidencies" class="btn btn-success btn-lg rounded mt-3 d-block">
 </form>
 
 <?php include_once "footer.php" ?>
