@@ -70,3 +70,29 @@ ALTER TABLE actuacio
 ADD CONSTRAINT fk_actuacio_incidencia  
 FOREIGN KEY (incidencia_id)
 REFERENCES incidencia(incidencia_id);
+
+-- AQUI ES FICAN DADES A LES TAULES:
+
+--Departaments
+
+INSERT INTO departament (nom) VALUES ('Informàtica');
+INSERT INTO departament (nom) VALUES ('Recursos Humans');
+INSERT INTO departament (nom) VALUES ('Manteniment');
+
+--Tipologia
+
+INSERT INTO tipologia (nom) VALUES ('Maquinari');
+INSERT INTO tipologia (nom) VALUES ('Programari');
+INSERT INTO tipologia (nom) VALUES ('Xarxes');
+
+--Tecnic
+
+INSERT INTO tecnic (nom, cognom) VALUES ('Joan', 'Pérez');
+INSERT INTO tecnic (nom, cognom) VALUES ('Maria', 'García');
+INSERT INTO tecnic (nom, cognom) VALUES ('Arnau', 'López');
+
+--Incidencies (en un futur)
+
+
+
+--Actuacions (en un futur)
