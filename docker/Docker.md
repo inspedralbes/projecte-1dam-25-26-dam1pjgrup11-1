@@ -83,7 +83,7 @@
 
 - Si canvies el `docker-compose.yml` o algun `Dockerfile`, millor fer:
   ```bash
-  docker-compose up -d --build
+  
   ```
 
 - Mapeig de ports habitual:
