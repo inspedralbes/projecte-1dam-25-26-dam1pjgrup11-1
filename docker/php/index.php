@@ -1,34 +1,20 @@
-<!DOCTYPE html>
-<html lang="ca">
+<header>
+    <?php include_once "header.php"?>
+</header>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inici</title>
-</head>
+<div class="titol">
+    <h1>GI3P</h1>
+    <h3>Gestió incidències informàtiques Institut Pedralbes</h3>
+</div>
+<div class="botones d-flex flex-column justify-content-center align-items-center"
+     style="height: 80vh; width: 400px; background: white; border-radius: 15px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+    <h3>Qui ets?</h3>
+    <a href="crear.php" class="btn btn-danger">Professor</a>
+    <a href="listar.php" class="btn btn-primary">Técnic</a>
+    <a href="admin.php" class="btn btn-dark">Admin</a>
+</div>
+    
 
-<body>
-    <h1>Pàgina inicial</h1>
-    <p>Aquesta pàgina inclou codi php</p>
-    <?php
-    echo "<h2>Hola, món!</h2>";
-    echo "<p>Hora actual: " . date("H:i:s") . "</p>";
-    ?>
-    <h2>Variables</h2>
-    <p>Les variables s'han d'utilitzar per a definir la cadena de connexió independentment del codi</p>
-    <?php
-    $v1 = getenv('VAR1') ?: 'Ups, variable no definida';
-    $v2 = getenv('VAR2') ?: 'Ups, variable no definida';
-    echo "<p>El valor de la variable d'entorn VAR1 és: <strong>$v1</strong> </p>";
-    echo "<p>El valor de la variable d'entorn VAR2 és: <strong>$v2</strong></p>";
-    ?>
-    <div id="menu">
-        <hr>
-        <p><a href="index.php">Portada</a> </p>
-        <p><a href="llistar.php">Llistar</a></p>
-        <p><a href="crear.php">Crear</a></p>
-    </div>
-    <p>Fi de la pàgina</p>
-</body>
-
-</html>
+<footer>
+    <?php include_once "footer.php"?>
+</footer>
