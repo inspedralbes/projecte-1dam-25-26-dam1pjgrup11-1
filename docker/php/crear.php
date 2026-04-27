@@ -1,45 +1,36 @@
 <?php
 
-//Sempre volem tenir una connexió a la base de dades, així que la creem al principi del fitxer
 require_once 'connexio.php';
-// Un cop inclòs el fitxer connexio.php, ja podeu utilitzar la variable $conn per a fer les consultes a la base de dades.
 
 /**
- * Funció que llegeix els paràmetres del formulari i crea una nova casa a la base de dades.
- * @param mixed $conn
- * @return void
+ * Crear una incidencia
  */
-function crear_casa($conn)
+function crear_incidencia($conn)
 {
-    // Obtenir el nom de la casa del formulari
-    $nom = $_POST['nom'];
+    $departament_id = $_POST['departament_id'];
+    $descripcio = $_POST['descripcio_incidencia'];
 
-    // Comprovar si el nom no està buit
-    // Si l'html està ben escrit això no podria passar en els usuaris normals
-    // Igualment SEMPRE s'ha de comprovar tot al backend ja que no tots els usuaris
-    // són "bones persones" i des de les web tools es pot canviar tot el front per exemple.
-    if (empty($nom)) {
-        echo "<p class='error'>El nom de la casa no pot estar buit.</p>";
+
+    if (empty($departament_id) || empty($descripcio)) {
+        echo "<p class='error'>Tots els camps són obligatoris.</p>";
         return;
     }
 
-    // Preparar la consulta SQL per inserir una nova casa
-    $sql = "INSERT INTO cases (name) VALUES (?)";
-    $stmt = $conn->prepare($sql);  //La variable $conn la tenim per haver inclòs el fitxer connexio.php
-    $stmt->bind_param("s", $nom);
+    $sql = "INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia)
+            VALUES (?, ?, NOW())";
 
-    // Executar la consulta i comprovar si s'ha inserit correctament
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param("is", $departament_id, $descripcio);
+
     if ($stmt->execute()) {
-        echo "<p class='info'>Casa creada amb èxit!</p>";
+        echo "<p class='info'>Incidència creada amb èxit!</p>";
     } else {
-        echo "<p class='error'>Error al crear la casa: " . htmlspecialchars($stmt->error) . "</p>";
+        echo "<p class='error'>Error al crear la incidència: " . htmlspecialchars($stmt->error) . "</p>";
     }
 
-    // Tancar la declaració i la connexió
     $stmt->close();
-
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -48,41 +39,63 @@ function crear_casa($conn)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear</title>
+    <title>Crear incidencia</title>
 </head>
 
 <body>
-    <h1>Crear una casa</h1>
-    <?php
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Si el formulari s'ha enviatc (mètode POST), cridem a la funció per crear la casa
-        crear_casa($conn);
-    } else {
-        //Mostrem el formulari per crear una nova casa
-        //Tanquem el php per poder escriure el codi HTML de forma més còmoda.
-        ?>
-        <form method="POST" action="crear.php">
-            <fieldset>
-                <legend>CASA</legend>
-                <label for="nom">Nom de la casa:</label>
-                <input type="text" id="nom" name="nom">
-                <input type="submit" value="Crear">
-            </fieldset>
-        </form>
+<h1>Crear una incidencia</h1>
 
+<?php
 
-        <?php
-        //Tanquem l'else
-    }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    crear_incidencia($conn);
+
+} else {
+
+    $sql = "SELECT departament_id, nom FROM departament";
+    $departaments = $conn->query($sql);
+
     ?>
-    <div id="menu">
-        <hr>
-        <p><a href="index.php">Portada</a> </p>
-        <p><a href="llistar.php">Llistar</a></p>
-        <p><a href="crear.php">Crear</a></p>
-    </div>
+
+    <form method="POST" action="crear.php">
+        <fieldset>
+            <legend>INCIDENCIA</legend>
+
+            <label for="departament">Departament:</label>
+            <select name="departament_id" id="departament">
+                <option value=""> Selecciona </option>
+
+                <?php while ($dep = $departaments->fetch_assoc()) { ?>
+                    <option value="<?= $dep['departament_id'] ?>">
+                        <?= htmlspecialchars($dep['nom']) ?>
+                    </option>
+                <?php } ?>
+
+            </select>
+
+            <br><br>
+            <label for="descripcio">Descripció del problema:</label>
+            <br>
+            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40"></textarea>
+
+            <br><br>
+
+            <input type="submit" value="Crear">
+        </fieldset>
+    </form>
+
+    <?php
+}
+?>
+
+<div id="menu">
+    <hr>
+    <p><a href="index.php">Portada</a></p>
+    <p><a href="llistar.php">Llistar</a></p>
+    <p><a href="crear.php">Crear incidència</a></p>
+</div>
+
 </body>
-
 </html>
-
