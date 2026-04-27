@@ -101,6 +101,8 @@ ALTER TABLE actuacio
         FOREIGN KEY (incidencia_id)
             REFERENCES incidencia(incidencia_id);
 
+
+
 -- AQUI ES FICAN DADES A LES TAULES:
 
 -- Departaments
@@ -140,8 +142,32 @@ INSERT INTO tecnic (nom, cognom) VALUES ('Núria', 'Costa');
 INSERT INTO tecnic (nom, cognom) VALUES ('Xavier', 'Puig');
 INSERT INTO tecnic (nom, cognom) VALUES ('Sergi', 'Batlle');
 
--- Incidencies (en un futur)
 
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id) VALUES
+((1, 'Incidència sense prioritat assignada - Revisar servidor', '2024-03-01', NULL, NULL, 1, 1),
+(2, 'Problema amb la impressora del departament', '2024-03-02', NULL, NULL, 2, 3),
+
+-- Incidències sense tècnic assignat (NULL)
+(3, 'Incidència pendent d''assignar a tècnic', '2024-03-03', NULL, 'Alta', NULL, 2),
+(4, 'Falla elèctrica a la sala de servidors', '2024-03-04', NULL, 'Alta', NULL, 7),
+(1, 'Monitor trencat a l''oficina', '2024-03-05', NULL, 'Baixa', NULL, 3),
+
+-- Incidències sense tipologia (NULL)
+(2, 'Problema general per reportar', '2024-03-06', NULL, 'Mitja', 1, NULL),
+(4, 'Incidència sense categoritzar', '2024-03-07', NULL, 'Baixa', 2, NULL),
+(3, 'Ajuda amb programari nou', '2024-03-08', NULL, 'Mitja', 3, NULL),
+
+-- Incidències amb tots els camps NULL (només descripció i departament)
+(5, 'Incidència pendent de revisió completa', '2024-03-10', NULL, NULL, NULL, NULL),
+(1, 'Reportar problema sense dades específiques', '2024-03-11', NULL, NULL, NULL, NULL),
+(2, 'Incidència urgent sense assignar', '2024-03-12', NULL, NULL, NULL, NULL),
+
+-- Combinacions variades de NULL
+(3, 'Incidència amb prioritat però sense tècnic', '2024-03-13', NULL, 'Alta', NULL, 4),
+(4, 'Incidència amb tècnic però sense prioritat', '2024-03-14', NULL, NULL, 1, 5),
+(5, 'Incidència amb tipologia però sense prioritat', '2024-03-15', NULL, NULL, 2, 6),
+(1, 'Incidència sense tècnic ni tipologia', '2024-03-16', NULL, 'Baixa', NULL, NULL),
+(2, 'Incidència sense prioritat ni tipologia', '2024-03-17', NULL, NULL, 3, NULL);
 
 
 -- Actuacions (en un futur)
