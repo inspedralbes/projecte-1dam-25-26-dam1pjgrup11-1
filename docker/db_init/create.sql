@@ -100,3 +100,48 @@ ALTER TABLE actuacio
     ADD CONSTRAINT fk_actuacio_incidencia
         FOREIGN KEY (incidencia_id)
             REFERENCES incidencia(incidencia_id);
+
+-- AQUI ES FICAN DADES A LES TAULES:
+
+-- Departaments
+
+INSERT INTO departament (nom) VALUES ('Informàtica');
+INSERT INTO departament (nom) VALUES ('Anglès');
+INSERT INTO departament (nom) VALUES ('Manteniment');
+INSERT INTO departament (nom) VALUES ('Matemàtiques');
+INSERT INTO departament (nom) VALUES ('Ciències Naturals');
+INSERT INTO departament (nom) VALUES ('Física i Química');
+INSERT INTO departament (nom) VALUES ('Educació Física');
+INSERT INTO departament (nom) VALUES ('Administració');
+
+-- Tipologia
+
+INSERT INTO tipologia (nom) VALUES ('Maquinari');
+INSERT INTO tipologia (nom) VALUES ('Programari');
+INSERT INTO tipologia (nom) VALUES ('Xarxes');
+INSERT INTO tipologia (nom) VALUES ('Impressió');
+INSERT INTO tipologia (nom) VALUES ('Accés usuaris');
+INSERT INTO tipologia (nom) VALUES ('Servidor');
+INSERT INTO tipologia (nom) VALUES ('Seguretat');
+INSERT INTO tipologia (nom) VALUES ('Audiovisuals');
+INSERT INTO tipologia (nom) VALUES ('Connexió Internet');
+INSERT INTO tipologia (nom) VALUES ('Manteniment general');
+-- Tecnic
+
+INSERT INTO tecnic (nom, cognom) VALUES ('Joan', 'Pérez');
+INSERT INTO tecnic (nom, cognom) VALUES ('Maria', 'García');
+INSERT INTO tecnic (nom, cognom) VALUES ('Arnau', 'López');
+INSERT INTO tecnic (nom, cognom) VALUES ('Laia', 'Martínez');
+INSERT INTO tecnic (nom, cognom) VALUES ('Pau', 'Soler');
+INSERT INTO tecnic (nom, cognom) VALUES ('Marc', 'Ferrer');
+INSERT INTO tecnic (nom, cognom) VALUES ('Clara', 'Vila');
+INSERT INTO tecnic (nom, cognom) VALUES ('Jordi', 'Roca');
+INSERT INTO tecnic (nom, cognom) VALUES ('Núria', 'Costa');
+INSERT INTO tecnic (nom, cognom) VALUES ('Xavier', 'Puig');
+INSERT INTO tecnic (nom, cognom) VALUES ('Sergi', 'Batlle');
+
+-- Incidencies (en un futur)
+
+
+
+-- Actuacions (en un futur)
