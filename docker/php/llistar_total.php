@@ -14,36 +14,12 @@ require_once 'connexio.php';
 <body>
 
 <div class="container mt-4">
+
+    <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
     <h2 class="mb-4">Llistat d'incidències</h2>
 
     <?php
-    // Obtenir nom del tècnic
-    $nom_tecnic = isset($_GET['nom_tecnic']) ? trim($_GET['nom_tecnic']) : '';
 
-    if (empty($nom_tecnic)) {
-        echo '<div class="alert alert-danger">Escriu el nom del tècnic.</div>';
-        echo '<a href="tecnic.php" class="btn btn-primary">Tornar</a>';
-        exit;
-    }
-
-    // Buscar ID del tècnic
-    $sql_tecnic = "SELECT tecnic_id FROM tecnic WHERE nom = ?";
-    $stmnt = $conn->prepare($sql_tecnic);
-    $stmnt->bind_param("s", $nom_tecnic);
-    $stmnt->execute();
-    $result_tecnic = $stmnt->get_result();
-
-    if ($result_tecnic->num_rows == 0) {
-        echo '<div class="alert alert-warning">No s\'ha trobat el tècnic: ' . htmlspecialchars($nom_tecnic) . '</div>';
-        echo '<a href="tecnic.php" class="btn btn-primary">Tornar</a>';
-        $conn->close();
-        exit;
-    }
-
-    $tecnic = $result_tecnic->fetch_assoc();
-    $tecnic_id = $tecnic['tecnic_id'];
-
-    // Consulta per obtenir les incidències del tècnic
     $sql = "SELECT 
                 i.incidencia_id,
                 i.descripcio_incidencia,
@@ -53,11 +29,9 @@ require_once 'connexio.php';
             FROM incidencia i
             LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
             LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-            WHERE i.tecnic_id = ?
             ORDER BY i.incidencia_id";
 
     $stmnt = $conn->prepare($sql);
-    $stmnt->bind_param("i", $tecnic_id);
     $stmnt->execute();
     $result = $stmnt->get_result();
 
@@ -98,18 +72,17 @@ require_once 'connexio.php';
         echo '</tbody>';
         echo '</table>';
     } else {
-        echo '<div class="alert alert-info">No hi ha incidències per aquest tècnic.</div>';
+        echo '<div class="alert alert-info">No hi ha incidències.</div>';
     }
 
     $stmnt->close();
     $conn->close();
     ?>
 
-    <a href="tecnic.php" class="btn btn-secondary mt-3">← Tornar</a>
 </div>
 
 <script>
-    function actuacio(id) {
+    function editar(id) {
         
     }
 </script>
@@ -117,3 +90,6 @@ require_once 'connexio.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php include_once 'footer.php'?>
+
+
+

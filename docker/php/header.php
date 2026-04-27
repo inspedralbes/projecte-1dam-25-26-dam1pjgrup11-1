@@ -16,7 +16,7 @@
         align-items: center;
         }
 
-        
+
         .titol h1{
             justify-content: center;
             text-align: center;
