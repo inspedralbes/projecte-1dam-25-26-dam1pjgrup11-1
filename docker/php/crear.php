@@ -48,6 +48,9 @@ function crear_incidencia($conn)
 
 <?php
 
+$old_departament = $_POST['departament_id'] ?? '';
+$old_descripcio = $_POST['descripcio_incidencia'] ?? '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     crear_incidencia($conn);
@@ -68,7 +71,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value=""> Selecciona </option>
 
                 <?php while ($dep = $departaments->fetch_assoc()) { ?>
-                    <option value="<?= $dep['departament_id'] ?>">
+                    <option value="<?= $dep['departament_id'] ?>"
+                        <?= ($old_departament == $dep['departament_id']) ? 'selected' : '' ?>>
                         <?= htmlspecialchars($dep['nom']) ?>
                     </option>
                 <?php } ?>
@@ -78,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br><br>
             <label for="descripcio">Descripció del problema:</label>
             <br>
-            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40"></textarea>
+            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40"><?= htmlspecialchars($old_descripcio) ?></textarea>
 
             <br><br>
 
