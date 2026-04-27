@@ -92,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div id="menu">
     <hr>
+    <p><a href="buscar_id.php">Buscar la meva incidencia</a></p>
     <p><a href="index.php">Portada</a></p>
     <p><a href="llistar.php">Llistar</a></p>
     <p><a href="crear.php">Crear incidència</a></p>
