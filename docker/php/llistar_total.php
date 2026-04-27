@@ -57,10 +57,10 @@ require_once 'connexio.php';
 
             echo '<tr>';
             echo '<td>' . $row['incidencia_id'] . '</td>';
-            echo '<td>' . htmlspecialchars($row['descripcio_incidencia']) . '</td>';
-            echo '<td>' . htmlspecialchars($row['tipologia_nom']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['descripcio_incidencia'] ?? '') . '</td>';
+            echo '<td>' . htmlspecialchars($row['tipologia_nom'] ?? '') . '</td>';
             echo '<td class="' . $prioritat_class . '">' . $row['prioritat'] . '</td>';
-            echo '<td>' . htmlspecialchars($row['tecnic_nom']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['tecnic_nom'] ?? '') . '</td>';
             echo '<td>';
             echo '<button class="btn btn-sm btn-primary" onclick="actuacio(' . $row['incidencia_id'] . ')">';
             echo 'Actuació';
