@@ -142,32 +142,42 @@ INSERT INTO tecnic (nom, cognom) VALUES ('Núria', 'Costa');
 INSERT INTO tecnic (nom, cognom) VALUES ('Xavier', 'Puig');
 INSERT INTO tecnic (nom, cognom) VALUES ('Sergi', 'Batlle');
 
+-- Incidencies
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id) VALUES
-((1, 'Incidència sense prioritat assignada - Revisar servidor', '2024-03-01', NULL, NULL, 1, 1),
-(2, 'Problema amb la impressora del departament', '2024-03-02', NULL, NULL, 2, 3),
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (1, 'No funciona ordenador aula 1', '2026-04-01', NULL, NULL, NULL, NULL);
 
--- Incidències sense tècnic assignat (NULL)
-(3, 'Incidència pendent d''assignar a tècnic', '2024-03-03', NULL, 'Alta', NULL, 2),
-(4, 'Falla elèctrica a la sala de servidors', '2024-03-04', NULL, 'Alta', NULL, 7),
-(1, 'Monitor trencat a l''oficina', '2024-03-05', NULL, 'Baixa', NULL, 3),
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (2, 'Problema acceso wifi aula', '2026-04-02', NULL, NULL, NULL, NULL);
 
--- Incidències sense tipologia (NULL)
-(2, 'Problema general per reportar', '2024-03-06', NULL, 'Mitja', 1, NULL),
-(4, 'Incidència sense categoritzar', '2024-03-07', NULL, 'Baixa', 2, NULL),
-(3, 'Ajuda amb programari nou', '2024-03-08', NULL, 'Mitja', 3, NULL),
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (3, 'Proyector averiado sala reuniones', '2026-04-03', NULL, NULL, NULL, NULL);
 
--- Incidències amb tots els camps NULL (només descripció i departament)
-(5, 'Incidència pendent de revisió completa', '2024-03-10', NULL, NULL, NULL, NULL),
-(1, 'Reportar problema sense dades específiques', '2024-03-11', NULL, NULL, NULL, NULL),
-(2, 'Incidència urgent sense assignar', '2024-03-12', NULL, NULL, NULL, NULL),
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (4, 'Impresora sin papel y error', '2026-04-04', NULL, NULL, NULL, NULL);
 
--- Combinacions variades de NULL
-(3, 'Incidència amb prioritat però sense tècnic', '2024-03-13', NULL, 'Alta', NULL, 4),
-(4, 'Incidència amb tècnic però sense prioritat', '2024-03-14', NULL, NULL, 1, 5),
-(5, 'Incidència amb tipologia però sense prioritat', '2024-03-15', NULL, NULL, 2, 6),
-(1, 'Incidència sense tècnic ni tipologia', '2024-03-16', NULL, 'Baixa', NULL, NULL),
-(2, 'Incidència sense prioritat ni tipologia', '2024-03-17', NULL, NULL, 3, NULL);
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (5, 'Servidor lento en acceso archivos', '2026-04-05', NULL, NULL, NULL, NULL);
 
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (6, 'Problema conexion internet general', '2026-04-06', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (7, 'Equipo audio no funciona gimnasio', '2026-04-07', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (8, 'Fallo sistema administrativo login', '2026-04-08', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (1, 'Pantalla no enciende aula informatica', '2026-04-09', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (2, 'Problema acceso plataforma educativa', '2026-04-10', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (3, 'Cableado red desconectado pasillo', '2026-04-11', NULL, NULL, NULL, NULL);
+
+INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
+VALUES (4, 'Error en impresiones multiples aulas', '2026-04-12', NULL, NULL, NULL, NULL);
 
 -- Actuacions (en un futur)
