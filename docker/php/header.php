@@ -9,17 +9,20 @@
   
      <style>
         body {
-        background-color: #f5f5f5;
         height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         }
 
-
         .titol h1{
             justify-content: center;
             text-align: center;
+        }
+
+        #menu{
+            text-align: center;
+            align-items: center;
         }
         
     </style>
