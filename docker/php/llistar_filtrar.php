@@ -75,7 +75,7 @@ $tipologies = $conn->query($sql2);
 
         <div class="mb-3">
             <label for="prioritat">Prioritat</label>
-            <select name="prioritat" id="prioritat" class="form-control">
+            <select name="prioritat" id="prioritat" class="form-control" required>
 
                 <option value="" >Selecciona una prioritat</option>
                 <option value="Alta"
@@ -96,7 +96,7 @@ $tipologies = $conn->query($sql2);
 
         <div class="mb-3">
             <label for="tecnic">Tècnic:</label>
-            <select name="tecnic_id" id="tecnic" class="form-control">
+            <select name="tecnic_id" id="tecnic" class="form-control" required>
                 <option value=""> Selecciona un tècnic </option>
 
                 <?php while ($tec = $tecnics->fetch_assoc()) { ?>
@@ -109,7 +109,7 @@ $tipologies = $conn->query($sql2);
 
         <div class="mb-3">
             <label for="tipologia">Tipologia:</label>
-            <select name="tipologia_id" id="tipologia" class="form-control">
+            <select name="tipologia_id" id="tipologia" class="form-control" required>
                 <option value=""> Selecciona una tipologia </option>
 
                 <?php while ($tip = $tipologies->fetch_assoc()) { ?>

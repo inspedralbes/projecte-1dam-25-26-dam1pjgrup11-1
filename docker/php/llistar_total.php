@@ -31,7 +31,7 @@ require_once 'connexio.php';
             FROM incidencia i
             LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
             LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-            ORDER BY i.incidencia_id";
+            ORDER BY i.prioritat";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
