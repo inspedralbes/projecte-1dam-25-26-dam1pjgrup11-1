@@ -31,9 +31,9 @@ require_once 'connexio.php';
             LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
             ORDER BY i.incidencia_id";
 
-    $stmnt = $conn->prepare($sql);
-    $stmnt->execute();
-    $result = $stmnt->get_result();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         echo '<table class="table table-bordered table-striped">';
@@ -75,7 +75,7 @@ require_once 'connexio.php';
         echo '<div class="alert alert-info">No hi ha incidències.</div>';
     }
 
-    $stmnt->close();
+    $stmt->close();
     $conn->close();
     ?>
 
