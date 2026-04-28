@@ -1,5 +1,9 @@
 <?php
 require_once 'connexio.php';
+
+$filtre = $_GET['filtre'] ?? 'total';
+$result = null;
+$stmt = null;
 ?>
 
 <!DOCTYPE html>
@@ -21,8 +25,28 @@ require_once 'connexio.php';
 
     <h2 class="mb-4">Llistat d'incidències</h2>
 
+    <form id="formFiltre" action="llistar_total.php" method="GET">
+    <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()">
+
+    <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
+        Total
+    </option>
+
+    <option value="sense_assignar" <?= $filtre == 'sense_assignar' ? 'selected' : '' ?>>
+        Sense assignar
+    </option>
+
+    <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
+        Assignades
+    </option>
+
+</select>
+</form>
+
     <?php
-    $sql = "SELECT
+
+    if ($filtre == 'total') {
+        $sql = "SELECT
                 i.incidencia_id,
                 i.descripcio_incidencia,
                 i.prioritat,
@@ -33,9 +57,43 @@ require_once 'connexio.php';
             LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
             ORDER BY i.prioritat";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    }else if ($filtre == 'sense_assignar'){
+        $sql = "SELECT
+                i.incidencia_id,
+                i.descripcio_incidencia,
+                i.prioritat,
+                t.nom AS tipologia_nom,
+                te.nom AS tecnic_nom
+            FROM incidencia i
+            LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+            LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+            WHERE i.tecnic_id IS NULL";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+    }else if ($filtre == 'assignades'){
+        $sql = "SELECT
+                    i.incidencia_id,
+                    i.descripcio_incidencia,
+                    i.prioritat,
+                    t.nom AS tipologia_nom,
+                    te.nom AS tecnic_nom
+                FROM incidencia i
+                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                WHERE i.tecnic_id IS NOT NULL
+                ORDER BY i.prioritat";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    }
+
     ?>
 
     <?php if ($result->num_rows > 0): ?>
