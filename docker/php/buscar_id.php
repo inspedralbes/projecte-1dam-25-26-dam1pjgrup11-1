@@ -1,23 +1,9 @@
 <?php require_once 'connexio.php'; ?>
 <?php require_once 'header.php'; ?>
 
-<a href="crear.php" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
+<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
 
 <div class="container py-5">
-
-    <h1 class="mb-4">Buscar una incidència</h1>
-
-    <form method="GET" class="card p-4 shadow-sm mb-4">
-        <fieldset>
-            <legend class="h5 mb-3">INCIDÈNCIA</legend>
-
-            <label for="incidencia_id" class="form-label">Id de la incidència:</label>
-
-            <input type="number" id="incidencia_id" name="incidencia_id" class="form-control" required>
-
-            <button type="submit" class="btn btn-primary mt-3">Buscar</button>
-        </fieldset>
-    </form>
 
 <?php
 if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
@@ -36,11 +22,11 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
     LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
     WHERE i.incidencia_id = ?";
 
-    $stmnt = $conn->prepare($sql_incidencia);
-    $stmnt->bind_param("i", $incidencia_id);
-    $stmnt->execute();
+    $stmt = $conn->prepare($sql_incidencia);
+    $stmt->bind_param("i", $incidencia_id);
+    $stmt->execute();
 
-    $result_incidencia = $stmnt->get_result();
+    $result_incidencia = $stmt->get_result();
 
     if ($result_incidencia->num_rows > 0) {
         $row = $result_incidencia->fetch_assoc();

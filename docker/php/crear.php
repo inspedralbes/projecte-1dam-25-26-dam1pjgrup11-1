@@ -24,9 +24,18 @@ function crear_incidencia($conn)
     $stmt->bind_param("is", $departament_id, $descripcio);
 
     if ($stmt->execute()) {
-        $last_incidencia_id = $conn->insert_id;
-        echo "<p class='info'>Incidència creada amb èxit!</p>";
-        echo "<p class= 'info'>El teu numero de incidència es </p><strong>" . $last_incidencia_id . "</strong>";
+    $last_incidencia_id = $conn->insert_id;
+
+    echo "<p class='info'>Incidència creada amb èxit!</p>";
+    echo "<p class='info'>El teu número d'incidència és <strong>$last_incidencia_id</strong></p>";
+    ?>
+    <form method="GET" action="buscar_id.php">
+        <input type="hidden" name="incidencia_id" value="<?php echo $last_incidencia_id; ?>">
+        <fieldset>
+            <button type="submit" class="btn btn-primary mt-3">Veure la teva incidència</button>
+        </fieldset>
+    </form>
+    <?php
     } else {
         echo "<p class='error'>Error al crear la incidència: " . htmlspecialchars($stmt->error) . "</p>";
     }
@@ -95,10 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <div id="menu">
-    <hr>
-    <p><a href="buscar_id.php">Buscar la meva incidencia</a></p>
-    <p><a href="index.php">Portada</a></p>
-    <p><a href="crear.php">Crear incidència</a></p>
+    <br>
+    <p><a class='btn btn-secondary' href="index.php">Portada</a></p>
 </div>
 
 <?php require_once 'footer.php'?>
