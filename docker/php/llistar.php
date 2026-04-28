@@ -1,30 +1,17 @@
 <?php
 require_once 'connexio.php';
-?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Llistat d'incidències</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
-<body>
-
-<div class="container mt-4">
-    <h2 class="mb-4">Llistat d'incidències</h2>
-
-<?php
 $tecnic_id = isset($_GET['tecnic_id']) ? intval($_GET['tecnic_id']) : 0;
 
 if ($tecnic_id == 0) {
-    echo '<div class="alert alert-danger">Selecciona un tècnic.</div>';
-    echo '<a href="tecnic.php" class="btn btn-primary">Tornar</a>';
+?>
+    <div class="alert alert-danger">Selecciona un tècnic.</div>
+    <a href="tecnic.php" class="btn btn-primary">Tornar</a>
+<?php
     exit;
 }
-$sql = "SELECT 
+
+$sql = "SELECT
             i.incidencia_id,
             i.descripcio_incidencia,
             i.prioritat,
@@ -40,61 +27,86 @@ $stmnt = $conn->prepare($sql);
 $stmnt->bind_param("i", $tecnic_id);
 $stmnt->execute();
 $result = $stmnt->get_result();
+?>
 
-if ($result->num_rows > 0) {
-    echo '<table class="table table-bordered table-striped">';
-    echo '<thead class="table-dark">';
-    echo '<tr>';
-    echo '<th>ID</th>';
-    echo '<th>Descripció</th>';
-    echo '<th>Tipologia</th>';
-    echo '<th>Prioritat</th>';
-    echo '<th>Tècnic</th>';
-    echo '<th>Actuació</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llistat d'incidències</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-    while ($row = $result->fetch_assoc()) {
-        $prioritat_class = '';
-        if ($row['prioritat'] == 'Alta') $prioritat_class = 'text-danger fw-bold';
-        if ($row['prioritat'] == 'Mitja') $prioritat_class = 'text-warning fw-bold';
-        if ($row['prioritat'] == 'Baixa') $prioritat_class = 'text-success fw-bold';
-        echo '<tr>';
-        echo '<td>' . $row['incidencia_id'] . '</td>';
-        echo '<td>' . htmlspecialchars($row['descripcio_incidencia']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['tipologia_nom']) . '</td>';
-        echo '<td class="' . $prioritat_class . '">' . $row['prioritat'] . '</td>';
-        echo '<td>' . htmlspecialchars($row['tecnic_nom']) . '</td>';
-        echo '<td>';
-        echo '<button class="btn btn-sm btn-primary" onclick="actuacio(' . $row['incidencia_id'] . ')">';
-        echo 'Actuació';
-        echo '</button>';
-        echo '</td>';
-        echo '</tr>';
-    }
-    echo '</tbody>';
-    echo '</table>';
+<body>
 
-} else {
-    echo '<div class="alert alert-info">No hi ha incidències per aquest tècnic.</div>';
-}
+<div class="container mt-4">
+    <h2 class="mb-4">Llistat d'incidències</h2>
 
+<?php if ($result->num_rows > 0) { ?>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Descripció</th>
+                <th>Tipologia</th>
+                <th>Prioritat</th>
+                <th>Tècnic</th>
+                <th>Actuació</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <?php while ($row = $result->fetch_assoc()) {
+            $prioritat_class = '';
+            if ($row['prioritat'] == 'Alta') $prioritat_class = 'text-danger fw-bold';
+            if ($row['prioritat'] == 'Mitja') $prioritat_class = 'text-warning fw-bold';
+            if ($row['prioritat'] == 'Baixa') $prioritat_class = 'text-success fw-bold';
+        ?>
+
+            <tr>
+                <td><?= $row['incidencia_id'] ?></td>
+                <td><?= htmlspecialchars($row['descripcio_incidencia']) ?></td>
+                <td><?= htmlspecialchars($row['tipologia_nom']) ?></td>
+                <td class="<?= $prioritat_class ?>">
+                    <?= $row['prioritat'] ?>
+                </td>
+                <td><?= htmlspecialchars($row['tecnic_nom']) ?></td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="actuacio.php?id=<?= $row['incidencia_id'] ?>">
+                        Actuació
+                    </a>
+                </td>
+            </tr>
+
+        <?php } ?>
+
+        </tbody>
+    </table>
+
+<?php } else { ?>
+
+    <div class="alert alert-info">
+        No hi ha incidències per aquest tècnic.
+    </div>
+
+<?php } ?>
+
+<?php
 $stmnt->close();
 $conn->close();
-
 ?>
-    <a href="tecnic.php" class="btn btn-secondary mt-3">← Tornar</a>
+
+    <a href="tecnic.php" class="btn btn-secondary mt-3">Tornar</a>
 </div>
 
 <script>
 function actuacio(id) {
-
+    // aquí puedes redirigir si quieres
+    // window.location.href = "actuacio.php?id=" + id;
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php include_once 'footer.php'?>
 </body>
 </html>
