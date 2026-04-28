@@ -28,10 +28,10 @@ require_once 'connexio.php';
 
     // Buscar ID del tècnic
     $sql_tecnic = "SELECT tecnic_id FROM tecnic WHERE nom = ?";
-    $stmnt = $conn->prepare($sql_tecnic);
-    $stmnt->bind_param("s", $nom_tecnic);
-    $stmnt->execute();
-    $result_tecnic = $stmnt->get_result();
+    $stmt = $conn->prepare($sql_tecnic);
+    $stmt->bind_param("s", $nom_tecnic);
+    $stmt->execute();
+    $result_tecnic = $stmt->get_result();
 
     if ($result_tecnic->num_rows == 0) {
         echo '<div class="alert alert-warning">No s\'ha trobat el tècnic: ' . htmlspecialchars($nom_tecnic) . '</div>';
@@ -56,10 +56,10 @@ require_once 'connexio.php';
             WHERE i.tecnic_id = ?
             ORDER BY i.incidencia_id";
 
-    $stmnt = $conn->prepare($sql);
-    $stmnt->bind_param("i", $tecnic_id);
-    $stmnt->execute();
-    $result = $stmnt->get_result();
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $tecnic_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         echo '<table class="table table-bordered table-striped">';
@@ -101,7 +101,7 @@ require_once 'connexio.php';
         echo '<div class="alert alert-info">No hi ha incidències per aquest tècnic.</div>';
     }
 
-    $stmnt->close();
+    $stmt->close();
     $conn->close();
     ?>
 
