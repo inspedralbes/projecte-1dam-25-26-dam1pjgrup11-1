@@ -1,7 +1,7 @@
 <?php
 
 require_once 'connexio.php';
-
+require_once 'header.php';
 /**
  * Crear una incidencia
  */
@@ -24,7 +24,9 @@ function crear_incidencia($conn)
     $stmt->bind_param("is", $departament_id, $descripcio);
 
     if ($stmt->execute()) {
+        $last_incidencia_id = $conn->insert_id;
         echo "<p class='info'>Incidència creada amb èxit!</p>";
+        echo "<p class= 'info'>El teu numero de incidència es </p><strong>" . $last_incidencia_id . "</strong>";
     } else {
         echo "<p class='error'>Error al crear la incidència: " . htmlspecialchars($stmt->error) . "</p>";
     }
@@ -43,6 +45,8 @@ function crear_incidencia($conn)
 </head>
 
 <body>
+
+<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
 
 <h1>Crear una incidencia</h1>
 
@@ -94,9 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <hr>
     <p><a href="buscar_id.php">Buscar la meva incidencia</a></p>
     <p><a href="index.php">Portada</a></p>
-    <p><a href="llistar.php">Llistar</a></p>
     <p><a href="crear.php">Crear incidència</a></p>
 </div>
 
-</body>
-</html>
+<?php require_once 'footer.php'?>
