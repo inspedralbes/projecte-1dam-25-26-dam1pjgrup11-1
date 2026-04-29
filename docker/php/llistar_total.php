@@ -1,7 +1,7 @@
 <?php
 require_once 'connexio.php';
 
-$filtre = $_GET['filtre'] ?? 'total';
+$filtre = $_GET['filtre'] ?? 'sense_assignar';
 $result = null;
 $stmt = null;
 ?>

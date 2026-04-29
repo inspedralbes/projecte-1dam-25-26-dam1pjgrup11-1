@@ -125,7 +125,7 @@ $tipologies = $conn->query($sql2);
         </button>
 
         <a href="llistar_total.php" class="btn btn-secondary">
-            Volver
+            Tornar
         </a>
 
     </form>
