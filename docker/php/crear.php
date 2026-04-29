@@ -55,7 +55,7 @@ function crear_incidencia($conn)
 
 <body>
 
-<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
+<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
 <h1>Crear una incidencia</h1>
 

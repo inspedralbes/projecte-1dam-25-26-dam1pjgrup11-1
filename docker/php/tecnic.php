@@ -6,7 +6,7 @@ $sql = "SELECT tecnic_id, nom, cognom    FROM tecnic ORDER BY nom";
 $result = $conn->query($sql);
 ?>
 
-<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">← Tornar</a>
+<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
 <div class="d-flex justify-content-center align-items-center vh-100">
 
