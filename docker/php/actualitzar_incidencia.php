@@ -16,6 +16,6 @@ $sentencia->bind_param("siii", $prioritat, $tecnic_id, $tipologia_id, $id);
 
 $sentencia->execute();
 
-header("Location: llistar_total.php");
+header("Location: buscar_id.php?incidencia_id=" . $id);
 exit;
 ?>
