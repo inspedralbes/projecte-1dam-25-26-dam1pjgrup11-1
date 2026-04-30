@@ -10,6 +10,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 
     $incidencia_id = (int) $_GET['incidencia_id'];
 
+    //info incidencia
     $sql_incidencia = "SELECT 
         i.incidencia_id,
         i.descripcio_incidencia,
@@ -25,8 +26,19 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
     $stmt = $conn->prepare($sql_incidencia);
     $stmt->bind_param("i", $incidencia_id);
     $stmt->execute();
-
     $result_incidencia = $stmt->get_result();
+
+    // temps total
+    $sql_temps = "SELECT 
+        SUM(a.temps) AS temps_total
+    FROM actuacio a
+    WHERE a.incidencia_id = ?";
+
+    $stmt2 = $conn->prepare($sql_temps);
+    $stmt2->bind_param("i", $incidencia_id);
+    $stmt2->execute();
+    $result_temps = $stmt2->get_result();
+    $row2 = $result_temps->fetch_assoc();
 
     if ($result_incidencia->num_rows > 0) {
         $row = $result_incidencia->fetch_assoc();
@@ -41,9 +53,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
             <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?></p>
             <p><strong>Data incidència:</strong> <?= htmlspecialchars($row['data_incidencia']) ?></p>
             <p><strong>Data final:</strong> <?= htmlspecialchars($row['data_final'] ?? 'Encara no ha estat resolta la incidència') ?></p>
-            <p><strong>Temps invertit (min):</strong>
-            <p><strong>Descripció última actuació:</strong>
-
+            <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row2['temps_total'] ?? 0) ?> min</p>
         </div>
 
 <?php
@@ -56,39 +66,40 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 <br>
 
 <div class="card shadow-sm p-4">
-    <h5 class="mb-3">Descripció de la actuació</h5>
+    <h5 class="mb-3">Descripció de les actuacions</h5>
 
-<?php 
-if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
+<?php
+// info actuacio
+$sql_actuacio = "SELECT 
+    a.actuacio_id,
+    a.descripcio_actuacio, 
+    a.visible, 
+    a.data_actuacio, 
+    a.temps 
+FROM actuacio a 
+WHERE a.incidencia_id = ? 
+ORDER BY a.data_actuacio DESC, a.actuacio_id DESC"; 
 
-    $incidencia_id = (int) $_GET['incidencia_id'];
+$stmt3 = $conn->prepare($sql_actuacio); 
+$stmt3->bind_param("i", $incidencia_id); 
+$stmt3->execute(); 
+$result_actuacio = $stmt3->get_result();
 
-    $sql_incidencia = "SELECT a.descripcio_actuacio, a.visible
-                       FROM actuacio a
-                       WHERE a.incidencia_id = ?
-                       ORDER BY a.data_actuacio DESC
-                       LIMIT 1";
+if ($result_actuacio->num_rows > 0): 
+    while ($row = $result_actuacio->fetch_assoc()): 
+        if ((int)$row['visible'] === 1): ?>
 
-    $stmt = $conn->prepare($sql_incidencia);
-    $stmt->bind_param("i", $incidencia_id);
-    $stmt->execute();
+            <div class="mb-3 p-3 border rounded bg-light">
+                <p><strong>Data actuació:</strong> <?= htmlspecialchars(date("d/m/Y H:i", strtotime($row['data_actuacio']))) ?></p>
+                <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row['temps']) ?> min</p>
+                <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_actuacio']) ?></p>
+            </div>
 
-    $result_actuacio = $stmt->get_result();
-
-    if ($result_actuacio->num_rows > 0) {
-
-        $row = $result_actuacio->fetch_assoc();
-
-        if ((int)$row['visible'] === 1) {
-            echo $row['descripcio_actuacio'];
-        } else {
-            echo '<div class="alert alert-warning">No estan visibles les actuacions.</div>';
-        }
-    } else {
-        echo '<div class="alert alert-warning">No s\'ha trobat cap actuació.</div>';
-    }
-}
-?>
+        <?php endif; 
+    endwhile;
+else: ?>
+    <div class="alert alert-warning">No s'ha trobat cap actuació.</div>
+<?php endif; ?>
 
 </div>
 
