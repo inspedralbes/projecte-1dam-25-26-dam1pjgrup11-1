@@ -25,6 +25,7 @@ function crear_actuacio($conn)
         return;
     }
 
+
     if ($finalitzada == 1) {
 
         $sql_update = "UPDATE incidencia
@@ -46,7 +47,7 @@ function crear_actuacio($conn)
     if ($stmt->execute()) {
 
         $last_actuacio_id = $conn->insert_id;
-
+        echo "<br><br><br><br>";
         echo "<p class='info'>Actuació creada amb èxit!</p>";
         echo "<p class='info'>Número d'actuació: <strong>$last_actuacio_id</strong></p>";
 
@@ -68,6 +69,28 @@ function crear_actuacio($conn)
 
 ?>
 
+<?php
+
+$descripcio_incidencia = '';
+
+if ($incidencia_id) {
+    $sql = "SELECT descripcio_incidencia
+            FROM incidencia
+            WHERE incidencia_id = ?";
+
+    $stmt1 = $conn->prepare($sql);
+    $stmt1->bind_param("i", $incidencia_id);
+    $stmt1->execute();
+    $result = $stmt1->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $descripcio_incidencia = $row['descripcio_incidencia'];
+    }
+
+    $stmt1->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -81,6 +104,8 @@ function crear_actuacio($conn)
 <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
 <h1>Actuació realitzada</h1>
+<h4>Incidencia numero #<?php echo $incidencia_id; ?></h5>
+<h6><?php echo $descripcio_incidencia; ?></h5>
 
 <?php
 
@@ -101,17 +126,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <fieldset>
 
         <legend>Data Actuació</legend>
-        <input type="date" name="data_actuacio">
+        <input type="date" name="data_actuacio" required>
 
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea name="descripcio_actuacio" rows="5" cols="40"><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
         <legend>Temps Invertit (min)</legend>
-        <input type="number" name="temps" min="0">
+        <input type="number" name="temps" min="0" required>
 
         <br><br>
 
