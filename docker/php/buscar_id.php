@@ -3,11 +3,14 @@
 
 <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
+
 <div class="container py-5">
+<h2>La teva incidència</h2>
+<br>
 
 <?php
 if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
-
+    //tota informacio incidencia
     $incidencia_id = (int) $_GET['incidencia_id'];
 
     $sql_incidencia = "SELECT 
@@ -27,11 +30,25 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
     $stmt->execute();
 
     $result_incidencia = $stmt->get_result();
+    //
+
+    // calcular temps
+    $sql_temps = "SELECT SUM(a.temps) AS total_temps
+              FROM actuacio a
+              WHERE a.incidencia_id = ?";
+
+    $stmt2 = $conn->prepare($sql_temps);
+    $stmt2->bind_param("i", $incidencia_id);
+    $stmt2->execute();
+
+    $result_temps = $stmt2->get_result();
+    $row_temps = $result_temps->fetch_assoc();
+    //
 
     if ($result_incidencia->num_rows > 0) {
         $row = $result_incidencia->fetch_assoc();
 ?>
-
+<!-- mostrar informacio incidencia i temps invertit-->
         <div class="card shadow-sm p-4">
             <h5 class="mb-3">Resultat de la incidència</h5>
 
@@ -41,8 +58,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
             <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?></p>
             <p><strong>Data incidència:</strong> <?= htmlspecialchars($row['data_incidencia']) ?></p>
             <p><strong>Data final:</strong> <?= htmlspecialchars($row['data_final'] ?? 'Encara no ha estat resolta la incidència') ?></p>
-            <p><strong>Temps invertit (min):</strong>
-            <p><strong>Descripció última actuació:</strong>
+            <p><strong>Temps invertit: </strong> <?= ($row_temps['total_temps'] ?? 0) ?> min </p>
 
         </div>
 
@@ -56,39 +72,43 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 <br>
 
 <div class="card shadow-sm p-4">
-    <h5 class="mb-3">Descripció de la actuació</h5>
+    <h5 class="mb-3">Actuacions</h5>
 
 <?php 
+// informacio actuacions de la incidencia
 if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
-
     $incidencia_id = (int) $_GET['incidencia_id'];
 
-    $sql_incidencia = "SELECT a.descripcio_actuacio, a.visible
+    $sql_incidencia = "SELECT a.descripcio_actuacio, a.visible, a.data_actuacio, a.actuacio_id, a.temps
                        FROM actuacio a
                        WHERE a.incidencia_id = ?
-                       ORDER BY a.data_actuacio DESC
-                       LIMIT 1";
+                       ORDER BY a.data_actuacio DESC, a.actuacio_id DESC";
 
     $stmt = $conn->prepare($sql_incidencia);
     $stmt->bind_param("i", $incidencia_id);
     $stmt->execute();
 
     $result_actuacio = $stmt->get_result();
+//
 
-    if ($result_actuacio->num_rows > 0) {
+// mostrar actuacions per ordre cronologic descendent i per id descendent
+    if ($result_actuacio->num_rows > 0):
+        while ($row = $result_actuacio->fetch_assoc()): 
+            if ((int)$row['visible'] === 1): ?>
+                <div class="mb-3 p-3 border rounded bg-light">            
+                    <p><strong>Data actuació:</strong><?= htmlspecialchars(date("d/m/Y H:i", strtotime($row['data_actuacio'])))?></p>
+                    <p><strong>Temps invertit: </strong><?= htmlspecialchars($row['temps'])?> min</p>
+                    <p><strong>Descripció: </strong><?= htmlspecialchars($row['descripcio_actuacio'])?></p>
+                </div>
+            <?php endif;
+        endwhile;   
+    else: ?>
+        <div class="alert alert-warning">No s'ha trobat cap actuació.</div>
 
-        $row = $result_actuacio->fetch_assoc();
-
-        if ((int)$row['visible'] === 1) {
-            echo $row['descripcio_actuacio'];
-        } else {
-            echo '<div class="alert alert-warning">No estan visibles les actuacions.</div>';
-        }
-    } else {
-        echo '<div class="alert alert-warning">No s\'ha trobat cap actuació.</div>';
-    }
+<?php endif; 
 }
-?>
+// 
+?> 
 
 </div>
 
