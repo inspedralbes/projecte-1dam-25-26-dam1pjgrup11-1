@@ -6,6 +6,15 @@ require_once 'header.php';
 $incidencia_id = $_GET['incidencia_id'] ?? $_POST['incidencia_id'] ?? null;
 $tecnic_id = $_GET['tecnic_id'] ?? $_POST['tecnic_id'] ?? null;
 
+$sql = "SELECT 1 FROM tecnic WHERE tecnic_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $tecnic_id);
+$stmt->execute();
+
+if ($stmt->get_result()->num_rows === 0) {
+    die("Tècnic no vàlid");
+}
+
 /**
  * Crear una actuació
  */
