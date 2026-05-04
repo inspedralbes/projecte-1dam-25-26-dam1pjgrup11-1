@@ -3,13 +3,16 @@
     require_once "header.php";
 
 $sql = "SELECT 
-            i.departament_id,
-            COUNT(i.departament_id) AS num_incidencies,
-            d.nom AS nom
+        i.departament_id,
+        d.nom AS nom,
+        COUNT(*) AS num_incidencies,
+        SUM(a.temps) AS temps
         FROM incidencia i
         LEFT JOIN departament d ON i.departament_id = d.departament_id
-        GROUP BY i.departament_id
-        ORDER BY num_incidencies DESC";
+        LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
+        WHERE i.data_final IS NOT NULL
+        GROUP BY i.departament_id, d.nom
+        ORDER BY num_incidencies DESC;";
 
 $stmnt = $conn->prepare($sql);
 $stmnt->execute();
@@ -24,6 +27,7 @@ $result = $stmnt->get_result();
             <th>ID</th>
             <th>Departament</th>
             <th>Incidències</th>
+            <th>Temps</th>
         </tr>
     </thead>
     <tbody>
@@ -34,6 +38,7 @@ $result = $stmnt->get_result();
                         <td>{$row['departament_id']}</td>
                         <td>{$row['nom']}</td>
                         <td>{$row['num_incidencies']}</td>
+                        <td>{$row['temps']} min</td>
                       </tr>";
             }
         } else {
