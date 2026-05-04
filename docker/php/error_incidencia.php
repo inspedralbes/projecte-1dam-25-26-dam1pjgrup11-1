@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Error Incidencia</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
+<?php require_once 'header.php'; ?>
+<a href="javascript:history.go(-1)" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 <h2>ERROR QUE SALE CUANDO NO EXISTE LA ID DE LA INCIDENCIA</h2>
-</body>
-</html>
+<?php require_once 'footer.php';?>
