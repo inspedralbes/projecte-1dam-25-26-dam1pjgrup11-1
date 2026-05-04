@@ -16,13 +16,13 @@ $stmnt->execute();
 $result = $stmnt->get_result();
 ?>
 
-<h2 style="text-align:center;">Incidències per tècnic</h2>
+<h2 style="text-align:center;">Incidències per departament</h2>
 
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nom</th>
+            <th>Departament</th>
             <th>Incidències</th>
         </tr>
     </thead>
