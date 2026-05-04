@@ -1,42 +1,52 @@
-<header>
-    <?php include_once "header.php"?>
-</header>
+<?php include_once "header.php"?>
 
-<div class="titol">
-    <h1>GI3P</h1>
-    <h3>Gestió incidències informàtiques Institut Pedralbes</h3>
-</div>
-<div class="container-fluid vh-100">
-  <div class="row h-100">
+<main class="container py-5">
 
-    <div class="col-6 d-flex justify-content-center align-items-center bg-light">
-      <div class="botones d-flex flex-column justify-content-center align-items-center gap-2">
-        <h3>Qui ets?</h3>
-        <a href="crear.php" class="btn btn-danger">Professor</a>
-        <a href="tecnic.php" class="btn btn-primary">Tècnic</a>
-        <a href="llistar_total.php" class="btn btn-dark">Admin</a>
-      </div>
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">GI3P</h1>
+        <h3 class="text-muted">Gestió d’incidències informàtiques Institut Pedralbes</h3>
     </div>
 
-    <div class="col-6 d-flex flex-column justify-content-center align-items-center bg-light">
-    
-    <h3 class="mb-4">Buscar una incidència</h3>
 
-    <form method="GET" action="buscar_id.php" class="card p-4 shadow-sm mb-4">
-        <fieldset>
-            <legend class="h5 mb-3">INCIDÈNCIA</legend>
+    <div class="d-flex justify-content-center mb-5">
+        <div class="card shadow-sm p-5 text-center w-100" style="max-width: 500px;">
 
-            <label for="incidencia_id" class="form-label">Id de la incidència:</label>
+            <h3 class="mb-4">Qui ets?</h3>
 
-            <input type="number" id="incidencia_id" name="incidencia_id" class="form-control" required>
+            <div class="d-grid gap-3">
+                <a href="crear.php" class="btn btn-danger btn-lg">Professor</a>
+                <a href="tecnic.php" class="btn btn-primary btn-lg">Tècnic</a>
+                <a href="llistar_total.php" class="btn btn-dark btn-lg">Admin</a>
+            </div>
 
-            <button type="submit" class="button" >Buscar</button>
-        </fieldset>
-    </form>
-
+        </div>
     </div>
 
-</div>
-</div>
-    
+    <div class="d-flex justify-content-center">
+
+        <div class="card shadow-sm p-3 w-100" style="max-width: 350px; opacity: 0.85;">
+
+            <h6 class="text-center mb-3 text-muted">
+                Buscar incendia (només si ja tens l’ID)
+            </h6>
+
+            <form method="GET" action="buscar_id.php">
+
+                <input type="number"
+                       name="incidencia_id"
+                       class="form-control mb-2"
+                       placeholder="ID incidència"
+                       required>
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold">
+                    Buscar
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
 <?php include_once "footer.php"?>

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicació incidencies</title>
+    <title>Aplicació incidències</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-
 </head>
+
 <body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<header class="bg-white shadow-sm py-3 mb-3">
+    <div class="container d-flex align-items-center gap-3">
+        <img src="../img/logo.png" alt="Logo" style="height:50px;">
+        <strong>EJEMPLO</strong>
+    </div>
+</header>

@@ -1,4 +1,14 @@
 <?php require_once 'header.php'; ?>
-<a href="javascript:history.go(-1)" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
-<h2>ERROR QUE SALE CUANDO NO EXISTE LA ID DEL TECNIC</h2>
+<style>
+
+</style>
+<img src="../img/404.png" alt="ERROR 404" width="500" height="350">
+<h1>Lo sentimos, algo ha salido mal</h1>
+<h5>El tecnico que que buscas no existe o ha cambiado</h5>
+<h5>Prueba a volver atras</h5>
+<a href="javascript:history.go(-1)" class="button" style="top: 10px; left: 10px;">
+    <button type="button">Tornar</button>
+</a>
+
+
 <?php require_once 'footer.php';?>
