@@ -112,9 +112,7 @@ if ($incidencia_id) {
 $old_descripcio = $_POST['descripcio_actuacio'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     crear_actuacio($conn);
-
 } else {
 ?>
 

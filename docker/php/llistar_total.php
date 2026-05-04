@@ -23,7 +23,13 @@ $stmt = null;
         Tornar
     </a>
 
-    <h2 class="mb-4">Llistat d'incidències</h2>
+    <h2 class="mb-4">Llistat d'incidències</h2> 
+
+    <div>
+        <a href="informe_tecnics.php">Informe tècnics</a>
+        <a href="">Consum per departaments</a>
+    </div>
+    <br>
 
     <form id="formFiltre" action="llistar_total.php" method="GET">
     <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()">
