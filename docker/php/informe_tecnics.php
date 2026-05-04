@@ -25,17 +25,20 @@ $result = $stmnt->get_result();
             <th>Nom</th>
             <th>Incidències resoltes</th>
             <th>Incidències totals</th>
+            <th>Incidències pendents</th>
         </tr>
     </thead>
     <tbody>
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "<tr>
+            //crear incidencies pendientes    
+            echo "<tr>
                         <td>{$row['tecnic_id']}</td>
                         <td>{$row['nom']}</td>
                         <td>{$row['incidencies_resoltes']}</td>
                         <td>{$row['incidencies_totals']}</td>
+                        <td>{$row['incidencies_totals']} - {$row['incidencies_resoltes']}</td>
                       </tr>";
             }
         } else {
