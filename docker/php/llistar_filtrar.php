@@ -4,7 +4,8 @@ require_once 'connexio.php';
 $id = $_GET['id'];
 
 if (!$id) {
-    die("ID no proporcionada");
+    header("Location: error_id.php");
+    exit;
 }
 
     $sql = "SELECT
@@ -31,7 +32,8 @@ $result = $stmt->get_result();
 $incidencia = $result->fetch_assoc();
 
 if (!$incidencia) {
-    die("Incidència no trobada");
+    header("Location: error_incidencia.php");
+    exit;
 }
 
 $sql1 = "SELECT tecnic_id, nom AS tecnic_nom, cognom

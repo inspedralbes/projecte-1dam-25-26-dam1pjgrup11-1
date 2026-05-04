@@ -46,6 +46,10 @@ $stmt = null;
         Assignades
     </option>
 
+    <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
+        finalitzades
+    </option>
+
 </select>
 </form>
 
@@ -98,7 +102,24 @@ $stmt = null;
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-    }
+
+    }else if ($filtre == 'finalitzades'){
+             $sql = "SELECT
+                         i.incidencia_id,
+                         i.descripcio_incidencia,
+                         i.prioritat,
+                         t.nom AS tipologia_nom,
+                         te.nom AS tecnic_nom
+                     FROM incidencia i
+                     LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                     LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                     WHERE i.data_final IS NOT NULL
+                     ORDER BY i.prioritat";
+
+             $stmt = $conn->prepare($sql);
+             $stmt->execute();
+             $result = $stmt->get_result();
+         }
 
     ?>
 
