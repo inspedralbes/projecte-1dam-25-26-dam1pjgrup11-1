@@ -62,9 +62,9 @@ function crear_actuacio($conn)
 
         ?>
         <form method="GET" action="buscar_id.php">
-            <input type="hidden" name="actuacio_id" value="<?php echo $last_actuacio_id; ?>">
+            <input type="hidden" name="incidencia_id" value="<?php echo $incidencia_id; ?>">
             <fieldset>
-                <button type="submit" class="btn btn-primary mt-3">Veure actuació</button>
+                <button type="submit" class="btn btn-primary mt-3">Veure actuacions</button>
             </fieldset>
         </form>
         <?php
@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
