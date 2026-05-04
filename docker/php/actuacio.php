@@ -1,7 +1,6 @@
 <?php
 
 require_once 'connexio.php';
-require_once 'header.php';
 
 $incidencia_id = $_GET['incidencia_id'] ?? $_POST['incidencia_id'] ?? null;
 $tecnic_id = $_GET['tecnic_id'] ?? $_POST['tecnic_id'] ?? null;
@@ -12,8 +11,19 @@ $stmt->bind_param("i", $tecnic_id);
 $stmt->execute();
 
 if ($stmt->get_result()->num_rows === 0) {
-    die("Tècnic no vàlid");
+    header("LOCATION: error_tecnic.php");
 }
+
+$sql = "SELECT 1 FROM incidencia WHERE incidencia_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $incidencia_id);
+$stmt->execute();
+
+if ($stmt->get_result()->num_rows === 0) {
+    header("LOCATION: error_incidencia.php");
+}
+
+require_once 'header.php';
 
 /**
  * Crear una actuació
