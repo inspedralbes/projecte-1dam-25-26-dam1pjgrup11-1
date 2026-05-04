@@ -30,7 +30,7 @@
 
             <input type="number" id="incidencia_id" name="incidencia_id" class="form-control" required>
 
-            <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+            <button type="submit" class="button" >Buscar</button>
         </fieldset>
     </form>
 
