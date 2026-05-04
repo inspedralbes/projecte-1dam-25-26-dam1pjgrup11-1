@@ -27,7 +27,7 @@ $stmt = null;
 
     <div>
         <a href="informe_tecnics.php">Informe tècnics</a>
-        <a href="">Consum per departaments</a>
+        <a href="consum_departaments.php">Consum per departaments</a>
     </div>
     <br>
 
