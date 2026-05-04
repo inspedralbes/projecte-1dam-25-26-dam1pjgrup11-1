@@ -74,7 +74,7 @@ $result = $stmnt->get_result();
                 </td>
                 <td><?= htmlspecialchars($row['tecnic_nom']) ?></td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="actuacio.php?id=<?= $row['incidencia_id'] ?>">
+                    <a class="btn btn-sm btn-primary" href="actuacio.php?incidencia_id=<?= $row['incidencia_id'] ?>&tecnic_id=<?= $tecnic_id ?>">
                         Actuació
                     </a>
                 </td>

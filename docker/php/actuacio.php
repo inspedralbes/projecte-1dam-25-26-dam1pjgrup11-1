@@ -2,51 +2,97 @@
 
 require_once 'connexio.php';
 require_once 'header.php';
+
+$incidencia_id = $_GET['incidencia_id'] ?? $_POST['incidencia_id'] ?? null;
+$tecnic_id = $_GET['tecnic_id'] ?? $_POST['tecnic_id'] ?? null;
+
 /**
- * Crear una actuacio
+ * Crear una actuació
  */
 function crear_actuacio($conn)
 {
-    $departament_id = $_POST['departament_id'];
-    $descripcio = $_POST['descripcio_incidencia'];
+    $incidencia_id = $_POST['incidencia_id'] ?? null;
+    $tecnic_id = $_POST['tecnic_id'] ?? null;
 
+    $descripcio = $_POST['descripcio_actuacio'] ?? '';
+    $visible = isset($_POST['visible']) ? 1 : 0;
+    $finalitzada = isset($_POST['finalitzada']) ? 1 : 0;
+    $temps = $_POST['temps'] ?? 0;
+    $data_actuacio = $_POST['data_actuacio'] ?? date('Y-m-d');
 
-    if (empty($departament_id) || empty($descripcio)) {
-        echo "<p class='error'>Tots els camps són obligatoris.</p>";
+    if (empty($descripcio)) {
+        echo "<p class='error'>La descripció és obligatòria.</p>";
         return;
     }
 
-    $sql = "INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia)
-            VALUES (?, ?, NOW())";
+
+    if ($finalitzada == 1) {
+
+        $sql_update = "UPDATE incidencia
+                       SET data_final = NOW()
+                       WHERE incidencia_id = ?";
+
+        $stmt_up = $conn->prepare($sql_update);
+        $stmt_up->bind_param("i", $incidencia_id);
+        $stmt_up->execute();
+    }
+
+    $sql = "INSERT INTO actuacio
+            (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
+            VALUES (?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("is", $departament_id, $descripcio);
+    $stmt->bind_param("iisssi", $incidencia_id, $tecnic_id, $temps, $data_actuacio, $descripcio, $visible);
 
     if ($stmt->execute()) {
-    $last_incidencia_id = $conn->insert_id;
 
-    echo "<p class='info'>Incidència creada amb èxit!</p>";
-    echo "<p class='info'>El teu número d'incidència és <strong>$last_incidencia_id</strong></p>";
-    ?>
-    <form method="GET" action="buscar_id.php">
-        <input type="hidden" name="incidencia_id" value="<?php echo $last_incidencia_id; ?>">
-        <fieldset>
-            <button type="submit" class="btn btn-primary mt-3">Veure la teva incidència</button>
-        </fieldset>
-    </form>
-    <?php
+        $last_actuacio_id = $conn->insert_id;
+        echo "<br><br><br><br>";
+        echo "<p class='info'>Actuació creada amb èxit!</p>";
+        echo "<p class='info'>Número d'actuació: <strong>$last_actuacio_id</strong></p>";
+
+        ?>
+        <form method="GET" action="buscar_id.php">
+            <input type="hidden" name="actuacio_id" value="<?php echo $last_actuacio_id; ?>">
+            <fieldset>
+                <button type="submit" class="btn btn-primary mt-3">Veure actuació</button>
+            </fieldset>
+        </form>
+        <?php
+
     } else {
-        echo "<p class='error'>Error al crear la incidència: " . htmlspecialchars($stmt->error) . "</p>";
+        echo "<p class='error'>Error al crear l'actuació: " . htmlspecialchars($stmt->error) . "</p>";
     }
 
     $stmt->close();
 }
 
 ?>
+
+<?php
+
+$descripcio_incidencia = '';
+
+if ($incidencia_id) {
+    $sql = "SELECT descripcio_incidencia
+            FROM incidencia
+            WHERE incidencia_id = ?";
+
+    $stmt1 = $conn->prepare($sql);
+    $stmt1->bind_param("i", $incidencia_id);
+    $stmt1->execute();
+    $result = $stmt1->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $descripcio_incidencia = $row['descripcio_incidencia'];
+    }
+
+    $stmt1->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,69 +104,61 @@ function crear_actuacio($conn)
 <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
 <h1>Actuació realitzada</h1>
+<h4>Incidencia numero #<?php echo $incidencia_id; ?></h5>
+<h6><?php echo $descripcio_incidencia; ?></h5>
 
 <?php
 
-$old_departament = $_POST['departament_id'] ?? '';
-$old_descripcio = $_POST['descripcio_incidencia'] ?? '';
+$old_descripcio = $_POST['descripcio_actuacio'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     crear_actuacio($conn);
 
 } else {
-
-    $sql = "SELECT departament_id, nom FROM departament";
-    $departaments = $conn->query($sql);
-
-    ?>
-
-    <form method="POST" action="actuacio.php">
-        <fieldset>
-            <legend>Data Actuació</legend>
-              <label for="birthday">Birthday:</label>
-              <input type="date" id="birthday" name="birthday">
-              <br><br>
-
-            <legend>Descripció Actuació</legend>
-
-            <label for="descripcio"></label>
-            <br>
-            <textarea placeholder="Posa una descripció que expliqui la teva actuació" id="descripcio" name="descripcio_incidencia" rows="5" cols="40"><?= htmlspecialchars($old_descripcio) ?></textarea>
-
-            <br><br>
-
-            <legend>Visible la Descripció de la Actuació</legend>
-            <input type="checkbox" style="width: 30px; height: 30px;">
-
-            <br><br>
-
-            <legend>Temps Invertit (min)</legend>
-
-            <label for="descripcio"></label>
-            <br>
-            <textarea placeholder="Posa quant temps en minuts (m) has dedicat en aquesta actuació" id="descripcio" name="descripcio_incidencia" rows="5" cols="40"><?= htmlspecialchars($old_descripcio) ?></textarea>
-
-            <br><br>
-
-
-            <legend>Actuació Finalitzada</legend>
-            <input type="checkbox" style="width: 30px; height: 30px;">
-
-            <br><br>
-
-
-            <input type="submit" value="Crear">
-        </fieldset>
-    </form>
-
-    <?php
-}
 ?>
+
+<form method="POST" action="actuacio.php">
+
+    <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
+    <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
+
+    <fieldset>
+
+        <legend>Data Actuació</legend>
+        <input type="date" name="data_actuacio" required>
+
+        <br><br>
+
+        <legend>Descripció Actuació</legend>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+
+        <br><br>
+
+        <legend>Temps Invertit (min)</legend>
+        <input type="number" name="temps" min="0" required>
+
+        <br><br>
+
+        <legend>Visible</legend>
+        <input type="checkbox" name="visible">
+
+        <br><br>
+
+        <legend>Finalitzada</legend>
+        <input type="checkbox" name="finalitzada">
+
+        <br><br>
+
+        <input type="submit" value="Crear">
+    </fieldset>
+</form>
+
+<?php } ?>
 
 <div id="menu">
     <br>
     <p><a class='btn btn-secondary' href="index.php">Portada</a></p>
 </div>
 
-<?php require_once 'footer.php'?>
+<?php require_once 'footer.php'; ?>
