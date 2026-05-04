@@ -80,8 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <legend>INCIDENCIA</legend>
 
             <label for="departament">Departament:</label>
-            <select name="departament_id" id="departament">
-                <option value=""> Selecciona </option>
+            <select name="departament_id" id="departament" required>
+                <option value="" required> Selecciona </option>
 
                 <?php while ($dep = $departaments->fetch_assoc()) { ?>
                     <option value="<?= $dep['departament_id'] ?>"
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br><br>
             <label for="descripcio">Descripció del problema:</label>
             <br>
-            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40"><?= htmlspecialchars($old_descripcio) ?></textarea>
+            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
             <br><br>
 
