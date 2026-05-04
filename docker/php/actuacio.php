@@ -1,6 +1,7 @@
 <?php
 
 require_once 'connexio.php';
+require_once 'header.php';
 
 $incidencia_id = $_GET['incidencia_id'] ?? $_POST['incidencia_id'] ?? null;
 $tecnic_id = $_GET['tecnic_id'] ?? $_POST['tecnic_id'] ?? null;
@@ -135,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
 ?>
 
-<form method="POST" action="actuacio.php">
+<form id="form_actuacio" method="POST" action="actuacio.php">
 
     <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
     <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
@@ -148,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20"><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
