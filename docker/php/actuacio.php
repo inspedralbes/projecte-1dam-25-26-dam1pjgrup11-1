@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
