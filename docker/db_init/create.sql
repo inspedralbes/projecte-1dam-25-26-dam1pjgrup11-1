@@ -145,7 +145,7 @@ INSERT INTO incidencia
 VALUES (NULL, 1, 'No funciona lordinador de laula 1', '2026-04-01', NULL, 'Alta', 1, 1);
 
 INSERT INTO incidencia
-VALUES (NULL, 2, 'Problema amb la WiFi de laula', '2026-04-02', NULL, 'Alta', 2, 3);
+VALUES (NULL, 2, 'Problema amb la WiFi de laula', '2026-04-02', '2026-04-09', 'Alta', 2, 3);
 
 INSERT INTO incidencia
 VALUES (NULL, 3, 'Projector espatllat a la sala de reunions', '2026-04-03', NULL, 'Mitja', 3, 8);
@@ -154,7 +154,7 @@ INSERT INTO incidencia
 VALUES (NULL, 4, 'Impressora sense paper i error', '2026-04-04', NULL, 'Baixa', 4, 4);
 
 INSERT INTO incidencia
-VALUES (NULL, 5, 'Servidor lent en accés a fitxers', '2026-04-05', NULL, 'Alta', 5, 6);
+VALUES (NULL, 5, 'Servidor lent en accés a fitxers', '2026-04-05', '2026-04-07', 'Alta', 5, 6);
 
 INSERT INTO incidencia
 VALUES (NULL, 7, 'Equip de so no funciona al gimnàs', '2026-04-07', NULL, 'Mitja', 7, 8);
@@ -163,7 +163,7 @@ INSERT INTO incidencia
 VALUES (NULL, 8, 'Error al sistema daccés administratiu', '2026-04-08', NULL, 'Alta', 8, 5);
 
 INSERT INTO incidencia
-VALUES (NULL, 1, 'Pantalla no encén a laula informàtica', '2026-04-09', NULL, 'Mitja', 1, 1);
+VALUES (NULL, 1, 'Pantalla no encén a laula informàtica', '2026-04-09', '2026-04-15', 'Mitja', 1, 1);
 
 INSERT INTO incidencia
 VALUES (NULL, 2, 'Problema amb la plataforma educativa', '2026-04-10', NULL, 'Alta', 2, 2);
