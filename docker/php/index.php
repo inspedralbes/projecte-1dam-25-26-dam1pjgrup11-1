@@ -32,15 +32,9 @@
 
             <form method="GET" action="buscar_id.php">
 
-                <input type="number"
-                       name="incidencia_id"
-                       class="form-control mb-2"
-                       placeholder="ID incidència"
-                       required>
+                <input type="number" name="incidencia_id" class="form-control mb-2" placeholder="ID incidència" required>
 
-                <button type="submit" class="btn btn-warning w-100 fw-bold">
-                    Buscar
-                </button>
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Buscar</button>
 
             </form>
 

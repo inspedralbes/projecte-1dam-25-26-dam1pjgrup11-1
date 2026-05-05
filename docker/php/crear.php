@@ -57,7 +57,7 @@ function crear_incidencia($conn)
 
 <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
-<h1>Crear una incidencia</h1>
+<h1 class="fw-bold">Crear una incidencia</h1>
 
 <?php
 
@@ -76,11 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
 
     <form method="POST" action="crear.php">
-        <fieldset>
-            <legend>INCIDENCIA</legend>
+        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+        <fieldset class=" border d-inline-block p-3 mb-4" style="background-color: white">
+            <legend class="mb-3 azm-color-444">INCIDENCIA</legend>
 
-            <label for="departament">Departament:</label>
-            <select name="departament_id" id="departament" required>
+            <label for="departament" class="form-label azm-color-666">Departament:</label>
+            <select name="departament_id" id="departament" class="form-select mb-3" style="background-color: #F5F7F8; color:#495E57" required>
                 <option value="" required> Selecciona </option>
 
                 <?php while ($dep = $departaments->fetch_assoc()) { ?>
@@ -93,14 +94,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
 
             <br><br>
-            <label for="descripcio">Descripció del problema:</label>
+            <label for="descripcio" >Descripció del problema:</label>
             <br>
-            <textarea id="descripcio" name="descripcio_incidencia" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+            <textarea class="form-control" id="descripcio" name="descripcio_incidencia" rows="5" cols="40" style="background-color: #F5F7F8; color:#495E57" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
             <br><br>
 
-            <input type="submit" value="Crear">
+            <input type="submit" class="btn btn-success" value="Crear">
         </fieldset>
+    </div>
     </form>
 
     <?php

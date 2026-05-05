@@ -1,4 +1,3 @@
-<?php include_once "header.php"?>
 <?php
 require_once 'connexio.php';
 
@@ -51,6 +50,8 @@ $sql2 = "SELECT tipologia_id, nom AS tipologia_nom
 $tipologies = $conn->query($sql2);
 
 ?>
+
+<?php include_once "header.php"; ?>
 
 <!DOCTYPE html>
 <html lang="ca">
