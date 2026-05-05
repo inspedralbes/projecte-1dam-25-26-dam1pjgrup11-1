@@ -1,3 +1,4 @@
+<?php include_once "header.php"?>
 <?php
 require_once 'connexio.php';
 
@@ -23,7 +24,13 @@ $stmt = null;
         Tornar
     </a>
 
-    <h2 class="mb-4">Llistat d'incidències</h2>
+    <h2 class="mb-4">Llistat d'incidències</h2> 
+
+    <div>
+        <a href="informe_tecnics.php">Informe tècnics</a>
+        <a href="consum_departaments.php">Consum per departaments</a>
+    </div>
+    <br>
 
     <form id="formFiltre" action="llistar_total.php" method="GET">
     <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()">
@@ -38,6 +45,10 @@ $stmt = null;
 
     <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
         Assignades
+    </option>
+
+    <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
+        finalitzades
     </option>
 
 </select>
@@ -92,7 +103,24 @@ $stmt = null;
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-    }
+
+    }else if ($filtre == 'finalitzades'){
+             $sql = "SELECT
+                         i.incidencia_id,
+                         i.descripcio_incidencia,
+                         i.prioritat,
+                         t.nom AS tipologia_nom,
+                         te.nom AS tecnic_nom
+                     FROM incidencia i
+                     LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                     LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                     WHERE i.data_final IS NOT NULL
+                     ORDER BY i.prioritat";
+
+             $stmt = $conn->prepare($sql);
+             $stmt->execute();
+             $result = $stmt->get_result();
+         }
 
     ?>
 

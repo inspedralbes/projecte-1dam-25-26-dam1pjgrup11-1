@@ -1,10 +1,29 @@
 <?php
 
 require_once 'connexio.php';
-require_once 'header.php';
 
 $incidencia_id = $_GET['incidencia_id'] ?? $_POST['incidencia_id'] ?? null;
 $tecnic_id = $_GET['tecnic_id'] ?? $_POST['tecnic_id'] ?? null;
+
+$sql = "SELECT 1 FROM tecnic WHERE tecnic_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $tecnic_id);
+$stmt->execute();
+
+if ($stmt->get_result()->num_rows === 0) {
+    header("LOCATION: error_tecnic.php");
+}
+
+$sql = "SELECT 1 FROM incidencia WHERE incidencia_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $incidencia_id);
+$stmt->execute();
+
+if ($stmt->get_result()->num_rows === 0) {
+    header("LOCATION: error_incidencia.php");
+}
+
+require_once 'header.php';
 
 /**
  * Crear una actuació
@@ -53,9 +72,9 @@ function crear_actuacio($conn)
 
         ?>
         <form method="GET" action="buscar_id.php">
-            <input type="hidden" name="actuacio_id" value="<?php echo $last_actuacio_id; ?>">
+            <input type="hidden" name="incidencia_id" value="<?php echo $incidencia_id; ?>">
             <fieldset>
-                <button type="submit" class="btn btn-primary mt-3">Veure actuació</button>
+                <button type="submit" class="btn btn-primary mt-3">Veure actuacions</button>
             </fieldset>
         </form>
         <?php
@@ -112,9 +131,7 @@ if ($incidencia_id) {
 $old_descripcio = $_POST['descripcio_actuacio'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     crear_actuacio($conn);
-
 } else {
 ?>
 
@@ -131,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
