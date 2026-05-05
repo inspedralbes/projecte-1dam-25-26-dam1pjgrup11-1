@@ -2,7 +2,7 @@
     require_once "connexio.php";
     require_once "header.php";
 
-$sql = "SELECT 
+$sql = "SELECT DISTINCT
             i.incidencia_id,
             d.nom AS departament_nom,
             t.nom AS tecnic_nom,
@@ -26,7 +26,8 @@ $sql = "SELECT
             i.data_final,
             tp.nom,
             i.descripcio_incidencia
-        ORDER BY i.data_final DESC";
+        ORDER BY i.data_final DESC
+        LIMIT 10;";
 
 $stmnt = $conn->prepare($sql);
 $stmnt->execute();
