@@ -168,7 +168,6 @@ INSERT INTO incidencia VALUES (NULL, 4, 'Error en impressions múltiples', '2026
 
 -- ======================
 -- ACTUACIONS
--- (temps en minuts, sense "h")
 -- ======================
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
