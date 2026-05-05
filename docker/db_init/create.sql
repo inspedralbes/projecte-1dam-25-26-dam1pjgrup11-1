@@ -18,21 +18,20 @@ CREATE DATABASE IF NOT EXISTS incidencies
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
--- Donem permisos a l'usuari 'usuari' per accedir a la base de dades 'persones'
--- sinó, aquest usuari no podrà veure la base de dades i no podrà accedir a les taules
 GRANT ALL PRIVILEGES ON incidencies.* TO 'usuari'@'%';
 FLUSH PRIVILEGES;
 
-
--- Després de crear la base de dades, cal seleccionar-la per treballar-hi
 USE incidencies;
-
 
 DROP TABLE IF EXISTS actuacio;
 DROP TABLE IF EXISTS incidencia;
 DROP TABLE IF EXISTS tecnic;
 DROP TABLE IF EXISTS tipologia;
 DROP TABLE IF EXISTS departament;
+
+-- ======================
+-- TAULES
+-- ======================
 
 CREATE TABLE departament (
     departament_id INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -71,113 +70,127 @@ CREATE TABLE actuacio (
     visible INT(1)
 );
 
--- INCIDENCIA -> DEPARTAMENT
-ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_departament
-        FOREIGN KEY (departament_id)
-            REFERENCES departament(departament_id);
+-- ======================
+-- CLAUS FORANES
+-- ======================
 
--- INCIDENCIA -> TECNIC
 ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_tecnic
-        FOREIGN KEY (tecnic_id)
-            REFERENCES tecnic(tecnic_id);
+ADD CONSTRAINT fk_incidencia_departament
+FOREIGN KEY (departament_id) REFERENCES departament(departament_id);
 
--- INCIDENCIA -> TIPOLOGIA
 ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_tipologia
-        FOREIGN KEY (tipologia_id)
-            REFERENCES tipologia(tipologia_id);
+ADD CONSTRAINT fk_incidencia_tecnic
+FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id);
 
--- ACTUACIO -> TECNIC
+ALTER TABLE incidencia
+ADD CONSTRAINT fk_incidencia_tipologia
+FOREIGN KEY (tipologia_id) REFERENCES tipologia(tipologia_id);
+
 ALTER TABLE actuacio
-    ADD CONSTRAINT fk_actuacio_tecnic
-        FOREIGN KEY (tecnic_id)
-            REFERENCES tecnic(tecnic_id);
+ADD CONSTRAINT fk_actuacio_tecnic
+FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id);
 
--- ACTUACIO -> INCIDENCIA
 ALTER TABLE actuacio
-    ADD CONSTRAINT fk_actuacio_incidencia
-        FOREIGN KEY (incidencia_id)
-            REFERENCES incidencia(incidencia_id);
+ADD CONSTRAINT fk_actuacio_incidencia
+FOREIGN KEY (incidencia_id) REFERENCES incidencia(incidencia_id);
 
-
-
--- AQUI ES FICAN DADES A LES TAULES:
+-- ======================
+-- DADES
+-- ======================
 
 -- Departaments
+INSERT INTO departament (nom) VALUES
+('Informàtica'),
+('Anglès'),
+('Manteniment'),
+('Matemàtiques'),
+('Ciències Naturals'),
+('Física i Química'),
+('Educació Física'),
+('Administració');
 
-INSERT INTO departament (nom) VALUES ('Informàtica');
-INSERT INTO departament (nom) VALUES ('Anglès');
-INSERT INTO departament (nom) VALUES ('Manteniment');
-INSERT INTO departament (nom) VALUES ('Matemàtiques');
-INSERT INTO departament (nom) VALUES ('Ciències Naturals');
-INSERT INTO departament (nom) VALUES ('Física i Química');
-INSERT INTO departament (nom) VALUES ('Educació Física');
-INSERT INTO departament (nom) VALUES ('Administració');
+-- Tipologies
+INSERT INTO tipologia (nom) VALUES
+('Maquinari'),
+('Programari'),
+('Xarxes'),
+('Impressió'),
+('Accés d’usuaris'),
+('Servidor'),
+('Seguretat'),
+('Audiovisuals'),
+('Connexió Internet'),
+('Manteniment general');
 
--- Tipologia
+-- Tècnics
+INSERT INTO tecnic (nom, cognom) VALUES
+('Joan', 'Pérez'),
+('Maria', 'García'),
+('Arnau', 'López'),
+('Laia', 'Martínez'),
+('Pau', 'Soler'),
+('Marc', 'Ferrer'),
+('Clara', 'Vila'),
+('Jordi', 'Roca'),
+('Núria', 'Costa'),
+('Xavier', 'Puig'),
+('Sergi', 'Batlle');
 
-INSERT INTO tipologia (nom) VALUES ('Maquinari');
-INSERT INTO tipologia (nom) VALUES ('Programari');
-INSERT INTO tipologia (nom) VALUES ('Xarxes');
-INSERT INTO tipologia (nom) VALUES ('Impressió');
-INSERT INTO tipologia (nom) VALUES ('Accés usuaris');
-INSERT INTO tipologia (nom) VALUES ('Servidor');
-INSERT INTO tipologia (nom) VALUES ('Seguretat');
-INSERT INTO tipologia (nom) VALUES ('Audiovisuals');
-INSERT INTO tipologia (nom) VALUES ('Connexió Internet');
-INSERT INTO tipologia (nom) VALUES ('Manteniment general');
--- Tecnic
+-- ======================
+-- INCIDÈNCIES
+-- (ALGUNES JA TENEN TÈCNIC ASSIGNAT)
+-- ======================
 
-INSERT INTO tecnic (nom, cognom) VALUES ('Joan', 'Pérez');
-INSERT INTO tecnic (nom, cognom) VALUES ('Maria', 'García');
-INSERT INTO tecnic (nom, cognom) VALUES ('Arnau', 'López');
-INSERT INTO tecnic (nom, cognom) VALUES ('Laia', 'Martínez');
-INSERT INTO tecnic (nom, cognom) VALUES ('Pau', 'Soler');
-INSERT INTO tecnic (nom, cognom) VALUES ('Marc', 'Ferrer');
-INSERT INTO tecnic (nom, cognom) VALUES ('Clara', 'Vila');
-INSERT INTO tecnic (nom, cognom) VALUES ('Jordi', 'Roca');
-INSERT INTO tecnic (nom, cognom) VALUES ('Núria', 'Costa');
-INSERT INTO tecnic (nom, cognom) VALUES ('Xavier', 'Puig');
-INSERT INTO tecnic (nom, cognom) VALUES ('Sergi', 'Batlle');
+INSERT INTO incidencia
+VALUES (NULL, 1, 'No funciona lordinador de laula 1', '2026-04-01', NULL, 'Alta', 1, 1);
 
--- Incidencies
+INSERT INTO incidencia
+VALUES (NULL, 2, 'Problema amb la WiFi de laula', '2026-04-02', '2026-04-09', 'Alta', 2, 3);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (1, 'No funciona ordenador aula 1', '2026-04-01', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 3, 'Projector espatllat a la sala de reunions', '2026-04-03', NULL, 'Mitja', 3, 8);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (2, 'Problema acceso wifi aula', '2026-04-02', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 4, 'Impressora sense paper i error', '2026-04-04', NULL, 'Baixa', 4, 4);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (3, 'Proyector averiado sala reuniones', '2026-04-03', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 5, 'Servidor lent en accés a fitxers', '2026-04-05', '2026-04-07', 'Alta', 5, 6);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (4, 'Impresora sin papel y error', '2026-04-04', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 7, 'Equip de so no funciona al gimnàs', '2026-04-07', NULL, 'Mitja', 7, 8);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (5, 'Servidor lento en acceso archivos', '2026-04-05', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 8, 'Error al sistema daccés administratiu', '2026-04-08', NULL, 'Alta', 8, 5);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (6, 'Problema conexion internet general', '2026-04-06', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 1, 'Pantalla no encén a laula informàtica', '2026-04-09', '2026-04-15', 'Mitja', 1, 1);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (7, 'Equipo audio no funciona gimnasio', '2026-04-07', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 2, 'Problema amb la plataforma educativa', '2026-04-10', NULL, 'Alta', 2, 2);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (8, 'Fallo sistema administrativo login', '2026-04-08', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 4, 'Error en impressions múltiples', '2026-04-12', NULL, NULL, NULL, NULL);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (1, 'Pantalla no enciende aula informatica', '2026-04-09', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 6, 'Problema general de connexió a internet', '2026-04-06', NULL, NULL, NULL, NULL);
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (2, 'Problema acceso plataforma educativa', '2026-04-10', NULL, NULL, NULL, NULL);
+INSERT INTO incidencia
+VALUES (NULL, 3, 'Cable de xarxa desconnectat al passadís', '2026-04-11', NULL, NULL, NULL, NULL);
+-- ======================
+-- ACTUACIONS
+-- ======================
 
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (3, 'Cableado red desconectado pasillo', '2026-04-11', NULL, NULL, NULL, NULL);
-
-INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
-VALUES (4, 'Error en impresiones multiples aulas', '2026-04-12', NULL, NULL, NULL, NULL);
-
--- Actuacions (en un futur)
+INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
+VALUES
+(1, 1, '120', '2026-04-01', 'Reinstal·lació del sistema operatiu', 1),
+(2, 2, '60', '2026-04-02', 'Configuració del punt WiFi de laula', 1),
+(3, 3, '90', '2026-04-03', 'Substitució del projector', 1),
+(4, 4, '30', '2026-04-04', 'Reposició de paper a la impressora', 1),
+(5, 5, '180', '2026-04-05', 'Optimització del servidor', 1),
+(6, 6, '120', '2026-04-06', 'Revisió del router principal', 1),
+(7, 7, '60', '2026-04-07', 'Reparació del sistema de so', 1),
+(8, 8, '120', '2026-04-08', 'Correcció del sistema daccés', 1),
+(9, 1, '60', '2026-04-09', 'Substitució de pantalla defectuosa', 1),
+(10, 2, '60', '2026-04-10', 'Reinici de la plataforma educativa', 1),
+(11, 3, '120', '2026-04-11', 'Reconnectar cablejat de xarxa', 1),
+(12, 4, '60', '2026-04-12', 'Reparació del sistema dimpressió', 1);

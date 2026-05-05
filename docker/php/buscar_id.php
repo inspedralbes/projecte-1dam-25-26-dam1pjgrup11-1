@@ -3,11 +3,14 @@
 
 <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
 
+
 <div class="container py-5">
+<h2>La teva incidència</h2>
+<br>
 
 <?php
 if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
-
+    //tota informacio incidencia
     $incidencia_id = (int) $_GET['incidencia_id'];
 
     //info incidencia
@@ -43,7 +46,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
     if ($result_incidencia->num_rows > 0) {
         $row = $result_incidencia->fetch_assoc();
 ?>
-
+<!-- mostrar informacio incidencia i temps invertit-->
         <div class="card shadow-sm p-4">
             <h5 class="mb-3">Resultat de la incidència</h5>
 
@@ -56,6 +59,46 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
             <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row2['temps_total'] ?? 0) ?> min</p>
         </div>
 
+        <br>
+
+        <div class="card shadow-sm p-4">
+            <h5 class="mb-3">Descripció de les actuacions</h5>
+        
+        <?php
+        // info actuacio
+        $sql_actuacio = "SELECT 
+            a.actuacio_id,
+            a.descripcio_actuacio, 
+            a.visible, 
+            a.data_actuacio, 
+            a.temps 
+        FROM actuacio a 
+        WHERE a.incidencia_id = ? 
+        ORDER BY a.data_actuacio DESC, a.actuacio_id DESC"; 
+        
+        $stmt3 = $conn->prepare($sql_actuacio); 
+        $stmt3->bind_param("i", $incidencia_id); 
+        $stmt3->execute(); 
+        $result_actuacio = $stmt3->get_result();
+        
+        if ($result_actuacio->num_rows > 0): 
+            while ($row = $result_actuacio->fetch_assoc()): 
+                if ((int)$row['visible'] === 1): ?>
+        
+                    <div class="mb-3 p-3 border rounded bg-light">
+                        <p><strong>Data actuació:</strong> <?= htmlspecialchars(date("d/m/Y H:i", strtotime($row['data_actuacio']))) ?></p>
+                        <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row['temps']) ?> min</p>
+                        <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_actuacio']) ?></p>
+                    </div>
+                
+                <?php endif; 
+            endwhile;
+        else: ?>
+            <div class="alert alert-warning">No s'ha trobat cap actuació.</div>
+        <?php endif; ?>
+        
+        </div>
+
 <?php
     } else {
         echo '<div class="alert alert-warning">No s\'ha trobat cap incidència.</div>';
@@ -63,45 +106,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 }
 ?>
 
-<br>
 
-<div class="card shadow-sm p-4">
-    <h5 class="mb-3">Descripció de les actuacions</h5>
-
-<?php
-// info actuacio
-$sql_actuacio = "SELECT 
-    a.actuacio_id,
-    a.descripcio_actuacio, 
-    a.visible, 
-    a.data_actuacio, 
-    a.temps 
-FROM actuacio a 
-WHERE a.incidencia_id = ? 
-ORDER BY a.data_actuacio DESC, a.actuacio_id DESC"; 
-
-$stmt3 = $conn->prepare($sql_actuacio); 
-$stmt3->bind_param("i", $incidencia_id); 
-$stmt3->execute(); 
-$result_actuacio = $stmt3->get_result();
-
-if ($result_actuacio->num_rows > 0): 
-    while ($row = $result_actuacio->fetch_assoc()): 
-        if ((int)$row['visible'] === 1): ?>
-
-            <div class="mb-3 p-3 border rounded bg-light">
-                <p><strong>Data actuació:</strong> <?= htmlspecialchars(date("d/m/Y H:i", strtotime($row['data_actuacio']))) ?></p>
-                <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row['temps']) ?> min</p>
-                <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_actuacio']) ?></p>
-            </div>
-
-        <?php endif; 
-    endwhile;
-else: ?>
-    <div class="alert alert-warning">No s'ha trobat cap actuació.</div>
-<?php endif; ?>
-
-</div>
 
 </div>
 

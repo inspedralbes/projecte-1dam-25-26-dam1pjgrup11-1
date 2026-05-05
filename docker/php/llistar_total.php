@@ -27,8 +27,9 @@ $stmt = null;
     <h2 class="mb-4">Llistat d'incidències</h2> 
 
     <div>
-        <a href="informe_tecnics.php">Informe tècnics</a>
-        <a href="consum_departaments.php">Consum per departaments</a>
+        <a type="button" href="informe_tecnics.php" class="btn btn-outline-primary">Informe tècnics</a>
+        <a type="button" href="consum_departaments.php" class="btn btn-outline-primary">Consum per departaments</a>
+        <a type="button" href="historial_incidencies.php" class="btn btn-outline-primary">Historial d'incidencies</a>
     </div>
     <br>
 
@@ -48,7 +49,7 @@ $stmt = null;
     </option>
 
     <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
-        finalitzades
+        Finalitzades
     </option>
 
 </select>

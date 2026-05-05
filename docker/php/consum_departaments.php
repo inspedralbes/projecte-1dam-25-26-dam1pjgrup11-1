@@ -6,7 +6,8 @@ $sql = "SELECT
     i.departament_id,
     d.nom AS nom,
     COUNT(DISTINCT i.incidencia_id) AS num_incidencies,
-    COALESCE(SUM(a.temps), 0) AS temps_total
+    COALESCE(SUM(a.temps), 0) AS temps_total,
+    AVG(a.temps) AS temps_mitja
 FROM incidencia i
 LEFT JOIN departament d ON i.departament_id = d.departament_id
 LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
@@ -28,6 +29,7 @@ $result = $stmnt->get_result();
             <th>Departament</th>
             <th>Incidències</th>
             <th>Temps</th>
+            <th>Temps mitjà</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +41,7 @@ $result = $stmnt->get_result();
                         <td>{$row['nom']}</td>
                         <td>{$row['num_incidencies']}</td>
                         <td>{$row['temps_total']} min</td>
+                        <td>{$row['temps_mitja']} min</td>
                       </tr>";
             }
         } else {

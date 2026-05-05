@@ -2,7 +2,7 @@
 include_once "header.php";
 require_once "connexio.php";
 
-$sql = "SELECT tecnic_id, nom, cognom    FROM tecnic ORDER BY nom";
+$sql = "SELECT tecnic_id, nom, cognom FROM tecnic ORDER BY nom";
 $result = $conn->query($sql);
 ?>
 
