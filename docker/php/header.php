@@ -18,3 +18,13 @@
         <strong>Iniciar Sesió</strong>
     </div>
 </header>
+
+<?php
+$paginaActual = basename($_SERVER['PHP_SELF']);
+
+if ($paginaActual !== 'index.php'): ?>
+    <a href="javascript:history.go(-1)" class="button" style="top: 10px; left: 10px;">
+    <button type="button">Tornar</button>
+</a>
+<?php endif; ?>
+

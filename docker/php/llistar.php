@@ -7,7 +7,6 @@ $tecnic_id = isset($_GET['tecnic_id']) ? intval($_GET['tecnic_id']) : 0;
 if ($tecnic_id == 0) {
 ?>
     <div class="alert alert-danger">Selecciona un tècnic.</div>
-    <a href="tecnic.php" class="btn btn-primary">Tornar</a>
 <?php
     exit;
 }
@@ -29,15 +28,6 @@ $stmnt->bind_param("i", $tecnic_id);
 $stmnt->execute();
 $result = $stmnt->get_result();
 ?>
-
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Llistat d'incidències</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
 
 <body>
 
@@ -99,15 +89,6 @@ $stmnt->close();
 $conn->close();
 ?>
 
-    <a href="tecnic.php" class="btn btn-secondary mt-3">Tornar</a>
 </div>
 
-<script>
-function actuacio(id) {
-    // aquí puedes redirigir si quieres
-    // window.location.href = "actuacio.php?id=" + id;
-}
-</script>
-
-</body>
-</html>
+<?php include_once "footer.php"?>

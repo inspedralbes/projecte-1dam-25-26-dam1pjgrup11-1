@@ -53,7 +53,6 @@ $result = $stmnt->get_result();
 </body>
 </html>
 
-    <a href="llistar_total.php" class="btn btn-secondary mt-3">Tornar</a>
 </div>
 
 </body>

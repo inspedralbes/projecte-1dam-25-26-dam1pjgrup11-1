@@ -7,22 +7,9 @@ $result = null;
 $stmt = null;
 ?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Llistat d'incidències</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
 <body>
 
 <div class="container mt-4">
-
-    <a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">
-        Tornar
-    </a>
 
     <h2 class="mb-4">Llistat d'incidències</h2> 
 
