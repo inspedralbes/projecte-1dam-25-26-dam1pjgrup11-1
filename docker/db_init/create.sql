@@ -180,42 +180,40 @@ VALUES (3, 'Cableado red desconectado pasillo', '2026-04-11', NULL, NULL, NULL, 
 INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia, data_final, prioritat, tecnic_id, tipologia_id)
 VALUES (4, 'Error en impresiones multiples aulas', '2026-04-12', NULL, NULL, NULL, NULL);
 
--- Actuacions (en un futur)
-
--- Actuacions inicials
+-- Actuacions
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (1, 1, '2h', '2026-04-01', 'Revisió de lordinador i reinstal·lació del sistema operatiu', 1);
+VALUES (1, 1, '120', '2026-04-01', 'Revisió de lordinador i reinstal·lació del sistema operatiu', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (2, 2, '1h', '2026-04-02', 'Configuració del punt daccés WiFi de laula', 1);
+VALUES (2, 2, '60', '2026-04-02', 'Configuració del punt daccés WiFi de laula', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (3, 3, '1.5h', '2026-04-03', 'Substitució del projector defectuós', 1);
+VALUES (3, 3, '90', '2026-04-03', 'Substitució del projector defectuós', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (4, 4, '30m', '2026-04-04', 'Reposició de paper i reinici de la impressora', 1);
+VALUES (4, 4, '30', '2026-04-04', 'Reposició de paper i reinici de la impressora', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (5, 5, '3h', '2026-04-05', 'Optimització del servidor i neteja de processos', 1);
+VALUES (5, 5, '180', '2026-04-05', 'Optimització del servidor i neteja de processos', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (6, 6, '2h', '2026-04-06', 'Revisió de la connexió general i router principal', 1);
+VALUES (6, 6, '120', '2026-04-06', 'Revisió de la connexió general i router principal', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (7, 7, '1h', '2026-04-07', 'Reparació del sistema dàudio del gimnàs', 1);
+VALUES (7, 7, '60', '2026-04-07', 'Reparació del sistema dàudio del gimnàs', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (8, 8, '2h', '2026-04-08', 'Correcció derrors al sistema de login administratiu', 1);
+VALUES (8, 8, '120', '2026-04-08', 'Correcció derrors al sistema de login administratiu', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (9, 1, '1h', '2026-04-09', 'Substitució de pantalla defectuosa', 1);
+VALUES (9, 1, '60', '2026-04-09', 'Substitució de pantalla defectuosa', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (10, 2, '1h', '2026-04-10', 'Reinici de plataforma educativa i neteja de cache', 1);
+VALUES (10, 2, '60', '2026-04-10', 'Reinici de plataforma educativa i neteja de cache', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (11, 3, '2h', '2026-04-11', 'Reconnectat del cablejat de xarxa del passadís', 1);
+VALUES (11, 3, '120', '2026-04-11', 'Reconnectat del cablejat de xarxa del passadís', 1);
 
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES (12, 4, '1h', '2026-04-12', 'Reparació del sistema dimpressió massiva', 1);
+VALUES (12, 4, '60', '2026-04-12', 'Reparació del sistema dimpressió massiva', 1);
