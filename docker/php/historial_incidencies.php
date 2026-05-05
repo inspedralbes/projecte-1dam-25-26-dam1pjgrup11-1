@@ -3,14 +3,30 @@
     require_once "header.php";
 
 $sql = "SELECT 
-            t.tecnic_id,
+            i.incidencia_id,
+            d.nom AS departament_nom,
+            t.nom AS tecnic_nom,
+            t.cognom AS tecnic_cognom,
+            i.data_incidencia,
+            i.data_final,
+            tp.nom AS tipologia_nom,
+            i.descripcio_incidencia
+        FROM incidencia i
+        LEFT JOIN tecnic t ON i.tecnic_id = t.tecnic_id
+        LEFT JOIN departament d ON i.departament_id = d.departament_id
+        LEFT JOIN tipologia tp ON i.tipologia_id = tp.tipologia_id
+        LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
+        WHERE i.data_final IS NOT NULL
+        GROUP BY 
+            i.incidencia_id,
+            d.nom,
             t.nom,
             t.cognom,
-            COUNT(i.incidencia_id) AS incidencies_totals,
-            SUM(CASE WHEN i.data_final IS NOT NULL THEN 1 ELSE 0 END) AS incidencies_resoltes
-        FROM tecnic t
-        LEFT JOIN incidencia i ON t.tecnic_id = i.tecnic_id
-        GROUP BY t.tecnic_id, t.nom";
+            i.data_incidencia,
+            i.data_final,
+            tp.nom,
+            i.descripcio_incidencia
+        ORDER BY i.data_final DESC";
 
 $stmnt = $conn->prepare($sql);
 $stmnt->execute();
@@ -23,24 +39,30 @@ $result = $stmnt->get_result();
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nom</th>
-            <th>Incidències resoltes</th>
-            <th>Incidències totals</th>
-            <th>Incidències pendents</th>
+            <th>Descripció</th>
+            <th>Data inici</th>
+            <th>Data final</th>
+            <th>Tipologia</th>
+            <th>Departament</th>
+            <th>Tecnic</th>
+            <th>Temps</th>
         </tr>
     </thead>
     <tbody>
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-            //crear incidencies pendientes  
-            $incidencies_pendents = $row['incidencies_totals'] - $row['incidencies_resoltes'];  
+                $temps_total = strtotime($row['data_final']) - strtotime($row['data_incidencia']);
+                $temps_total = $temps_total / 86400; // segundos a días
             echo "<tr>
-                        <td>{$row['tecnic_id']}</td>
-                        <td>{$row['nom']} {$row['cognom']}</td>
-                        <td>{$row['incidencies_resoltes']}</td>
-                        <td>{$row['incidencies_totals']}</td>
-                        <td style='background-color:#f8d7da;'>{$incidencies_pendents}</td>
+                        <td>{$row['incidencia_id']}</td>
+                        <td>{$row['descripcio_incidencia']}</td>
+                        <td>{$row['data_incidencia']}</td>
+                        <td>{$row['data_final']}</td>
+                        <td>{$row['tipologia_nom']}</td>
+                        <td>{$row['departament_nom']}</td>
+                        <td>{$row['tecnic_nom']} {$row['tecnic_cognom']}</td>
+                        <td>$temps_total dies</td>
                       </tr>";
             }
         } else {
