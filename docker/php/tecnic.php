@@ -7,7 +7,7 @@ $result = $conn->query($sql);
 ?>
 
 
-<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="d-flex justify-content-center vh-100" style="padding-top: 60px;">
 
     <div class="text-center w-50">
 
