@@ -32,62 +32,91 @@ $result = $stmnt->get_result();
 <body>
 
 <div class="container mt-4">
-    <h2 class="mb-4">Llistat d'incidències</h2>
 
-<?php if ($result->num_rows > 0) { ?>
+    <h1 class="mb-5">Llistat d'incidències</h1>
 
-    <table class="table table-striped border-dark" style="--bs-table-striped-bg: #e3f2fd;">        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Descripció</th>
-                <th>Tipologia</th>
-                <th>Prioritat</th>
-                <th>Tècnic</th>
-                <th>Actuació</th>
-            </tr>
-        </thead>
-        <tbody>
+    <?php if ($result->num_rows > 0): ?>
 
-        <?php while ($row = $result->fetch_assoc()) {
-            $prioritat_class = '';
-            if ($row['prioritat'] == 'Alta') $prioritat_class = 'text-danger fw-bold';
-            if ($row['prioritat'] == 'Mitja') $prioritat_class = 'text-warning fw-bold';
-            if ($row['prioritat'] == 'Baixa') $prioritat_class = 'text-success fw-bold';
-        ?>
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Descripció</th>
+                    <th>Tipologia</th>
+                    <th>Prioritat</th>
+                    <th>Tècnic</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
 
-            <tr>
-                <td><?= $row['incidencia_id'] ?></td>
-                <td><?= htmlspecialchars($row['descripcio_incidencia']) ?></td>
-                <td><?= htmlspecialchars($row['tipologia_nom']) ?></td>
-                <td class="<?= $prioritat_class ?>">
-                    <?= $row['prioritat'] ?>
-                </td>
-                <td><?= htmlspecialchars($row['tecnic_nom']) ?></td>
-                <td>
-                    <a class="btn btn-sm btn-primary" href="actuacio.php?incidencia_id=<?= $row['incidencia_id'] ?>&tecnic_id=<?= $tecnic_id ?>">
-                        Obrir
-                    </a>
-                </td>
-            </tr>
+            <tbody>
 
-        <?php } ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
 
-        </tbody>
-    </table>
+                <?php
+                    $prioritat_class = '';
 
-<?php } else { ?>
+                    if ($row['prioritat'] == 'Alta') {
+                        $prioritat_class = 'text-danger fw-semibold';
+                    } elseif ($row['prioritat'] == 'Mitja') {
+                        $prioritat_class = 'text-warning fw-semibold';
+                    } elseif ($row['prioritat'] == 'Baixa') {
+                        $prioritat_class = 'text-success fw-semibold';
+                    }
+                ?>
 
-    <div class="alert alert-info">
-        No hi ha incidències per aquest tècnic.
-    </div>
+                <tr>
+                    <td class="text-center fw-bold">
+                        <?= $row['incidencia_id'] ?>
+                    </td>
 
-<?php } ?>
+                    <td>
+                        <?= htmlspecialchars($row['descripcio_incidencia'] ?? '—') ?>
+                    </td>
 
-<?php
-$stmnt->close();
-$conn->close();
-?>
+                    <td class="text-center">
+                        <?= htmlspecialchars($row['tipologia_nom'] ?? '—') ?>
+                    </td>
+
+                    <td class="text-center <?= $prioritat_class ?>">
+                        <?= $row['prioritat'] ?? '—' ?>
+                    </td>
+
+                    <td class="text-center">
+                        <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
+                    </td>
+
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-outline-primary"
+                           href="actuacio.php?incidencia_id=<?= $row['incidencia_id'] ?>&tecnic_id=<?= $tecnic_id ?>">
+                            Obrir
+                        </a>
+                    </td>
+                </tr>
+
+            <?php endwhile; ?>
+
+            </tbody>
+        </table>
+
+    <?php else: ?>
+
+        <div class="alert alert-info">
+            No hi ha incidències per aquest tècnic.
+        </div>
+
+    <?php endif; ?>
+
+    <?php
+    $stmnt->close();
+    $conn->close();
+    ?>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <?php include_once "footer.php"?>
+
+</body>
+</html>

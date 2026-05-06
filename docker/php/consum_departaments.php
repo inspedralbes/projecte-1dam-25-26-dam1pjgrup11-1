@@ -1,8 +1,8 @@
 <?php 
-    require_once "connexio.php";
-    require_once "header.php";
+require_once "connexio.php";
+require_once "header.php";
 
-$sql = "SELECT 
+$sql = "SELECT
     i.departament_id,
     d.nom AS nom,
     COUNT(DISTINCT i.incidencia_id) AS num_incidencies,
@@ -20,37 +20,65 @@ $stmnt->execute();
 $result = $stmnt->get_result();
 ?>
 
-<h2 style="text-align:center;">Incidències per departament</h2>
+<div class="container mt-4">
 
-<table class="table table-striped table-bordered text-center">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Departament</th>
-            <th>Incidències</th>
-            <th>Temps</th>
-            <th>Temps mitjà</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['departament_id']}</td>
-                        <td>{$row['nom']}</td>
-                        <td>{$row['num_incidencies']}</td>
-                        <td>{$row['temps_total']} min</td>
-                        <td>{$row['temps_mitja']} min</td>
-                      </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='4'>No hi ha dades</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+    <h2 class="mb-4 text-center">Incidències per departament</h2>
+
+    <?php if ($result->num_rows > 0): ?>
+
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Departament</th>
+                    <th>Incidències</th>
+                    <th>Temps total</th>
+                    <th>Temps mitjà</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <?php while($row = $result->fetch_assoc()): ?>
+
+                    <tr>
+                        <td class="text-center fw-bold">
+                            <?= $row['departament_id'] ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($row['nom']) ?>
+                        </td>
+
+                        <td class="text-center fw-semibold">
+                            <?= $row['num_incidencies'] ?>
+                        </td>
+
+                        <td class="text-center">
+                            <?= $row['temps_total'] ?> min
+                        </td>
+
+                        <td class="text-center">
+                            <?= $row['temps_mitja'] ?> min
+                        </td>
+                    </tr>
+
+                <?php endwhile; ?>
+
+            </tbody>
+
+        </table>
+
+    <?php else: ?>
+
+        <div class="alert alert-info text-center">
+            No hi ha dades disponibles.
+        </div>
+
+    <?php endif; ?>
 
 </div>
 
-<?php include_once "footer.php"?>
+</body>
+</html>

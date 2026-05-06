@@ -25,9 +25,7 @@ if ($stmt->get_result()->num_rows === 0) {
 
 require_once 'header.php';
 
-/**
- * Crear una actuació
- */
+
 function crear_actuacio($conn)
 {
     $incidencia_id = $_POST['incidencia_id'] ?? null;
@@ -39,26 +37,13 @@ function crear_actuacio($conn)
     $temps = $_POST['temps'] ?? 0;
     $data_actuacio = $_POST['data_actuacio'] ?? date('Y-m-d');
 
-    if (empty($descripcio)) {
-        echo "<p class='error'>La descripció és obligatòria.</p>";
-        return;
-    }else if (empty($data_actuacio)) {
-        echo "<p class='error'>La data de l'actuació és obligatòria.</p>";
-        return;
-    } else if (empty($temps)) {
-        echo "<p class='error'>El temps és obligatori.</p>";
-        return;
-    }else if(strlen($descripcio) < 20){
-        echo "<p class='error'>La descripció ha de tenir almenys 20 caràcters.</p>";
-        return;
-    }
+    if (empty($descripcio)) return "<p class='alert alert-danger'>La descripció és obligatòria.</p>";
+    if (empty($data_actuacio)) return "<p class='alert alert-danger'>La data és obligatòria.</p>";
+    if (empty($temps)) return "<p class='alert alert-danger'>El temps és obligatori.</p>";
+    if (strlen($descripcio) < 20) return "<p class='alert alert-danger'>Mínim 20 caràcters.</p>";
 
     if ($finalitzada == 1) {
-
-        $sql_update = "UPDATE incidencia
-                       SET data_final = NOW()
-                       WHERE incidencia_id = ?";
-
+        $sql_update = "UPDATE incidencia SET data_final = NOW() WHERE incidencia_id = ?";
         $stmt_up = $conn->prepare($sql_update);
         $stmt_up->bind_param("i", $incidencia_id);
         $stmt_up->execute();
@@ -72,39 +57,31 @@ function crear_actuacio($conn)
     $stmt->bind_param("iisssi", $incidencia_id, $tecnic_id, $temps, $data_actuacio, $descripcio, $visible);
 
     if ($stmt->execute()) {
+        $last_id = $conn->insert_id;
 
-        $last_actuacio_id = $conn->insert_id;
-        echo "<br><br><br><br>";
-        echo "<p class='info'>Actuació creada amb èxit!</p>";
-        echo "<p class='info'>Número d'actuació: <strong>$last_actuacio_id</strong></p>";
+        $output = "<div class='alert alert-success'>";
+        $output .= "<p class='mb-1'>Actuació creada amb èxit!</p>";
+        $output .= "<p>Número d'actuació: <strong>$last_id</strong></p>";
+        $output .= "</div>";
 
-        ?>
-        <form method="GET" action="buscar_id.php">
-            <input type="hidden" name="incidencia_id" value="<?php echo $incidencia_id; ?>">
-            <fieldset>
-                <button type="submit" class="btn btn-primary mt-3">Veure actuacions</button>
-            </fieldset>
-        </form>
-        <?php
+        $output .= "
+        <form method='GET' action='buscar_id.php'>
+            <input type='hidden' name='incidencia_id' value='$incidencia_id'>
+            <button type='submit' class='btn btn-primary'>Veure actuacions</button>
+        </form>";
 
-    } else {
-        echo "<p class='error'>Error al crear l'actuació: " . htmlspecialchars($stmt->error) . "</p>";
+        return $output;
     }
 
-    $stmt->close();
+    return "<p class='alert alert-danger'>Error: " . htmlspecialchars($stmt->error) . "</p>";
 }
-
 ?>
 
 <?php
-
 $descripcio_incidencia = '';
 
 if ($incidencia_id) {
-    $sql = "SELECT descripcio_incidencia
-            FROM incidencia
-            WHERE incidencia_id = ?";
-
+    $sql = "SELECT descripcio_incidencia FROM incidencia WHERE incidencia_id = ?";
     $stmt1 = $conn->prepare($sql);
     $stmt1->bind_param("i", $incidencia_id);
     $stmt1->execute();
@@ -118,57 +95,66 @@ if ($incidencia_id) {
 }
 ?>
 
-<h1>Actuació realitzada</h1>
-<h4>Incidencia numero #<?php echo $incidencia_id; ?></h5>
-<h6><?php echo $descripcio_incidencia; ?></h5>
+<div class="container mt-5">
 
-<?php
+    <h1 class="fw-bold mb-2 text-center">Actuació realitzada</h1>
+    <h5 class="text-center mb-4">Incidència #<?= htmlspecialchars($incidencia_id) ?></h5>
+    <p class="text-center text-muted mb-4"><?= htmlspecialchars($descripcio_incidencia) ?></p>
 
-$old_descripcio = $_POST['descripcio_actuacio'] ?? '';
+    <?php
+    $old_descripcio = $_POST['descripcio_actuacio'] ?? '';
+    $creada = false;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    crear_actuacio($conn);
-} else {
-?>
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        echo crear_actuacio($conn);
+        $creada = true;
+    }
+    ?>
 
-<form method="POST" action="actuacio.php" name="guardar_actuacio" id="guardar_actuacio">
+    <?php if (!$creada): ?>
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body">
 
-    <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
-    <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
+            <form method="POST" action="actuacio.php">
 
-    
+                <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
+                <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
 
-        <legend>Data Actuació</legend>
-        <input type="date" name="data_actuacio" id="data_actuacio" required>
+                <div class="mb-3">
+                    <label class="form-label">Data actuació</label>
+                    <input style="background-color: #F5F7F8; color:#495E57" type="date" name="data_actuacio" class="form-control" required>
+                </div>
 
-        <br><br>
+                <div class="mb-3">
+                    <label class="form-label">Descripció actuació</label>
+                    <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" name="descripcio_actuacio" rows="5" minlength="20" placeholder="Escriu informació sobre la teva actuació" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+                </div>
 
-        <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" id="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+                <div class="mb-3">
+                    <label class="form-label">Temps invertit (minuts)</label>
+                    <input style="background-color: #F5F7F8; color:#495E57" type="number" name="temps" class="form-control" min="0" required>
+                </div>
 
-        <br><br>
+                <div class="form-check mb-2">
+                    <input style="background-color: #F5F7F8; color:#495E57" class="form-check-input" type="checkbox" name="visible" id="visible">
+                    <label class="form-check-label" for="visible">Visible</label>
+                </div>
 
-        <legend>Temps Invertit (min)</legend>
-        <input type="number" name="temps" id="temps" min="0" required>
+                <div class="form-check mb-3">
+                    <input style="background-color: #F5F7F8; color:#495E57" class="form-check-input" type="checkbox" name="finalitzada" id="finalitzada">
+                    <label class="form-check-label" for="finalitzada">Finalitzada</label>
+                </div>
 
-        <br><br>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Crear actuació</button>
+                </div>
 
-        <legend>Visible</legend>
-        <input type="checkbox" name="visible" id="visible">
+            </form>
 
-        <br><br>
+        </div>
+    </div>
+    <?php endif; ?>
 
-        <legend>Finalitzada</legend>
-        <input type="checkbox" name="finalitzada">
-
-        <br><br>
-
-        <input type="submit" value="Crear">
-    
-</form>
-
-<?php } ?>
-
-<br>
+</div>
 
 <?php require_once 'footer.php'; ?>

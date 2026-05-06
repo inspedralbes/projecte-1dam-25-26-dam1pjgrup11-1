@@ -10,118 +10,91 @@ $stmt = null;
 
 <div class="container mt-4">
 
-    <h2 class="mb-4">Llistat d'incidències</h2> 
+    <h1 class="mb-5">Llistat d'incidències</h1>
 
     <div>
-        <a type="button" href="informe_tecnics.php" class="btn btn-outline-primary">Informe tècnics</a>
-        <a type="button" href="consum_departaments.php" class="btn btn-outline-primary">Consum per departaments</a>
-        <a type="button" href="historial_incidencies.php" class="btn btn-outline-primary">Historial d'incidencies</a>
+        <a href="informe_tecnics.php" class="btn btn-outline-primary">Informe tècnics</a>
+        <a href="consum_departaments.php" class="btn btn-outline-primary">Consum per departaments</a>
+        <a href="historial_incidencies.php" class="btn btn-outline-primary">Historial d'incidencies</a>
     </div>
+
     <br>
 
     <form id="formFiltre" action="llistar_total.php" method="GET">
-    <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()">
+        <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()" style="width: 200px;">
+            <option value="sense_assignar" <?= $filtre == 'sense_assignar' ? 'selected' : '' ?>>
+                Sense assignar
+            </option>
 
-    <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
-        Total
-    </option>
+            <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
+                Total
+            </option>
 
-    <option value="sense_assignar" <?= $filtre == 'sense_assignar' ? 'selected' : '' ?>>
-        Sense assignar
-    </option>
+            <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
+                Assignades
+            </option>
 
-    <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
-        Assignades
-    </option>
+            <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
+                Finalitzades
+            </option>
 
-    <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
-        Finalitzades
-    </option>
-
-</select>
-</form>
+        </select>
+    </form>
 
     <?php
 
     if ($filtre == 'total') {
-        $sql = "SELECT
-                i.incidencia_id,
-                i.descripcio_incidencia,
-                i.prioritat,
-                t.nom AS tipologia_nom,
-                te.nom AS tecnic_nom
-            FROM incidencia i
-            LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-            LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-            ORDER BY i.prioritat";
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+                FROM incidencia i
+                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                ORDER BY i.prioritat";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    }else if ($filtre == 'sense_assignar'){
-        $sql = "SELECT
-                i.incidencia_id,
-                i.descripcio_incidencia,
-                i.prioritat,
-                t.nom AS tipologia_nom,
-                te.nom AS tecnic_nom
-            FROM incidencia i
-            LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-            LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-            WHERE i.tecnic_id IS NULL";
+    } else if ($filtre == 'sense_assignar') {
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+                FROM incidencia i
+                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                WHERE i.tecnic_id IS NULL";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-    }else if ($filtre == 'assignades'){
-        $sql = "SELECT
-                    i.incidencia_id,
-                    i.descripcio_incidencia,
-                    i.prioritat,
-                    t.nom AS tipologia_nom,
-                    te.nom AS tecnic_nom
+    } else if ($filtre == 'assignades') {
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.tecnic_id IS NOT NULL
                 ORDER BY i.prioritat";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    } else if ($filtre == 'finalitzades') {
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+                FROM incidencia i
+                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
+                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
+                WHERE i.data_final IS NOT NULL
+                ORDER BY i.prioritat";
+    }
 
-    }else if ($filtre == 'finalitzades'){
-             $sql = "SELECT
-                         i.incidencia_id,
-                         i.descripcio_incidencia,
-                         i.prioritat,
-                         t.nom AS tipologia_nom,
-                         te.nom AS tecnic_nom
-                     FROM incidencia i
-                     LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-                     LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                     WHERE i.data_final IS NOT NULL
-                     ORDER BY i.prioritat";
-
-             $stmt = $conn->prepare($sql);
-             $stmt->execute();
-             $result = $stmt->get_result();
-         }
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     ?>
 
     <?php if ($result->num_rows > 0): ?>
 
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-dark text-center">
                 <tr>
                     <th>ID</th>
                     <th>Descripció</th>
                     <th>Tipologia</th>
                     <th>Prioritat</th>
                     <th>Tècnic</th>
-                    <th>Modificació</th>
+                    <th>Accions</th>
                 </tr>
             </thead>
 
@@ -132,24 +105,38 @@ $stmt = null;
                         $prioritat_class = '';
 
                         if ($row['prioritat'] == 'Alta') {
-                            $prioritat_class = 'text-danger fw-bold';
+                            $prioritat_class = 'text-danger fw-semibold';
                         } elseif ($row['prioritat'] == 'Mitja') {
-                            $prioritat_class = 'text-warning fw-bold';
+                            $prioritat_class = 'text-warning fw-semibold';
                         } elseif ($row['prioritat'] == 'Baixa') {
-                            $prioritat_class = 'text-success fw-bold';
+                            $prioritat_class = 'text-success fw-semibold';
                         }
                     ?>
 
                     <tr>
-                        <td><?= $row['incidencia_id'] ?></td>
-                        <td><?= htmlspecialchars($row['descripcio_incidencia'] ?? '') ?></td>
-                        <td><?= htmlspecialchars($row['tipologia_nom'] ?? '') ?></td>
-                        <td class="<?= $prioritat_class ?>">
-                            <?= $row['prioritat'] ?>
+                        <td class="text-center fw-bold">
+                            <?= $row['incidencia_id'] ?>
                         </td>
-                        <td><?= htmlspecialchars($row['tecnic_nom'] ?? '') ?></td>
+
                         <td>
-                            <a class="btn btn-sm btn-primary" href="llistar_filtrar.php?id=<?= $row['incidencia_id'] ?>">
+                            <?= htmlspecialchars($row['descripcio_incidencia'] ?? '—') ?>
+                        </td>
+
+                        <td class="text-center">
+                            <?= htmlspecialchars($row['tipologia_nom'] ?? '—') ?>
+                        </td>
+
+                        <td class="text-center <?= $prioritat_class ?>">
+                            <?= $row['prioritat'] ?? '—'?>
+                        </td>
+
+                        <td class="text-center">
+                            <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
+                        </td>
+
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-outline-primary"
+                               href="llistar_filtrar.php?id=<?= $row['incidencia_id'] ?>">
                                 Modificar
                             </a>
                         </td>
