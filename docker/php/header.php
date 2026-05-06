@@ -8,6 +8,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="js/main.js" defer></script>
 </head>
 
 <body>
@@ -21,10 +22,9 @@
 
 <?php
 $paginaActual = basename($_SERVER['PHP_SELF']);
-
-if ($paginaActual !== 'index.php'): ?>
-    <a href="javascript:history.go(-1)" class="button" style="top: 10px; left: 10px;">
-    <button type="button">Tornar</button>
-</a>
+if ($paginaActual === 'buscar_id.php' || $paginaActual === 'crear.php'): ?>
+    <a href="index.php" class="button tornar">Tornar</a>
+<?php elseif ($paginaActual !== 'index.php'): ?>
+    <a href="javascript:history.back()" class="button tornar"">Tornar</a>
 <?php endif; ?>
 

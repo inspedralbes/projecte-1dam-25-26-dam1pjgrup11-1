@@ -67,3 +67,20 @@ a:hover {
     color: #F4CE14;
     text-decoration: underline;
 }
+
+.tornar{
+    top: 10px;
+    left: 10px;
+    background-color: #F4CE14;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.tornar:hover {
+    color: black;
+    background-color: #e0bb12;
+    text-decoration: none;
+}
