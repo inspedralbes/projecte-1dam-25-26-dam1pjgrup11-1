@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #F5F7F8;
@@ -5,7 +10,7 @@ body {
     padding: 20px;
     color: #45474B;
 
-    height: 100vh;
+    min-height: 100vh;
     flex-direction: column;
     align-items: center;
 }
@@ -83,4 +88,11 @@ a:hover {
     color: black;
     background-color: #e0bb12;
     text-decoration: none;
+}
+
+footer {
+  margin-top: auto;
+  width: 100%;
+  background-color: #000; /* opcional */
+  padding: 10px 0;
 }
