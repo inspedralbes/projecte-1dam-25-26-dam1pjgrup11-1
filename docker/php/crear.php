@@ -31,7 +31,6 @@ function crear_incidencia($conn)
             <button type='submit' class='btn btn-primary'>Veure la teva incidència</button>
         </form>
         ";
-
         return $output;
 
     } else {
@@ -58,18 +57,22 @@ function crear_incidencia($conn)
     $old_departament = $_POST['departament_id'] ?? '';
     $old_descripcio = $_POST['descripcio_incidencia'] ?? '';
 
+    $incidencia_creada = false;
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo crear_incidencia($conn);
+        $incidencia_creada = true;
     }
 
     $sql = "SELECT departament_id, nom FROM departament";
     $departaments = $conn->query($sql);
     ?>
-
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    
+    <?php if (!$incidencia_creada): ?>
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;" id="formulari_incidencia">
         <div class="card-body">
 
-            <form method="POST" action="crear.php">
+            <form method="POST" action="crear.php" name="guardar_incidencia">
 
                 <div class="mb-3">
                     <label for="departament" class="form-label">Departament</label>
@@ -86,7 +89,7 @@ function crear_incidencia($conn)
 
                 <div class="mb-3">
                     <label for="descripcio" class="form-label">Descripció del problema</label>
-                    <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" id="descripcio" name="descripcio_incidencia"rows="5"placeholder="Explica el problema amb el màxim detall possible"required><?= htmlspecialchars($old_descripcio) ?></textarea>
+                    <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" id="descripcio" name="descripcio_incidencia"rows="5"placeholder="Explica el problema amb el màxim detall possible" required><?= htmlspecialchars($old_descripcio) ?></textarea>
                 </div>
 
                 <div class="d-grid">
@@ -97,11 +100,7 @@ function crear_incidencia($conn)
 
         </div>
     </div>
-
-    <div class="text-center mt-4">
-        <a class="btn btn-outline-secondary" href="index.php">Portada</a>
-    </div>
-
+    <?php endif; ?>
 </div>
 
 <?php require_once 'footer.php'; ?>
