@@ -42,6 +42,15 @@ function crear_actuacio($conn)
     if (empty($descripcio)) {
         echo "<p class='error'>La descripció és obligatòria.</p>";
         return;
+    }else if (empty($data_actuacio)) {
+        echo "<p class='error'>La data de l'actuació és obligatòria.</p>";
+        return;
+    } else if (empty($temps)) {
+        echo "<p class='error'>El temps és obligatori.</p>";
+        return;
+    }else if(strlen($descripcio) < 20){
+        echo "<p class='error'>La descripció ha de tenir almenys 20 caràcters.</p>";
+        return;
     }
 
     if ($finalitzada == 1) {
