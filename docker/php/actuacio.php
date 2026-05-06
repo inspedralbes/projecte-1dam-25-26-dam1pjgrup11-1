@@ -120,8 +120,6 @@ if ($incidencia_id) {
 
 <body>
 
-<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
-
 <h1>Actuació realitzada</h1>
 <h4>Incidencia numero #<?php echo $incidencia_id; ?></h5>
 <h6><?php echo $descripcio_incidencia; ?></h5>

@@ -1,8 +1,6 @@
 <?php require_once 'connexio.php'; ?>
 <?php require_once 'header.php'; ?>
 
-<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
-
 
 <div class="container py-5">
 <h2>La teva incidència</h2>

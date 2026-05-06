@@ -53,15 +53,6 @@ $tipologies = $conn->query($sql2);
 
 <?php include_once "header.php"; ?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar incidència</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
 
 <div class="container mt-4">
 
@@ -127,10 +118,6 @@ $tipologies = $conn->query($sql2);
         <button type="submit" class="btn btn-success">
             Guardar canvis
         </button>
-
-        <a href="llistar_total.php" class="btn btn-secondary">
-            Tornar
-        </a>
 
     </form>
 
