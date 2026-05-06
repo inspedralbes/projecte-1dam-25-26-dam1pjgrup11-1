@@ -36,8 +36,7 @@ $result = $stmnt->get_result();
 
 <?php if ($result->num_rows > 0) { ?>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <table class="table table-striped border-dark" style="--bs-table-striped-bg: #e3f2fd;">        <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>Descripció</th>
@@ -66,7 +65,7 @@ $result = $stmnt->get_result();
                 <td><?= htmlspecialchars($row['tecnic_nom']) ?></td>
                 <td>
                     <a class="btn btn-sm btn-primary" href="actuacio.php?incidencia_id=<?= $row['incidencia_id'] ?>&tecnic_id=<?= $tecnic_id ?>">
-                        Actuació
+                        Obrir
                     </a>
                 </td>
             </tr>
