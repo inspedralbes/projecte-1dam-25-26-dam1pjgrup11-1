@@ -1,3 +1,4 @@
+// Validació del formulari d'incidència, evita camps buits i mostra un missatge d'alerta
 document.getElementById("guardar_incidencia").addEventListener("submit", function(e) {
   const inputs = this.querySelectorAll("input");
 
@@ -11,4 +12,5 @@ document.getElementById("guardar_incidencia").addEventListener("submit", functio
   }
 });
 
+// Amaga el formulari d'incidència al carregar la pàgina
 document.getElementById("formularioIncidencia").style.display = "none";
