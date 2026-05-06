@@ -39,12 +39,6 @@ function crear_actuacio($conn)
     $temps = $_POST['temps'] ?? 0;
     $data_actuacio = $_POST['data_actuacio'] ?? date('Y-m-d');
 
-    if (empty($descripcio)) {
-        echo "<p class='error'>La descripció és obligatòria.</p>";
-        return;
-    }
-
-
     if ($finalitzada == 1) {
 
         $sql_update = "UPDATE incidencia
@@ -133,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
 ?>
 
-<form method="POST" action="actuacio.php">
+<form method="POST" action="actuacio.php" name="guardar_actuacio" id="guardar_actuacio">
 
     <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
     <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
@@ -141,22 +135,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <fieldset>
 
         <legend>Data Actuació</legend>
-        <input type="date" name="data_actuacio" required>
+        <input type="date" name="data_actuacio" id="data_actuacio" required>
 
         <br><br>
 
         <legend>Descripció Actuació</legend>
-        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+        <textarea placeholder="Escriu informació sobre la teva actuació" name="descripcio_actuacio" id="descripcio_actuacio" rows="5" cols="40" minlength="20" required><?= htmlspecialchars($old_descripcio) ?></textarea>
 
         <br><br>
 
         <legend>Temps Invertit (min)</legend>
-        <input type="number" name="temps" min="0" required>
+        <input type="number" name="temps" id="temps" min="0" required>
 
         <br><br>
 
         <legend>Visible</legend>
-        <input type="checkbox" name="visible">
+        <input type="checkbox" name="visible" id="visible">
 
         <br><br>
 
@@ -171,9 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php } ?>
 
-<div id="menu">
-    <br>
-    <p><a class='btn btn-secondary' href="index.php">Portada</a></p>
-</div>
+<br>
 
 <?php require_once 'footer.php'; ?>
