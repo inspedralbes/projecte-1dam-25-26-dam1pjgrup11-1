@@ -1,117 +1,111 @@
 <?php
-
 require_once 'connexio.php';
 require_once 'header.php';
-/**
- * Crear una incidencia
- */
+
 function crear_incidencia($conn)
 {
-    $departament_id = $_POST['departament_id'];
-    $descripcio = $_POST['descripcio_incidencia'];
-
+    $departament_id = $_POST['departament_id'] ?? '';
+    $descripcio = trim($_POST['descripcio_incidencia'] ?? '');
 
     if (empty($departament_id) || empty($descripcio)) {
-        echo "<p class='error'>Tots els camps són obligatoris.</p>";
-        return;
+        return "<p class='alert alert-danger'>Tots els camps són obligatoris.</p>";
     }
 
     $sql = "INSERT INTO incidencia (departament_id, descripcio_incidencia, data_incidencia)
             VALUES (?, ?, NOW())";
 
     $stmt = $conn->prepare($sql);
-
     $stmt->bind_param("is", $departament_id, $descripcio);
 
     if ($stmt->execute()) {
-    $last_incidencia_id = $conn->insert_id;
+        $last_id = $conn->insert_id;
 
-    echo "<p class='info'>Incidència creada amb èxit!</p>";
-    echo "<p class='info'>El teu número d'incidència és <strong>$last_incidencia_id</strong></p>";
-    ?>
-    <form method="GET" action="buscar_id.php">
-        <input type="hidden" name="incidencia_id" value="<?php echo $last_incidencia_id; ?>">
-        <fieldset>
-            <button type="submit" class="btn btn-primary mt-3">Veure la teva incidència</button>
-        </fieldset>
-    </form>
-    <?php
+        $output = "<div class='alert alert-success'>";
+        $output .= "<p class='mb-1'>Incidència creada amb èxit!</p>";
+        $output .= "<p>El teu número és <strong>$last_id</strong></p>";
+        $output .= "</div>";
+
+        $output .= "
+        <form method='GET' action='buscar_id.php'>
+            <input type='hidden' name='incidencia_id' value='$last_id'>
+            <button type='submit' class='btn btn-primary'>Veure la teva incidència</button>
+        </form>
+        ";
+
+        return $output;
+
     } else {
-        echo "<p class='error'>Error al crear la incidència: " . htmlspecialchars($stmt->error) . "</p>";
+        return "<p class='alert alert-danger'>Error: " . htmlspecialchars($stmt->error) . "</p>";
     }
-
-    $stmt->close();
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear incidencia</title>
+    <title>Crear incidència</title>
 </head>
 
-<body>
+<body class="bg-light">
 
-<a href="../" class="btn btn-secondary mt-3" style="position: absolute; top: 10px; left: 10px;">Tornar</a>
+<div class="container mt-5">
 
-<h1 class="fw-bold">Crear una incidencia</h1>
+    <a href="../" class="btn btn-secondary mb-4">← Tornar</a>
 
-<?php
+    <h1 class="fw-bold mb-4 text-center">Crear una incidència</h1>
 
-$old_departament = $_POST['departament_id'] ?? '';
-$old_descripcio = $_POST['descripcio_incidencia'] ?? '';
+    <?php
+    $old_departament = $_POST['departament_id'] ?? '';
+    $old_descripcio = $_POST['descripcio_incidencia'] ?? '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    crear_incidencia($conn);
-
-} else {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        echo crear_incidencia($conn);
+    }
 
     $sql = "SELECT departament_id, nom FROM departament";
     $departaments = $conn->query($sql);
-
     ?>
 
-    <form method="POST" action="crear.php">
-        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-        <fieldset class=" border d-inline-block p-3 mb-4" style="background-color: white">
-            <legend class="mb-3 azm-color-444">INCIDENCIA</legend>
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body">
 
-            <label for="departament" class="form-label azm-color-666">Departament:</label>
-            <select name="departament_id" id="departament" class="form-select mb-3" style="background-color: #F5F7F8; color:#495E57" required>
-                <option value="" required> Selecciona </option>
+            <form method="POST" action="crear.php">
 
-                <?php while ($dep = $departaments->fetch_assoc()) { ?>
-                    <option value="<?= $dep['departament_id'] ?>"
-                        <?= ($old_departament == $dep['departament_id']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($dep['nom']) ?>
-                    </option>
-                <?php } ?>
+                <div class="mb-3">
+                    <label for="departament" class="form-label">Departament</label>
+                    <select name="departament_id" id="departament" class="form-select" style="background-color: #F5F7F8; color:#495E57" required>
+                        <option value="">Selecciona</option>
+                        <?php while ($dep = $departaments->fetch_assoc()) { ?>
+                            <option value="<?= $dep['departament_id'] ?>"
+                                <?= ($old_departament == $dep['departament_id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($dep['nom']) ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
 
-            </select>
+                <div class="mb-3">
+                    <label for="descripcio" class="form-label">Descripció del problema</label>
+                    <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" id="descripcio" name="descripcio_incidencia"rows="5"placeholder="Explica el problema amb el màxim detall possible"required><?= htmlspecialchars($old_descripcio) ?></textarea>
+                </div>
 
-            <br><br>
-            <label for="descripcio" >Descripció del problema:</label>
-            <br>
-            <textarea class="form-control" id="descripcio" name="descripcio_incidencia" rows="5" cols="40" style="background-color: #F5F7F8; color:#495E57" required><?= htmlspecialchars($old_descripcio) ?></textarea>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Crear incidència</button>
+                </div>
 
-            <br><br>
+            </form>
 
-            <input type="submit" class="btn btn-success" value="Crear">
-        </fieldset>
+        </div>
     </div>
-    </form>
 
-    <?php
-}
-?>
+    <div class="text-center mt-4">
+        <a class="btn btn-outline-secondary" href="index.php">Portada</a>
+    </div>
 
-<div id="menu">
-    <br>
-    <p><a class='btn btn-secondary' href="index.php">Portada</a></p>
 </div>
 
-<?php require_once 'footer.php'?>
+<?php require_once 'footer.php'; ?>
+</body>
+</html>
