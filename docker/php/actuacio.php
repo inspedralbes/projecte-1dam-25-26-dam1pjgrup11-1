@@ -118,16 +118,6 @@ if ($incidencia_id) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actuació realitzada</title>
-</head>
-
-<body>
-
 <h1>Actuació realitzada</h1>
 <h4>Incidencia numero #<?php echo $incidencia_id; ?></h5>
 <h6><?php echo $descripcio_incidencia; ?></h5>

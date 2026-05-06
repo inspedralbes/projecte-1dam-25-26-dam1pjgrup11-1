@@ -1,5 +1,6 @@
 <?php
 require_once 'connexio.php';
+require_once 'header.php';
 
 $id = $_GET['id'];
 
@@ -61,8 +62,6 @@ $tipologies = $conn->query($sql2);
 <h5><?php echo $incidencia['descripcio_incidencia']; ?></h5>
 <br>
 
-
-
     <form action="actualitzar_incidencia.php" method="POST">
 
         <input type="hidden" name="id"
@@ -123,5 +122,4 @@ $tipologies = $conn->query($sql2);
 
 </div>
 
-</body>
-</html>
+<?php include_once "footer.php"; ?>

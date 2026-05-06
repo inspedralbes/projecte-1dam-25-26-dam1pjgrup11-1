@@ -39,16 +39,6 @@ function crear_incidencia($conn)
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear incidència</title>
-</head>
-
-<body class="bg-light">
-
 <div class="container mt-5">
 
     <h1 class="fw-bold mb-4 text-center">Crear una incidència</h1>
@@ -104,5 +94,3 @@ function crear_incidencia($conn)
 </div>
 
 <?php require_once 'footer.php'; ?>
-</body>
-</html>

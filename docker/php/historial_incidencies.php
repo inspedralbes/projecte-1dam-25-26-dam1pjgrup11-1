@@ -72,10 +72,6 @@ $result = $stmnt->get_result();
         ?>
     </tbody>
 </table>
-</body>
-</html>
-
 </div>
 
-</body>
-</html>
+<?php include_once "footer.php"?>

@@ -1,5 +1,4 @@
-<?php include_once "header.php"?>
-<?php
+<?php include_once "header.php";
 require_once 'connexio.php';
 
 $filtre = $_GET['filtre'] ?? 'sense_assignar';
@@ -174,6 +173,3 @@ $stmt = null;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php include_once 'footer.php'; ?>
-
-</body>
-</html>
