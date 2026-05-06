@@ -52,8 +52,6 @@ function crear_incidencia($conn)
 
 <div class="container mt-5">
 
-    <a href="../" class="btn btn-secondary mb-4">← Tornar</a>
-
     <h1 class="fw-bold mb-4 text-center">Crear una incidència</h1>
 
     <?php
