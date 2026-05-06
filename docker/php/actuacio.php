@@ -39,6 +39,11 @@ function crear_actuacio($conn)
     $temps = $_POST['temps'] ?? 0;
     $data_actuacio = $_POST['data_actuacio'] ?? date('Y-m-d');
 
+    if (empty($descripcio)) {
+        echo "<p class='error'>La descripció és obligatòria.</p>";
+        return;
+    }
+
     if ($finalitzada == 1) {
 
         $sql_update = "UPDATE incidencia
@@ -132,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
     <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">
 
-    <fieldset>
+    
 
         <legend>Data Actuació</legend>
         <input type="date" name="data_actuacio" id="data_actuacio" required>
@@ -160,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <input type="submit" value="Crear">
-    </fieldset>
+    
 </form>
 
 <?php } ?>
