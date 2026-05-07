@@ -1,6 +1,6 @@
 <?php 
-    require_once "connexio.php";
-    require_once "header.php";
+require_once "connexio.php";
+require_once "header.php";
 
 $sql = "SELECT DISTINCT
             i.incidencia_id,
@@ -17,7 +17,7 @@ $sql = "SELECT DISTINCT
         LEFT JOIN tipologia tp ON i.tipologia_id = tp.tipologia_id
         LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
         WHERE i.data_final IS NOT NULL
-        GROUP BY 
+        GROUP BY
             i.incidencia_id,
             d.nom,
             t.nom,
@@ -34,44 +34,90 @@ $stmnt->execute();
 $result = $stmnt->get_result();
 ?>
 
-<h2 style="text-align:center;">Historial d'incidencies resoltes</h2>
+<div class="container mt-4">
 
-<table class="table table-striped table-bordered text-center">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Descripció</th>
-            <th>Data inici</th>
-            <th>Data final</th>
-            <th>Tipologia</th>
-            <th>Departament</th>
-            <th>Tecnic</th>
-            <th>Temps</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $temps_total = strtotime($row['data_final']) - strtotime($row['data_incidencia']);
-                $temps_total = $temps_total / 86400; // segundos a días
-            echo "<tr>
-                        <td>{$row['incidencia_id']}</td>
-                        <td>{$row['descripcio_incidencia']}</td>
-                        <td>{$row['data_incidencia']}</td>
-                        <td>{$row['data_final']}</td>
-                        <td>{$row['tipologia_nom']}</td>
-                        <td>{$row['departament_nom']}</td>
-                        <td>{$row['tecnic_nom']} {$row['tecnic_cognom']}</td>
-                        <td>$temps_total dies</td>
-                      </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='4'>No hi ha dades</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+    <h2 class="mb-4 text-center">Historial d'incidències resoltes</h2>
+
+    <?php if ($result->num_rows > 0): ?>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-bordered align-middle shadow-sm">
+
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripció</th>
+                        <th>Data inici</th>
+                        <th>Data final</th>
+                        <th>Tipologia</th>
+                        <th>Departament</th>
+                        <th>Tècnic</th>
+                        <th>Temps</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <?php while($row = $result->fetch_assoc()): ?>
+
+                        <?php
+                            $temps_total = strtotime($row['data_final']) - strtotime($row['data_incidencia']);
+                            $temps_total = $temps_total / 86400; // dies
+                        ?>
+
+                        <tr>
+                            <td class="text-center fw-bold">
+                                <?= $row['incidencia_id'] ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($row['descripcio_incidencia']) ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?= $row['data_incidencia'] ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?= $row['data_final'] ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?= htmlspecialchars($row['tipologia_nom']) ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?= htmlspecialchars($row['departament_nom']) ?>
+                            </td>
+
+                            <td class="text-center">
+                                <?= htmlspecialchars($row['tecnic_nom']) ?>
+                                <?= htmlspecialchars($row['tecnic_cognom']) ?>
+                            </td>
+
+                            <td class="text-center fw-semibold">
+                                <?= round($temps_total, 2) ?> dies
+                            </td>
+                        </tr>
+
+                    <?php endwhile; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <?php else: ?>
+
+        <div class="alert alert-info text-center">
+            No hi ha dades disponibles.
+        </div>
+
+    <?php endif; ?>
+
 </div>
 
-<?php include_once "footer.php"?>
+</body>
+</html>

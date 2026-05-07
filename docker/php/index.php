@@ -26,13 +26,13 @@
 
         <div class="card shadow-sm p-3 w-100" style="max-width: 350px; opacity: 0.85;">
 
-            <h6 class="text-center mb-3 text-muted">
+            <h4 class="text-center mb-4 ">
                 Buscar incendia (només si ja tens l’ID)
-            </h6>
+            </h4>
 
             <form method="GET" action="buscar_id.php">
 
-                <input type="number" name="incidencia_id" class="form-control mb-2" placeholder="ID incidència" required>
+                <input style="background-color: #F5F7F8; color:#495E57" type="number" name="incidencia_id" class="form-control mb-2" placeholder="ID incidència" required>
 
                 <button type="submit" class="btn btn-warning w-100 fw-bold">Buscar</button>
 

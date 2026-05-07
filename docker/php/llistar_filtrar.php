@@ -57,9 +57,9 @@ $tipologies = $conn->query($sql2);
 
 <div class="container mt-4">
 
-    <h2>Modificar incidència #<?php echo $incidencia['incidencia_id']; ?></h2>
+    <h1 class="mb-3">Modificar incidència #<?php echo $incidencia['incidencia_id']; ?></h1>
 <br>
-<h5><?php echo $incidencia['descripcio_incidencia']; ?></h5>
+<h5 style="color: #405c53; font-weight: bold;" class="mb-4"><?php echo $incidencia['descripcio_incidencia']; ?></h4>
 <br>
 
     <form action="actualitzar_incidencia.php" method="POST">
@@ -68,8 +68,8 @@ $tipologies = $conn->query($sql2);
                value="<?php echo $incidencia['incidencia_id']; ?>">
 
         <div class="mb-3">
-            <label for="prioritat">Prioritat</label>
-            <select name="prioritat" id="prioritat" class="form-control" required>
+            <label for="prioritat" class="fs-4" style="color: #396355; font-weight: bold;">Prioritat</label>
+            <select name="prioritat" id="prioritat" class="form-control form-select" required>
 
                 <option value="" >Selecciona una prioritat</option>
                 <option value="Alta"
@@ -89,8 +89,8 @@ $tipologies = $conn->query($sql2);
         </div>
 
         <div class="mb-3">
-            <label for="tecnic">Tècnic:</label>
-            <select name="tecnic_id" id="tecnic" class="form-control" required>
+            <label for="tecnic" class="fs-4" style="color: #396355; font-weight: bold;">Tècnic:</label>
+            <select name="tecnic_id" id="tecnic" class="form-control form-select" required>
                 <option value=""> Selecciona un tècnic </option>
 
                 <?php while ($tec = $tecnics->fetch_assoc()) { ?>
@@ -102,8 +102,8 @@ $tipologies = $conn->query($sql2);
         </div>
 
         <div class="mb-3">
-            <label for="tipologia">Tipologia:</label>
-            <select name="tipologia_id" id="tipologia" class="form-control" required>
+            <label for="tipologia" class="fs-4" style="color: #396355; font-weight: bold;">Tipologia:</label>
+            <select name="tipologia_id" id="tipologia" class="form-control form-select" required>
                 <option value=""> Selecciona una tipologia </option>
 
                 <?php while ($tip = $tipologies->fetch_assoc()) { ?>
