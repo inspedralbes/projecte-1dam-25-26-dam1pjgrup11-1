@@ -116,6 +116,18 @@ a:hover {
     transform: translateY(-2px);
 }
 
+.menu_principal a {
+    color: #495E57;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.menu_principal a:hover {
+    color: #F4CE14;
+    text-decoration: none;
+}
+
 .tornar{
     top: 10px;
     left: 10px;
