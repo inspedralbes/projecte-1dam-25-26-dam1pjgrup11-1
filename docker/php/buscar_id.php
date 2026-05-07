@@ -3,7 +3,7 @@
 
 
 <div class="container py-5">
-<h2>La teva incidència</h2>
+<h1 class="fw-bold">La teva incidència</h1>
 <br>
 
 <?php
@@ -46,22 +46,22 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 ?>
 <!-- mostrar informacio incidencia i temps invertit-->
         <div class="card shadow-sm p-4">
-            <h5 class="mb-3">Resultat de la incidència</h5>
-
-            <p><strong>ID:</strong> <?= $row['incidencia_id'] ?></p>
-            <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_incidencia']) ?></p>
-            <p><strong>Departament:</strong> <?= htmlspecialchars($row['departament_nom']) ?></p>
-            <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?></p>
-            <p><strong>Data incidència:</strong> <?= htmlspecialchars($row['data_incidencia']) ?></p>
-            <p><strong>Data final:</strong> <?= htmlspecialchars($row['data_final'] ?? 'Encara no ha estat resolta la incidència') ?></p>
-            <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row2['temps_total'] ?? 0) ?> min</p>
+            <h3 class="mb-3 fw-bold ">Resultat de la incidència</h3>
+                <div class="mb-3 p-3 border rounded bg-light">
+                    <p><strong>ID:</strong> <?= $row['incidencia_id'] ?></p>
+                    <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_incidencia']) ?></p>
+                    <p><strong>Departament:</strong> <?= htmlspecialchars($row['departament_nom']) ?></p>
+                    <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?></p>
+                    <p><strong>Data incidència:</strong> <?= htmlspecialchars($row['data_incidencia']) ?></p>
+                    <p><strong>Data final:</strong> <?= htmlspecialchars($row['data_final'] ?? 'Encara no ha estat resolta la incidència') ?></p>
+                    <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row2['temps_total'] ?? 0) ?> min</p>
+                </div>
         </div>
 
         <br>
 
         <div class="card shadow-sm p-4">
-            <h5 class="mb-3">Descripció de les actuacions</h5>
-        
+            <h3 class="mb-3 fw-bold ">Descripció de les actuacions</h3>
         <?php
         // info actuacio
         $sql_actuacio = "SELECT 

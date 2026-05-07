@@ -16,8 +16,8 @@ $result = $conn->query($sql);
 
         <form action="llistar.php" method="GET">
 
-            <select name="tecnic_id" id="tecnic_id" class="form-select mb-3">
-                <option value="">-- Tria un tècnic --</option>
+            <select name="tecnic_id" id="tecnic_id" class="form-select mb-3" style="background-color: #F5F7F8; color:#495E57">
+                <option style="color:#495E57" value="">-- Tria un tècnic --</option>
 
                 <?php
                 while ($row = $result->fetch_assoc()) {

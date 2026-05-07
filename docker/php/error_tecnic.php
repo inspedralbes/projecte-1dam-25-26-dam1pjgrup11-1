@@ -2,13 +2,12 @@
 <style>
 
 </style>
-<img src="../img/404.png" alt="ERROR 404" width="500" height="350">
-<h1>Lo sentimos, algo ha salido mal</h1>
-<h5>El tecnico que que buscas no existe o ha cambiado</h5>
-<h5>Prueba a volver atras</h5>
-<a href="javascript:history.go(-1)" class="button" style="top: 10px; left: 10px;">
-    <button type="button">Tornar</button>
-</a>
+<div style="text-align: center;">
+<img src="../img/404.png" alt="ERROR 404" width="600" height="330">
+</div>
+<h1>Ho sentim, alguna cosa no ha sortit bé</h1>
+<h3>El tècnic que busques no existeix o ha estat modificat</h3>
+<h3>Prova de tornar enrere</h3>
 
 
 <?php require_once 'footer.php';?>

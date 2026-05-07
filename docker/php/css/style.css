@@ -26,10 +26,22 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    color: black;
+    text-align: center;
+    font-size: 1.7em;
+}
+
 h3 {
     color: black;
     text-align: center;
     font-size: 1.7em;
+}
+
+h4 {
+    color: black;
+    text-align: center;
+    font-size: 1.4em;
 }
 
 #menu {
