@@ -7,7 +7,7 @@ $result = $conn->query($sql);
 ?>
 
 
-<div class="d-flex justify-content-center vh-100" style="padding-top: 60px;">
+<div class="d-flex justify-content-center" style="padding-top: 60px;">
 
     <div class="text-center w-50">
 
@@ -35,5 +35,4 @@ $result = $conn->query($sql);
 
 <?php 
 $conn->close();
-include_once "footer.php";
-?>
+include_once "footer.php";?>
