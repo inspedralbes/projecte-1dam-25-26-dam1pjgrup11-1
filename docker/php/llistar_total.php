@@ -8,15 +8,18 @@ $stmt = null;
 
 <body>
 
+
 <div class="container mt-4">
 
     <h1 class="mb-5">Llistat d'incidències</h1>
 
-    <div>
-        <a href="informe_tecnics.php" class="btn btn-outline-primary">Informe tècnics</a>
-        <a href="consum_departaments.php" class="btn btn-outline-primary">Consum per departaments</a>
-        <a href="historial_incidencies.php" class="btn btn-outline-primary">Historial d'incidencies</a>
-    </div>
+<div class="botones-panel">
+    <a href="informe_tecnics.php" class="btn-panel">Informe tècnics</a>
+
+    <a href="consum_departaments.php" class="btn-panel">Consum per departaments</a>
+
+    <a href="historial_incidencies.php" class="btn-panel">Historial d'incidències</a>
+</div>
 
     <br>
 
