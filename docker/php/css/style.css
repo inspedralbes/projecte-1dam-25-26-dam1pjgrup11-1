@@ -125,11 +125,11 @@ a:hover {
 }
 
 footer{
-    position: sticky;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 10px;
+    padding: 1px 0;
     background-color: #222;
     color: white;
     text-align: center;
