@@ -99,8 +99,7 @@ a {
 }
 
 a:hover {
-    color: #F4CE14;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .botones-panel{
