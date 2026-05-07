@@ -12,6 +12,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    padding: 20px;
     color: #45474B;
 
     min-height: 100vh;
@@ -19,15 +20,11 @@ body {
     align-items: center;
 }
 
-header {
-    width: 100%;
-}
-
-a{
+html a{
     text-decoration: none;
 }
 
-a:hover {
+html a:hover {
     text-decoration: none;
 }
 
@@ -47,12 +44,12 @@ a:hover {
     text-decoration: none;
     font-weight: bold;
     padding: 10px 15px;
-    border-radius: 6px;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+
 .menu_principal a:hover {
     text-decoration: none;
     transform: scale(1.05);
-    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 h1 {
