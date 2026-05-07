@@ -17,7 +17,7 @@
     <div class="container d-flex align-items-center gap-3">
         <img src="../img/logo.png" alt="Logo" style="height:50px;">
         <strong>Iniciar Sesió</strong>
-        <nav>
+        <nav class="menu_header ms-auto d-flex gap-3">
             <?php
             $paginaActual = basename($_SERVER['PHP_SELF']);
             if ($paginaActual !== 'index.php'): ?>
