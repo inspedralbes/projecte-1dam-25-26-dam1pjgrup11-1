@@ -14,6 +14,8 @@ Desenvolupar una aplicació web de gestor d'incidencies per l'Institut Pedralbes
 
 https://tree.taiga.io/project/a25vicrioqui-projecte-1dam-25-26-dam1pjgrup11-1/timeline
 
+## Prototip gràfic del projecte
+
  * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
  
 ## URL Producció
