@@ -136,12 +136,12 @@ if ($incidencia_id) {
                 </div>
 
                 <div class="form-check mb-2">
-                    <input style="background-color: #F5F7F8; color:#495E57" class="form-check-input" type="checkbox" name="visible" id="visible">
+                    <input style="background-color: #b5c3c9; color:#495E57" class="form-check-input" type="checkbox" name="visible" id="visible">
                     <label class="form-check-label" for="visible">Visible</label>
                 </div>
 
                 <div class="form-check mb-3">
-                    <input style="background-color: #F5F7F8; color:#495E57" class="form-check-input" type="checkbox" name="finalitzada" id="finalitzada">
+                    <input style=" accent-color: #2ECC71; background-color: #b5c3c9; color:#495E57" class="form-check-input" type="checkbox" name="finalitzada" id="finalitzada">
                     <label class="form-check-label" for="finalitzada">Finalitzada</label>
                 </div>
 
