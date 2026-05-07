@@ -20,12 +20,25 @@
         <nav class="menu_header ms-auto d-flex gap-3">
             <?php
             $paginaActual = basename($_SERVER['PHP_SELF']);
-            if ($paginaActual !== 'index.php'): ?>
+            if ($paginaActual === 'crear.php' && $paginaActual !== 'index.php'): ?>
+                <a href="../">Inici</a>
+                <a href="tecnic.php">Tecnic</a>
+                <a href="llistar_total.php">Admin</a>
+            <?php elseif ($paginaActual === 'tecnic.php' && $paginaActual !== 'index.php'): ?>
+                <a href="../">Inici</a>
+                <a href="crear.php">Professor</a>
+                <a href="llistar_total.php">Admin</a>
+            <?php elseif ($paginaActual === 'llistar_total.php' && $paginaActual !== 'index.php'): ?>
+                <a href="../">Inici</a>
+                <a href="crear.php">Professor</a>
+                <a href="tecnic.php">Tecnic</a>
+            <?php elseif ($paginaActual !== 'index.php'): ?>
                 <a href="../">Inici</a>
                 <a href="crear.php">Professor</a>
                 <a href="tecnic.php">Tecnic</a>
                 <a href="llistar_total.php">Admin</a>
             <?php endif; ?>
+            
         </nav>
     </div>
 </header>
