@@ -20,11 +20,11 @@ body {
     align-items: center;
 }
 
-a{
+html a{
     text-decoration: none;
 }
 
-a:hover {
+html a:hover {
     text-decoration: none;
 }
 
@@ -44,12 +44,12 @@ a:hover {
     text-decoration: none;
     font-weight: bold;
     padding: 10px 15px;
-    border-radius: 6px;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+
 .menu_principal a:hover {
     text-decoration: none;
     transform: scale(1.05);
-    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 h1 {
