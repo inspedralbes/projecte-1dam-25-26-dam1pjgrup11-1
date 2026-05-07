@@ -93,4 +93,6 @@ function crear_incidencia($conn)
     <?php endif; ?>
 </div>
 
+<br><br><br><br>
+
 <?php require_once 'footer.php'; ?>
