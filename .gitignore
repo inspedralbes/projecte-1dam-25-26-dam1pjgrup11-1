@@ -1,4 +1,5 @@
 .env
+docker/php/vendor/
 docker/db_data
 docker/db_data_old_old/
 docker/db_data_old/
