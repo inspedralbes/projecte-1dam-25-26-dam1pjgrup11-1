@@ -13,7 +13,7 @@
 
             <h3 class="mb-4">Qui ets?</h3>
 
-            <div class="d-grid gap-3">
+            <div class="d-grid gap-3 menu_principal" id ="menu_principal">
                 <a href="crear.php" class="btn btn-danger btn-lg">Professor</a>
                 <a href="tecnic.php" class="btn btn-primary btn-lg">Tècnic</a>
                 <a href="llistar_total.php" class="btn btn-dark btn-lg">Admin</a>
@@ -42,5 +42,6 @@
     </div>
 
 </main>
+
 
 <?php include_once "footer.php"?>

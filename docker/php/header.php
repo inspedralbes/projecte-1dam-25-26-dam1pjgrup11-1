@@ -17,11 +17,20 @@
     <div class="container d-flex align-items-center gap-3">
         <img src="../img/logo.png" alt="Logo" style="height:50px;">
         <strong>Iniciar Sesió</strong>
+        <nav>
+            <?php
+            $paginaActual = basename($_SERVER['PHP_SELF']);
+            if ($paginaActual !== 'index.php'): ?>
+                <a href="../">Inici</a>
+                <a href="crear.php">Professor</a>
+                <a href="tecnic.php">Tecnic</a>
+                <a href="llistar_total.php">Admin</a>
+            <?php endif; ?>
+        </nav>
     </div>
 </header>
 
 <?php
-$paginaActual = basename($_SERVER['PHP_SELF']);
 if ($paginaActual === 'buscar_id.php' || $paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
     <a href="index.php" class="button tornar">Tornar</a>
 <?php elseif ($paginaActual !== 'index.php'): ?>
