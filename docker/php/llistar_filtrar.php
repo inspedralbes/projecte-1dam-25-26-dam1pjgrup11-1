@@ -3,6 +3,7 @@ require_once 'connexio.php';
 
 $id = $_GET['id'] ?? null;
 
+
 if (!$id) {
     header("Location: error_id.php");
     exit;
