@@ -1,8 +1,7 @@
 <?php
 require_once 'connexio.php';
-require_once 'header.php';
 
-$id = $_GET['id'];
+$id = $_GET['id'] ?? null;
 
 if (!$id) {
     header("Location: error_id.php");
