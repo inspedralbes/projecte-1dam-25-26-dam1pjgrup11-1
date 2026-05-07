@@ -54,6 +54,19 @@ h4 {
     margin-bottom: 20px;
 }
 
+.menu_principal a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 15px;
+}
+
+.menu_principal a:hover {
+    text-decoration: none;
+    transform: scale(1.05);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
 .contenedor {
     background-color: #FFFFFF;
     padding: 20px;
@@ -116,14 +129,14 @@ a:hover {
     transform: translateY(-2px);
 }
 
-.menu_principal a {
+.menu_header a {
     color: #495E57;
     text-decoration: none;
     font-weight: bold;
     margin-left: 15px;
 }
 
-.menu_principal a:hover {
+.menu_header a:hover {
     color: #F4CE14;
     text-decoration: none;
 }
