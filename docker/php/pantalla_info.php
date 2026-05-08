@@ -51,7 +51,7 @@ $usuaris_actius = [
         '$match' => [
             'url' => '/'
         ]
-    ],
+    ],  
     [
         '$group' => [
             '_id' => '$ip_origin',
