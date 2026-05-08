@@ -5,6 +5,11 @@ require_once 'connexio.php';
 
 $total_accessos = [
     [
+        '$match' => [
+            'url' => '/'
+        ]
+    ],
+    [
         '$group' => [
             '_id' => null,
             'total' => ['$sum' => 1]
@@ -43,6 +48,11 @@ $resultat_pagines = $collection->aggregate($pagines_visitades);
 
 $usuaris_actius = [
     [
+        '$match' => [
+            'url' => '/'
+        ]
+    ],
+    [
         '$group' => [
             '_id' => '$ip_origin',
             'accessos' => ['$sum' => 1]
@@ -64,6 +74,11 @@ $resultat_usuaris = $collection->aggregate($usuaris_actius);
 //Accessos agrupats per dia (per a gràfics de tendències)
 
 $accessos_per_dia = [
+    [
+        '$match' => [
+            'url' => '/'
+        ]
+    ],
     [
         '$group' => [
             '_id' => [
