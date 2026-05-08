@@ -54,7 +54,9 @@ function crear_incidencia($conn)
         $incidencia_creada = true;
     }
 
-    $sql = "SELECT departament_id, nom FROM departament";
+    $sql = "SELECT departament_id, nom
+            FROM departament
+            ORDER BY nom ASC";
     $departaments = $conn->query($sql);
     ?>
     

@@ -20,7 +20,10 @@ $stmt = null;
 
     <a href="historial_incidencies.php" class="btn-panel">Historial d'incidències</a>
 
+    <a href="grafics.php" class="btn-panel">Gràfics</a>
+
     <a href="pantalla_info.php" class="btn-panel">Estadístiques</a>
+
 </div>
 
     <br>
@@ -138,13 +141,24 @@ $stmt = null;
                         <td class="text-center">
                             <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
                         </td>
-
                         <td class="text-center">
+
                             <a class="btn btn-sm btn-outline-primary"
                                href="llistar_filtrar.php?id=<?= $row['incidencia_id'] ?>">
                                 Modificar
                             </a>
-                        </td>
+
+                            <form action="esborrar.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<?= $row['incidencia_id'] ?>">
+
+                                <button type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Segur que vols esborrar aquesta incidència?');">
+                                    Descartar
+                                </button>
+                            </form>
+
+</td>
                     </tr>
 
                 <?php endwhile; ?>

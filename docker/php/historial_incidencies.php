@@ -36,7 +36,7 @@ $result = $stmnt->get_result();
 
 <div class="container mt-4">
 
-    <h2 class="mb-4 text-center">Historial d'incidències resoltes</h2>
+    <h1 class="mb-4 text-center">Historial d'incidències resoltes</h1>
 
     <?php if ($result->num_rows > 0): ?>
 

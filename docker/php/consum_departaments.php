@@ -7,7 +7,7 @@ $sql = "SELECT
     d.nom AS nom,
     COUNT(DISTINCT i.incidencia_id) AS num_incidencies,
     COALESCE(SUM(a.temps), 0) AS temps_total,
-    AVG(a.temps) AS temps_mitja
+    ROUND(AVG(a.temps), 1) AS temps_mitja
 FROM incidencia i
 LEFT JOIN departament d ON i.departament_id = d.departament_id
 LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
@@ -22,7 +22,7 @@ $result = $stmnt->get_result();
 
 <div class="container mt-4">
 
-    <h2 class="mb-4 text-center">Incidències per departament</h2>
+    <h1 class="mb-4 text-center">Incidències per departament</h1>
 
     <?php if ($result->num_rows > 0): ?>
 
