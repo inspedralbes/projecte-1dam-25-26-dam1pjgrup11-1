@@ -22,6 +22,8 @@ $stmt = null;
 
     <a href="grafics.php" class="btn-panel">Gràfics</a>
 
+    <a href="pantalla_info.php" class="btn-panel">Estadístiques</a>
+
 </div>
 
     <br>
