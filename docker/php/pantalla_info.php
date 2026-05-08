@@ -90,8 +90,6 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
 ?>
 
 <body>
-
-
 <div class="container mt-4">
 
     <h1 class="mb-5">Estadístiques d'accés</h1>
