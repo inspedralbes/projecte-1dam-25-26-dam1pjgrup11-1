@@ -32,7 +32,7 @@ echo "Dades inserides a demo .\n";
 // Obtenir tots els documents de la col·lecció users de la BBDD demo
 // $collection = $client->demo->users; #no cal, ja que ho hem fet abans
 $documents = $collection->find();
-
+/*
 foreach ($documents as $document) {
     echo "<p>";
     echo "<strong>Fecha:</strong> "
@@ -54,3 +54,4 @@ foreach ($documents as $document) {
         . htmlspecialchars($document['navegador'] ?? "x");
     echo "</p><hr>";
 }
+    */

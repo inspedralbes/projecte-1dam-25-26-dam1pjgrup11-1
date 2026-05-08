@@ -1,9 +1,92 @@
 <?php include_once "header.php";
 require_once 'connexio.php';
 
-$filtre = $_GET['filtre'] ?? 'sense_assignar';
-$result = null;
-$stmt = null;
+//Total d'accessos
+
+$total_accessos = [
+    [
+        '$group' => [
+            '_id' => null,
+            'total' => ['$sum' => 1]
+        ]
+    ]
+];
+
+$total = iterator_to_array($collection->aggregate($total_accessos));
+
+//Pàgines més visitades
+
+$pagines_visitades = [
+    [
+        '$match' => [
+            'url' => [
+                '$ne' => '/pantalla_info.php'
+            ]
+        ]
+    ],
+    [
+        '$group' => [
+            '_id' => '$url',
+            'total' => ['$sum' => 1]
+        ]
+    ],
+    [
+        '$sort' => [
+            'total' => -1
+        ]
+    ]
+];
+
+$resultat_pagines = $collection->aggregate($pagines_visitades);
+
+//Usuaris més actius
+
+$usuaris_actius = [
+    [
+        '$group' => [
+            '_id' => '$ip_origin',
+            'accessos' => ['$sum' => 1]
+        ]
+    ],
+    [
+        '$sort' => [
+            'accessos' => -1
+        ]
+    ],
+    [
+        '$limit' => 5
+    ]
+
+];
+
+$resultat_usuaris = $collection->aggregate($usuaris_actius);
+
+//Accessos agrupats per dia (per a gràfics de tendències)
+
+$accessos_per_dia = [
+    [
+        '$group' => [
+            '_id' => [
+                '$dateToString' => [
+                    'format' => '%Y-%m-%d',
+                    'date' => '$timestamp'
+                ]
+            ],
+            'total' => ['$sum' => 1]
+        ]
+    ],
+    [
+        '$sort' => [
+            '_id' => 1
+        ]
+    ]
+];  
+
+$resultat_dies = $collection->aggregate($accessos_per_dia);
+
+//Filtres per data, usuari i pàgina
+
+
 ?>
 
 <body>
@@ -14,153 +97,34 @@ $stmt = null;
     <h1 class="mb-5">Estadístiques d'accés</h1>
 
 <div style="background-color: white" class="container mt-5">
-    <h4>PRUEBA</h4>
-    <h4>PRUEBA</h4>
-    <h4>PRUEBA</h4>
-    <h4>PRUEBA</h4>
-
-
-</div>
-
-    <br>
-
-    <form id="formFiltre" action="llistar_total.php" method="GET">
-        <select name="filtre" id="filtre" class="form-select mb-3" onchange="this.form.submit()" style="width: 200px;">
-            <option value="sense_assignar" <?= $filtre == 'sense_assignar' ? 'selected' : '' ?>>
-                Sense assignar
-            </option>
-
-            <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
-                Total
-            </option>
-
-            <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
-                Assignades
-            </option>
-
-            <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
-                Finalitzades
-            </option>
-
-        </select>
-    </form>
-
+    <h2>Total accessos</h2>
     <?php
-
-    if ($filtre == 'total') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
-                FROM incidencia i
-                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                ORDER BY i.prioritat";
-
-    } else if ($filtre == 'sense_assignar') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
-                FROM incidencia i
-                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.tecnic_id IS NULL";
-
-    } else if ($filtre == 'assignades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
-                FROM incidencia i
-                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.tecnic_id IS NOT NULL
-                ORDER BY i.prioritat";
-
-    } else if ($filtre == 'finalitzades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
-                FROM incidencia i
-                LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
-                LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.data_final IS NOT NULL
-                ORDER BY i.prioritat";
+    foreach ($total as $doc) {
+        echo "Visites: " . $doc['total'] . "<br>";
     }
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
     ?>
-
-    <?php if ($result->num_rows > 0): ?>
-
-        <table class="table table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th>ID</th>
-                    <th>Descripció</th>
-                    <th>Tipologia</th>
-                    <th>Prioritat</th>
-                    <th>Tècnic</th>
-                    <th>Accions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
-
-                    <?php
-                        $prioritat_class = '';
-
-                        if ($row['prioritat'] == 'Alta') {
-                            $prioritat_class = 'text-danger fw-semibold';
-                        } elseif ($row['prioritat'] == 'Mitja') {
-                            $prioritat_class = 'text-warning fw-semibold';
-                        } elseif ($row['prioritat'] == 'Baixa') {
-                            $prioritat_class = 'text-success fw-semibold';
-                        }
-                    ?>
-
-                    <tr>
-                        <td class="text-center fw-bold">
-                            <?= $row['incidencia_id'] ?>
-                        </td>
-
-                        <td>
-                            <?= htmlspecialchars($row['descripcio_incidencia'] ?? '—') ?>
-                        </td>
-
-                        <td class="text-center">
-                            <?= htmlspecialchars($row['tipologia_nom'] ?? '—') ?>
-                        </td>
-
-                        <td class="text-center <?= $prioritat_class ?>">
-                            <?= $row['prioritat'] ?? '—'?>
-                        </td>
-
-                        <td class="text-center">
-                            <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
-                        </td>
-
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-outline-primary"
-                               href="llistar_filtrar.php?id=<?= $row['incidencia_id'] ?>">
-                                Modificar
-                            </a>
-                        </td>
-                    </tr>
-
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-
-    <?php else: ?>
-        <div class="alert alert-info">No hi ha incidències.</div>
-    <?php endif; ?>
-
+    <h2>Pàgines més visitades</h2>
     <?php
-    $stmt->close();
-    $conn->close();
+    foreach ($resultat_pagines as $doc) {
+        echo "Pàgina: " . htmlspecialchars($doc['_id'] ?? "x");
+        echo " - Total: " . $doc['total'];
+        echo "<br>";
+    }
     ?>
-
+    <h2>Usuaris més actius</h2>
+    <?php
+    foreach ($resultat_usuaris as $doc) {
+        echo "Usuari IP: " . htmlspecialchars($doc['_id'] ?? "x");
+        echo " - Accessos: " . $doc['accessos'];
+        echo "<br>";
+    }
+    ?>
+    <h2>Accessos per dia</h2>
+    <?php
+    foreach ($resultat_dies as $doc) {
+        echo "Data: " . htmlspecialchars($doc['_id'] ?? "x") . " - Accessos: " . $doc['total'] . "<br>";
+    }
+    ?>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php include_once 'footer.php'; ?>

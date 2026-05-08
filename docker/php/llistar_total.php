@@ -19,6 +19,8 @@ $stmt = null;
     <a href="consum_departaments.php" class="btn-panel">Consum per departaments</a>
 
     <a href="historial_incidencies.php" class="btn-panel">Historial d'incidències</a>
+
+    <a href="pantalla_info.php" class="btn-panel">Estadístiques</a>
 </div>
 
     <br>
