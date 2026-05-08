@@ -1,4 +1,5 @@
-<?php include_once "header.php"?>
+<?php include_once "header.php";
+include_once "logger.php"?>
 
 <main class="container py-5">
 
