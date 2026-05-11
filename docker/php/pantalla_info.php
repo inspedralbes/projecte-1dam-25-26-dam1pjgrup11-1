@@ -1,7 +1,7 @@
 <?php include_once "header.php";
 require_once 'connexio.php';
 
-//Total d'accessos
+//Total d'accessos (fet)
 
 $total_accessos = [
     [
@@ -30,21 +30,34 @@ $pagines_visitades = [
         ]
     ],
     [
+        '$project' => [
+            'url_neta' => [
+                '$arrayElemAt' => [
+                    [
+                        '$split' => ['$url', '?']
+                    ],
+                    0
+                ]
+            ]
+        ]
+    ],
+    [
         '$group' => [
-            '_id' => '$url',
+            '_id' => '$url_neta',
             'total' => ['$sum' => 1]
         ]
     ],
     [
         '$sort' => [
-            'total' => -1
+            'total' => -1,
+            '_id' => 1
         ]
     ]
 ];
 
 $resultat_pagines = $collection->aggregate($pagines_visitades);
 
-//Usuaris més actius
+//Usuaris més actius (fet)
 
 $usuaris_actius = [
     [
@@ -71,31 +84,33 @@ $usuaris_actius = [
 
 $resultat_usuaris = $collection->aggregate($usuaris_actius);
 
-//Accessos agrupats per dia (per a gràfics de tendències)
+//Accessos agrupats per dia (fet)
 
 $accessos_per_dia = [
-    [
-        '$match' => [
-            'url' => '/'
-        ]
+    [ 
+        '$match' => [ 
+            'url' => '/' 
+        ] 
     ],
     [
         '$group' => [
             '_id' => [
                 '$dateToString' => [
                     'format' => '%Y-%m-%d',
-                    'date' => '$timestamp'
+                    'date' => [
+                        '$dateFromString' => [
+                            'dateString' => '$date',
+                            'timezone' => 'Europe/Madrid'
+                        ]
+                    ]
                 ]
             ],
-            'total' => ['$sum' => 1]
-        ]
-    ],
-    [
-        '$sort' => [
-            '_id' => 1
+            'total' => [
+                '$sum' => 1
+            ]
         ]
     ]
-];  
+];
 
 $resultat_dies = $collection->aggregate($accessos_per_dia);
 
@@ -135,7 +150,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
     <h2>Accessos per dia</h2>
     <?php
     foreach ($resultat_dies as $doc) {
-        echo "Data: " . htmlspecialchars($doc['_id'] ?? "x") . " - Accessos: " . $doc['total'] . "<br>";
+        echo "Data: " . $doc['_id'] . " - Accessos: " . $doc['total'] . "<br>";
     }
     ?>
 </div>
