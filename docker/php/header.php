@@ -30,7 +30,6 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
             <img src="../img/logo.png" alt="Logo" style="height:50px;">
         </a>
 
-        <!-- USUARIO -->
         <div class="ms-3">
             <?php if (isset($_SESSION['user'])): ?>
 
@@ -45,7 +44,6 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
             <?php endif; ?>
         </div>
 
-        <!-- MENU -->
         <nav class="menu_header ms-auto d-flex gap-3">
 
             <?php if (isset($_SESSION['rol'])): ?>

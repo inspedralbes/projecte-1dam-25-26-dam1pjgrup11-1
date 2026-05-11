@@ -81,7 +81,7 @@ CREATE TABLE actuacio (
 -- DADES
 -- ======================
 
--- USUARIS (primer de tot!)
+-- USUARIS
 INSERT INTO usuari (email, password, rol) VALUES
 ('joan.perez@incidencies.cat','pass123','tecnic'),
 ('maria.garcia@incidencies.cat','pass123','tecnic'),
@@ -119,7 +119,7 @@ INSERT INTO tipologia (nom) VALUES
 ('Accés d’usuaris'),('Servidor'),('Seguretat'),
 ('Audiovisuals'),('Connexió Internet'),('Manteniment general');
 
--- TÈCNICS (ara sí, perquè ja existeixen usuaris)
+-- TÈCNICS
 INSERT INTO tecnic (nom, cognom, usuari_id) VALUES
 ('Joan','Pérez',1),
 ('Maria','García',2),
