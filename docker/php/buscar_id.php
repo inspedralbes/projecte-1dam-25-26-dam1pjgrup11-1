@@ -17,8 +17,10 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
         i.descripcio_incidencia,
         de.nom AS departament_nom,
         te.nom AS tecnic_nom,
+        te.cognom AS tecnic_cognom,
         i.data_incidencia,
-        i.data_final
+        i.data_final,
+        i.estat
     FROM incidencia i
     LEFT JOIN departament de ON i.departament_id = de.departament_id
     LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
@@ -51,9 +53,10 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
                     <p><strong>ID:</strong> <?= $row['incidencia_id'] ?></p>
                     <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_incidencia']) ?></p>
                     <p><strong>Departament:</strong> <?= htmlspecialchars($row['departament_nom']) ?></p>
-                    <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?></p>
+                    <p><strong>Tècnic:</strong> <?= htmlspecialchars($row['tecnic_nom'] ?? 'Sense tècnic assignat') ?> <?= htmlspecialchars($row['tecnic_cognom'] ?? '') ?></p>
                     <p><strong>Data incidència:</strong> <?= htmlspecialchars($row['data_incidencia']) ?></p>
                     <p><strong>Data final:</strong> <?= htmlspecialchars($row['data_final'] ?? 'Encara no ha estat resolta la incidència') ?></p>
+                    <p><strong>Estat:</strong> <?= htmlspecialchars($row['estat']) ?></p>
                     <p><strong>Temps invertit:</strong> <?= htmlspecialchars($row2['temps_total'] ?? 0) ?> min</p>
                 </div>
         </div>

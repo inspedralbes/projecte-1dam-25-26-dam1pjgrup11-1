@@ -14,16 +14,7 @@ $stmt = null;
     <h1 class="mb-5">Llistat d'incidències</h1>
 
 <div class="botones-panel">
-    <a href="informe_tecnics.php" class="btn-panel">Informe tècnics</a>
-
-    <a href="consum_departaments.php" class="btn-panel">Consum per departaments</a>
-
-    <a href="historial_incidencies.php" class="btn-panel">Historial d'incidències</a>
-
-    <a href="grafics.php" class="btn-panel">Gràfics</a>
-
-    <a href="pantalla_info.php" class="btn-panel">Estadístiques</a>
-
+    <a href="informacio.php" class="btn-panel">Informacions</a>
 </div>
 
     <br>
@@ -52,37 +43,38 @@ $stmt = null;
     <?php
 
     if ($filtre == 'total') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 ORDER BY i.prioritat";
 
     } else if ($filtre == 'sense_assignar') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.tecnic_id IS NULL";
+                WHERE i.estat = 'Oberta'
+                ORDER BY i.prioritat";
 
     } else if ($filtre == 'assignades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.tecnic_id IS NOT NULL
+                WHERE i.estat = 'En Curs'
                 ORDER BY i.prioritat";
 
     } else if ($filtre == 'finalitzades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat,
-                       t.nom AS tipologia_nom, te.nom AS tecnic_nom
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+                       t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                WHERE i.data_final IS NOT NULL
+                WHERE i.estat = 'Finalitzada'
                 ORDER BY i.prioritat";
     }
 
@@ -101,6 +93,7 @@ $stmt = null;
                     <th>Descripció</th>
                     <th>Tipologia</th>
                     <th>Prioritat</th>
+                    <th>Estat</th>
                     <th>Tècnic</th>
                     <th>Accions</th>
                 </tr>
@@ -139,7 +132,11 @@ $stmt = null;
                         </td>
 
                         <td class="text-center">
-                            <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
+                            <?= htmlspecialchars($row['estat'] ?? '—') ?>
+                        </td>
+
+                        <td class="text-center">
+                            <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?> <?= htmlspecialchars($row['tecnic_cognom'] ?? '—') ?>
                         </td>
                         <td class="text-center">
 

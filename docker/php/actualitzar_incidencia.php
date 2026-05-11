@@ -8,7 +8,7 @@ $tipologia_id = $_POST["tipologia_id"];
 
 $sentencia = $conn->prepare("
     UPDATE incidencia
-    SET prioritat = ?, tecnic_id = ?, tipologia_id = ?
+    SET prioritat = ?, tecnic_id = ?, tipologia_id = ?, estat = 'En Curs'
     WHERE incidencia_id = ?
 ");
 
