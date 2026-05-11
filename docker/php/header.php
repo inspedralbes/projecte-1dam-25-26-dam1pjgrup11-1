@@ -31,14 +31,14 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
         </a>
 
         <div class="ms-3">
-            <?php if (!isset($_SESSION['user'])): ?> <!-- Si ni esta la sesion iniciada, te deja hacer el login -->
+            <?php if (!isset($_SESSION['user'])): ?>
 
                 <a href="#" class="text-dark fw-bold"
                    data-bs-toggle="modal" data-bs-target="#loginModal">
                     Iniciar Sesió
                 </a>
 
-            <?php else: ?> <!-- Si SI esta, te deja hacer log out -->
+            <?php else: ?>
 
                 <span class="fw-bold text-dark me-2">
                     <?= htmlspecialchars($_SESSION['user']) ?>
@@ -54,26 +54,21 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
         <nav class="menu_header ms-auto d-flex gap-3">
 
             <?php if ($paginaActual === 'crear.php'): ?>
-
                 <a href="tecnic.php">Tecnic</a>
                 <a href="llistar_total.php">Admin</a>
 
             <?php elseif ($paginaActual === 'tecnic.php'): ?>
-
                 <a href="crear.php">Professor</a>
                 <a href="llistar_total.php">Admin</a>
 
             <?php elseif ($paginaActual === 'llistar_total.php'): ?>
-
                 <a href="crear.php">Professor</a>
                 <a href="tecnic.php">Tecnic</a>
 
             <?php elseif ($paginaActual !== 'index.php'): ?>
-
                 <a href="crear.php">Professor</a>
                 <a href="tecnic.php">Tecnic</a>
                 <a href="llistar_total.php">Admin</a>
-
             <?php endif; ?>
 
         </nav>
@@ -81,18 +76,24 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
     </div>
 </header>
 
-<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">  <!-- Fade es para que salga con una animacion suave (por eso he tenido que poner el JS de Bootstrap al final) -->
-    <!-- MODAL sirve para hacer que se abra la pestañita esa -->
-    <!-- tabindex es para que no se abra desde el inicio, sino una vez clickada la opcion -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+
   <div class="modal-dialog">
     <div class="modal-content">
 
       <div class="modal-header">
         <h5 class="modal-title">Iniciar sessió</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button> <!-- Esto es el boton de cerrar con forma de X (Puesto en el header para que se vea arriba) -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
+
+          <?php if (isset($_SESSION['login_error'])): ?>
+              <div class="alert alert-danger">
+                  <?= $_SESSION['login_error'] ?>
+              </div>
+              <?php unset($_SESSION['login_error']); ?>
+          <?php endif; ?>
 
         <div class="d-flex align-items-center gap-4">
 
@@ -132,16 +133,23 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
 </div>
 
 <?php if ($paginaActual === 'buscar_id.php' || $paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
-
     <a href="index.php" class="button tornar">Tornar</a>
-
 <?php elseif ($paginaActual !== 'index.php'): ?>
-
     <a href="javascript:history.back()" class="button tornar">Tornar</a>
-
 <?php endif; ?>
 
+<!-- BOOTSTRAP JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 🔥 ESTE ES EL FIX QUE TE FALTABA -->
+<?php if (isset($_SESSION['login_error'])): ?>
+<script>
+window.addEventListener('load', function () {
+    const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+    modal.show();
+});
+</script>
+<?php endif; ?>
 
 </body>
 </html>

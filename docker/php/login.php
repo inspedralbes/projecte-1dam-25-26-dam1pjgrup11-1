@@ -11,7 +11,8 @@ $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (empty($email) || empty($password)) {
-    echo "Tots els camps són obligatoris";
+    $_SESSION['login_error'] = "Tots els camps són obligatoris";
+    header("Location: index.php");
     exit;
 }
 
@@ -33,6 +34,8 @@ if ($user && $password === $user['password']) {
     exit;
 
 } else {
-    echo "Usuari o contrasenya incorrectes";
+    $_SESSION['login_error'] = "Usuari o contrasenya incorrectes";
+    header("Location: index.php");
+    exit;
 }
 ?>
