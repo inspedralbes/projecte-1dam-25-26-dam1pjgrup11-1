@@ -5,6 +5,11 @@ require_once 'connexio.php';
 
 $total_accessos = [
     [
+        '$match' => [
+            'url' => '/'
+        ]
+    ],
+    [
         '$group' => [
             '_id' => null,
             'total' => ['$sum' => 1]
@@ -25,14 +30,27 @@ $pagines_visitades = [
         ]
     ],
     [
+        '$project' => [
+            'url_neta' => [
+                '$arrayElemAt' => [
+                    [
+                        '$split' => ['$url', '?']
+                    ],
+                    0
+                ]
+            ]
+        ]
+    ],
+    [
         '$group' => [
-            '_id' => '$url',
+            '_id' => '$url_neta',
             'total' => ['$sum' => 1]
         ]
     ],
     [
         '$sort' => [
-            'total' => -1
+            'total' => -1,
+            '_id' => 1
         ]
     ]
 ];
@@ -42,6 +60,11 @@ $resultat_pagines = $collection->aggregate($pagines_visitades);
 //Usuaris més actius
 
 $usuaris_actius = [
+    [
+        '$match' => [
+            'url' => '/'
+        ]
+    ],  
     [
         '$group' => [
             '_id' => '$ip_origin',
@@ -64,23 +87,30 @@ $resultat_usuaris = $collection->aggregate($usuaris_actius);
 //Accessos agrupats per dia (per a gràfics de tendències)
 
 $accessos_per_dia = [
+    [ 
+        '$match' => [ 
+            'url' => '/' 
+        ] 
+    ],
     [
         '$group' => [
             '_id' => [
                 '$dateToString' => [
                     'format' => '%Y-%m-%d',
-                    'date' => '$timestamp'
+                    'date' => [
+                        '$dateFromString' => [
+                            'dateString' => '$date',
+                            'timezone' => 'Europe/Madrid'
+                        ]
+                    ]
                 ]
             ],
-            'total' => ['$sum' => 1]
-        ]
-    ],
-    [
-        '$sort' => [
-            '_id' => 1
+            'total' => [
+                '$sum' => 1
+            ]
         ]
     ]
-];  
+];
 
 $resultat_dies = $collection->aggregate($accessos_per_dia);
 
@@ -90,8 +120,6 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
 ?>
 
 <body>
-
-
 <div class="container mt-4">
 
     <h1 class="mb-5">Estadístiques d'accés</h1>
@@ -99,32 +127,72 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
 <div style="background-color: white" class="container mt-5">
     <h2>Total accessos</h2>
     <?php
-    foreach ($total as $doc) {
-        echo "Visites: " . $doc['total'] . "<br>";
-    }
-    ?>
-    <h2>Pàgines més visitades</h2>
+    foreach ($total as $doc) { ?>
+    <p style="color: black; font-size: 24px; font-weight: bold; text-align: center;">
+        <?php   
+        echo $doc['total'] . "<br>";
+        ?>
+    </p>
     <?php
-    foreach ($resultat_pagines as $doc) {
-        echo "Pàgina: " . htmlspecialchars($doc['_id'] ?? "x");
-        echo " - Total: " . $doc['total'];
-        echo "<br>";
-    }
-    ?>
+        }?>
+    <h2>Pàgines més visitades</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pàgina</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($resultat_pagines as $doc) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($doc['_id'] ?? "x") . "</td>";
+                echo "<td>" . $doc['total'] . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+    
     <h2>Usuaris més actius</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Usuari IP</th>
+                <th>Accessos</th>
+            </tr>
+        </thead>
+        <tbody>
     <?php
     foreach ($resultat_usuaris as $doc) {
-        echo "Usuari IP: " . htmlspecialchars($doc['_id'] ?? "x");
-        echo " - Accessos: " . $doc['accessos'];
-        echo "<br>";
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($doc['_id'] ?? "x") . "</td>";
+        echo "<td>" . $doc['accessos'] . "</td>";
+        echo "</tr>";
     }
     ?>
+    </tbody>
+    </table>
     <h2>Accessos per dia</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Accessos</th>
+            </tr>
+        </thead>
+        <tbody>
     <?php
     foreach ($resultat_dies as $doc) {
-        echo "Data: " . htmlspecialchars($doc['_id'] ?? "x") . " - Accessos: " . $doc['total'] . "<br>";
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($doc['_id'] ?? "x") . "</td>";
+        echo "<td>" . $doc['total'] . "</td>";
+        echo "</tr>";
     }
     ?>
+    </tbody>
+    </table>
 </div>
 
 <?php include_once 'footer.php'; ?>

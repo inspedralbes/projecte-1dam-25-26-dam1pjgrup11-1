@@ -1,6 +1,7 @@
 <?php
-require 'vendor/autoload.php';
+require 'vendor/autoload.php';  
 $client = new MongoDB\Client("mongodb://root:example@mongo:27017");
+date_default_timezone_set('Europe/Madrid');
 
 $collection = $client->demo->users;
 
@@ -10,7 +11,7 @@ $collection = $client->demo->users;
 // "Si no es pot obtenir, es fa servir 'unknown' com a valor per defecte"
 $start = microtime(true);
 $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$hora = date("H:i:s");
+$hora = date("Y-m-d H:i:s");
 $url = $_SERVER['REQUEST_URI'] ?? 'unknown';
 $navegador = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 $metode = $_SERVER['REQUEST_METHOD'] ?? 'unknown';
@@ -26,32 +27,8 @@ $collection->insertOne([
     'metode' => $metode
 ]);
 
-echo "Dades inserides a demo .\n";
 
 
 // Obtenir tots els documents de la col·lecció users de la BBDD demo
 // $collection = $client->demo->users; #no cal, ja que ho hem fet abans
 $documents = $collection->find();
-/*
-foreach ($documents as $document) {
-    echo "<p>";
-    echo "<strong>Fecha:</strong> "
-        . htmlspecialchars($document['date'] ?? "x");
-    echo "<br>";
-    echo "<strong>IP:</strong> "
-        . htmlspecialchars($document['ip_origin'] ?? "x");
-    echo "<br>";
-    echo "<strong>TEMPS RESPOSTA:</strong> "
-            . htmlspecialchars($document['temps_resposta_ms'] ?? "x");
-        echo "<br>";
-    echo "<strong>URL:</strong> "
-        . htmlspecialchars($document['url'] ?? "x");
-    echo "<br>";
-    echo "<strong>Método:</strong> "
-        . htmlspecialchars($document['metode'] ?? "x");
-    echo "<br>";
-    echo "<strong>Navegador:</strong> "
-        . htmlspecialchars($document['navegador'] ?? "x");
-    echo "</p><hr>";
-}
-    */
