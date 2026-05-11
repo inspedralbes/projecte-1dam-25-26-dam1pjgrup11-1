@@ -360,7 +360,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
     <!-- COLUMNA ESQUERRA -->
     <div class="col-esquerra">
         
-        <!-- GRAFIC QUESITO -->
+        <!-- Grafic quesito -->
         <div class="card">
             <div class="card-header">Distribució d'incidències per departament</div>
             <div class="card-body">
@@ -370,7 +370,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </div>
         </div>
         
-        <!-- TAULA DEPARTAMENTS -->
+        <!-- Taula departaments -->
         <div class="card">
             <div class="card-header">Incidències per departament</div>
             <div class="card-body">
@@ -407,7 +407,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
     <!-- COLUMNA DRETA -->
     <div class="col-dreta">
         
-        <!-- TAULA TECNICS -->
+        <!-- Taula tecnics -->
         <div class="card">
             <div class="card-header">Incidències per tècnic</div>
             <div class="card-body">
@@ -441,7 +441,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </div>
         </div>
         
-        <!-- HISTORIAL -->
+        <!-- Historial -->
         <div class="card">
             <div class="card-header">Historial d'incidències resoltes (últimes 10)</div>
             <div class="card-body">
@@ -488,9 +488,9 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
     
     <div class="clearfix"></div>
     
-    <!-- ESTADISTIQUES MONGODB -->
+    <!-- Estadistiques MongoDB -->
     
-    <!-- PAGINES MES VISITADES -->
+    <!-- Pagines mes visitades -->
     <div class="card" style="margin-top: 20px;">
         <div class="card-header">Pàgines més visitades</div>
         <div class="card-body">
@@ -520,7 +520,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
         </div>
     </div>
     
-    <!-- USUARIS MES ACTIUS -->
+    <!-- Usuaris mes actius -->
     <div class="card" style="margin-top: 20px;">
         <div class="card-header">Usuaris més actius</div>
         <div class="card-body">
@@ -550,7 +550,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
         </div>
     </div>
     
-    <!-- ACCESSOS PER DIA -->
+    <!-- Accessos per dia -->
     <div class="card" style="margin-top: 20px;">
         <div class="card-header">Accessos per dia</div>
         <div class="card-body">
