@@ -508,7 +508,15 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
                         $has_pagines = true;
                     ?>
                         <tr>
-                            <td><code><?= htmlspecialchars($doc['_id'] ?? '/') ?></code></td>
+                        <td><code>
+                        <?php
+                        $url = $doc['_id'] ?? '/';
+                        if ($url == '/') {
+                            $url = '/index.php';
+                        }
+                        echo htmlspecialchars($url);
+                        ?>
+                        </code></td>
                             <td class="text-center"><?= $doc['total'] ?></td>
                         </tr>
                     <?php endforeach; ?>
