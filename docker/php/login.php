@@ -30,12 +30,23 @@ if ($user && $password === $user['password']) {
     $_SESSION['user_id'] = $user['usuari_id'];
     $_SESSION['rol'] = $user['rol'];
 
+    if ($user['rol'] === 'professor'){
+    header("Location: crear.php");
+    exit;
+    }elseif ($user['rol'] === 'tecnic'){
+         header("Location: tecnic.php");
+         exit;
+    }elseif ($user['rol'] === 'admin'){
+             header("Location: llistar_total.php");
+             exit;
+    }else {
     header("Location: index.php");
     exit;
+    }
 
 } else {
     $_SESSION['login_error'] = "Usuari o contrasenya incorrectes";
-    header("Location: index.php");
+    header("Location: ../");
     exit;
 }
 ?>
