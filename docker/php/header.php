@@ -64,3 +64,9 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
 
     </div>
 </header>
+
+<?php if ($paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
+    <a href="index.php" class="button tornar">Tornar</a>
+<?php elseif ($paginaActual !== 'index.php'): ?>
+    <a href="javascript:history.back()" class="button tornar">Tornar</a>
+<?php endif; ?>
