@@ -179,7 +179,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
         <thead>
             <tr>
                 <th>Data</th>
-                <th>Total Accessos</th>
+                <th>Accessos</th>
             </tr>
         </thead>
         <tbody>
