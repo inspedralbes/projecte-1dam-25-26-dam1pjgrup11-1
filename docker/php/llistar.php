@@ -16,7 +16,8 @@ $sql = "SELECT
             i.descripcio_incidencia,
             i.prioritat,
             t.nom as tipologia_nom,
-            te.nom as tecnic_nom
+            te.nom as tecnic_nom,
+            i.estat
         FROM incidencia i
         LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
         LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
@@ -45,6 +46,7 @@ $result = $stmnt->get_result();
                     <th>Tipologia</th>
                     <th>Prioritat</th>
                     <th>Tècnic</th>
+                    <th>Estat</th>
                     <th>Accions</th>
                 </tr>
             </thead>
@@ -84,6 +86,10 @@ $result = $stmnt->get_result();
 
                     <td class="text-center">
                         <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?>
+                    </td>
+
+                    <td class="text-center">
+                        <?= htmlspecialchars($row['estat'] ?? '—') ?>
                     </td>
 
                     <td class="text-center">
