@@ -33,7 +33,8 @@ CREATE TABLE tipologia (
 CREATE TABLE tecnic (
     tecnic_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(200),
-    cognom VARCHAR(200)
+    cognom VARCHAR(200),
+    usuari_id INT(11)
 );
 
 CREATE TABLE usuari (
@@ -86,6 +87,10 @@ ALTER TABLE incidencia
     ADD CONSTRAINT fk_incidencia_usuari
     FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id);
 
+ALTER TABLE tecnic
+    ADD CONSTRAINT fk_tecnic_usuari
+    FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id);
+
 ALTER TABLE actuacio
     ADD CONSTRAINT fk_actuacio_tecnic
     FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id);
@@ -109,10 +114,15 @@ INSERT INTO tipologia (nom) VALUES
 ('Accés d’usuaris'),('Servidor'),('Seguretat'),
 ('Audiovisuals'),('Connexió Internet'),('Manteniment general');
 
-INSERT INTO tecnic (nom, cognom) VALUES
-('Joan','Pérez'),('Maria','García'),('Arnau','López'),
-('Laia','Martínez'),('Pau','Soler'),('Marc','Ferrer'),
-('Clara','Vila'),('Jordi','Roca');
+INSERT INTO tecnic (nom, cognom, usuari_id) VALUES
+('Joan','Pérez',1),
+('Maria','García',2),
+('Arnau','López',3),
+('Laia','Martínez',4),
+('Pau','Soler',5),
+('Marc','Ferrer',6),
+('Clara','Vila',7),
+('Jordi','Roca',8);
 
 -- USUARIS
 INSERT INTO usuari (email, password, rol) VALUES
