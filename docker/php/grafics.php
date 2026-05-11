@@ -20,6 +20,10 @@ $labels = array_keys(array_count_values($departaments));
 $values = array_values(array_count_values($departaments));
 ?>
 
+<h1>Incidencies per departament</h1>
+
+<div class="mb-3">
+
 <canvas id="myChart" width="200" height="200"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,3 +45,4 @@ new Chart(ctx, {
     }
 });
 </script>
+</div>

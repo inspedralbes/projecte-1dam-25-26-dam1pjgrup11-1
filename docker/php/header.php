@@ -1,5 +1,7 @@
-<?php include_once 'logger.php'; ?>
-
+<?php
+session_start();
+include_once 'logger.php';
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -11,10 +13,15 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+
     <script src="js/main.js" defer></script>
 </head>
 
 <body>
+
+<?php
+$paginaActual = basename($_SERVER['PHP_SELF']);
+?>
 
 <header class="bg-white shadow-sm py-3 mb-3">
     <div class="container d-flex align-items-center gap-3">
@@ -23,33 +30,118 @@
             <img src="../img/logo.png" alt="Logo" style="height:50px;">
         </a>
 
-        <strong>Iniciar Sesió</strong>
-        <nav class="menu_header ms-auto d-flex gap-3">
-            <?php
-            $paginaActual = basename($_SERVER['PHP_SELF']);
-            if ($paginaActual === 'crear.php' && $paginaActual !== 'index.php'): ?>
-                <a href="tecnic.php">Tecnic</a>
-                <a href="llistar_total.php">Admin</a>
-            <?php elseif ($paginaActual === 'tecnic.php' && $paginaActual !== 'index.php'): ?>
-                <a href="crear.php">Professor</a>
-                <a href="llistar_total.php">Admin</a>
-            <?php elseif ($paginaActual === 'llistar_total.php' && $paginaActual !== 'index.php'): ?>
-                <a href="crear.php">Professor</a>
-                <a href="tecnic.php">Tecnic</a>
-            <?php elseif ($paginaActual !== 'index.php'): ?>
-                <a href="crear.php">Professor</a>
-                <a href="tecnic.php">Tecnic</a>
-                <a href="llistar_total.php">Admin</a>
+        <div class="ms-3">
+            <?php if (!isset($_SESSION['user'])): ?> <!-- Si ni esta la sesion iniciada, te deja hacer el login -->
+
+                <a href="#" class="text-dark fw-bold"
+                   data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Iniciar Sesió
+                </a>
+
+            <?php else: ?> <!-- Si SI esta, te deja hacer log out -->
+
+                <span class="fw-bold text-dark me-2">
+                    <?= htmlspecialchars($_SESSION['user']) ?>
+                </span>
+
+                <a href="logout.php" class="text-danger fw-bold">
+                    Tancar sessió
+                </a>
+
             <?php endif; ?>
-            
+        </div>
+
+        <nav class="menu_header ms-auto d-flex gap-3">
+
+            <?php if ($paginaActual === 'crear.php'): ?>
+
+                <a href="tecnic.php">Tecnic</a>
+                <a href="llistar_total.php">Admin</a>
+
+            <?php elseif ($paginaActual === 'tecnic.php'): ?>
+
+                <a href="crear.php">Professor</a>
+                <a href="llistar_total.php">Admin</a>
+
+            <?php elseif ($paginaActual === 'llistar_total.php'): ?>
+
+                <a href="crear.php">Professor</a>
+                <a href="tecnic.php">Tecnic</a>
+
+            <?php elseif ($paginaActual !== 'index.php'): ?>
+
+                <a href="crear.php">Professor</a>
+                <a href="tecnic.php">Tecnic</a>
+                <a href="llistar_total.php">Admin</a>
+
+            <?php endif; ?>
+
         </nav>
+
     </div>
 </header>
 
-<?php
-if ($paginaActual === 'buscar_id.php' || $paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">  <!-- Fade es para que salga con una animacion suave (por eso he tenido que poner el JS de Bootstrap al final) -->
+    <!-- MODAL sirve para hacer que se abra la pestañita esa -->
+    <!-- tabindex es para que no se abra desde el inicio, sino una vez clickada la opcion -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Iniciar sessió</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button> <!-- Esto es el boton de cerrar con forma de X (Puesto en el header para que se vea arriba) -->
+      </div>
+
+      <div class="modal-body">
+
+        <div class="d-flex align-items-center gap-4">
+
+          <div class="flex-shrink-0">
+            <a href="../">
+              <img src="../img/gi3p.png" alt="Logo" style="height:120px;">
+            </a>
+          </div>
+
+          <div class="flex-grow-1">
+
+            <form action="login.php" method="POST">
+
+              <div class="mb-3">
+                <label class="form-label">Correu electrònic</label>
+                <input type="email" name="email" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Contrasenya</label>
+                <input type="password" name="password" class="form-control" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                Entrar
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php if ($paginaActual === 'buscar_id.php' || $paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
+
     <a href="index.php" class="button tornar">Tornar</a>
+
 <?php elseif ($paginaActual !== 'index.php'): ?>
-    <a href="javascript:history.back()" class="button tornar"">Tornar</a>
+
+    <a href="javascript:history.back()" class="button tornar">Tornar</a>
+
 <?php endif; ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -18,6 +18,10 @@ ORDER BY num_incidencies DESC;";
 $stmnt = $conn->prepare($sql);
 $stmnt->execute();
 $result = $stmnt->get_result();
+
+/* ARRAYS PARA LA GRÁFICA */
+$nomsDepartaments = [];
+$numIncidencies = [];
 ?>
 
 <div class="container mt-4">
@@ -41,6 +45,12 @@ $result = $stmnt->get_result();
             <tbody>
 
                 <?php while($row = $result->fetch_assoc()): ?>
+
+                    <?php
+                        // GUARDAMOS DATOS PARA LA GRÁFICA
+                        $nomsDepartaments[] = $row['nom'];
+                        $numIncidencies[] = $row['num_incidencies'];
+                    ?>
 
                     <tr>
                         <td class="text-center fw-bold">
@@ -70,6 +80,10 @@ $result = $stmnt->get_result();
 
         </table>
 
+        <div class="mt-5">
+            <canvas id="graficaIncidencies"></canvas>
+        </div>
+
     <?php else: ?>
 
         <div class="alert alert-info text-center">
@@ -79,6 +93,48 @@ $result = $stmnt->get_result();
     <?php endif; ?>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('graficaIncidencies');
+
+new Chart(ctx, {
+    type: 'bar',
+
+    data: {
+        labels: <?= json_encode($nomsDepartaments) ?>,
+
+        datasets: [{
+            label: 'Número d\'incidències',
+            data: <?= json_encode($numIncidencies) ?>,
+
+            backgroundColor: [
+                '#ff6384',
+                '#36a2eb',
+                '#ffce56',
+                '#4bc0c0',
+                '#9966ff',
+                '#ff9f40',
+                '#c7c7c7'
+            ],
+            borderWidth: 1
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 
 </body>
 </html>

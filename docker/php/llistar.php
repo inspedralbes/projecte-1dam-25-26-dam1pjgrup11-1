@@ -20,7 +20,7 @@ $sql = "SELECT
         FROM incidencia i
         LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
         LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-        WHERE i.tecnic_id = ?
+        WHERE i.tecnic_id = ? and i.data_final is null
         ORDER BY i.incidencia_id";
 
 $stmnt = $conn->prepare($sql);
