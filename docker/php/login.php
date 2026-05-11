@@ -34,7 +34,7 @@ if ($user && $password === $user['password']) {
     header("Location: professor.php?usuari_id=" . $user['usuari_id']);
     exit;
     }elseif ($user['rol'] === 'tecnic'){
-         header("Location: tecnic.php");
+         header("Location: tecnic.php?usuari_id=" . $user['usuari_id']);
          exit;
     }elseif ($user['rol'] === 'admin'){
              header("Location: llistar_total.php");
