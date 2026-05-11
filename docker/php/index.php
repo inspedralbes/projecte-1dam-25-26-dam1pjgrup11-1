@@ -1,5 +1,7 @@
-<?php include_once "header.php";
-include_once "logger.php"?>
+<?php
+include_once "logger.php";
+include_once "header.php";
+?>
 
 <main class="container py-5">
 
@@ -8,41 +10,61 @@ include_once "logger.php"?>
         <h3 class="text-muted">Gestió d’incidències informàtiques Institut Pedralbes</h3>
     </div>
 
+    <div class="d-flex justify-content-center gap-4 flex-wrap">
 
-    <div class="d-flex justify-content-center mb-5">
-        <div class="card shadow-sm p-5 text-center w-100" style="max-width: 500px;">
+        <div class="card shadow-sm p-4 w-100" style="max-width: 350px;">
 
-            <h3 class="mb-4">Qui ets?</h3>
+            <h4 class="text-center mb-3">Iniciar sessió</h4>
 
-            <div class="d-grid gap-3 menu_principal" id ="menu_principal">
-                <a href="crear.php" class="btn btn-danger btn-lg">Professor</a>
-                <a href="tecnic.php" class="btn btn-primary btn-lg">Tècnic</a>
-                <a href="llistar_total.php" class="btn btn-dark btn-lg">Admin</a>
-            </div>
+            <?php if (isset($_SESSION['login_error'])): ?>
+                <div class="alert alert-danger">
+                    <?= $_SESSION['login_error'] ?>
+                </div>
+                <?php unset($_SESSION['login_error']); ?>
+            <?php endif; ?>
 
-        </div>
-    </div>
+            <form action="login.php" method="POST">
 
-    <div class="d-flex justify-content-center">
+                <div class="mb-3">
+                    <label class="form-label">Correu electrònic</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
 
-        <div class="card shadow-sm p-3 w-100" style="max-width: 350px; opacity: 0.85;">
+                <div class="mb-3">
+                    <label class="form-label">Contrasenya</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
 
-            <h4 class="text-center mb-4 ">
-                Buscar incendia (només si ja tens l’ID)
-            </h4>
-
-            <form method="GET" action="buscar_id.php">
-
-                <input style="background-color: #F5F7F8; color:#495E57" type="number" name="incidencia_id" class="form-control mb-2" placeholder="ID incidència" required>
-
-                <button type="submit" class="btn btn-warning w-100 fw-bold">Buscar</button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">
+                    Entrar
+                </button>
 
             </form>
 
         </div>
+
+        <div class="card shadow-sm p-4 w-100" style="max-width: 350px; opacity: 0.9;">
+
+            <h4 class="text-center mb-4">Buscar incidència</h4>
+
+            <form method="GET" action="buscar_id.php">
+
+                <input type="number"
+                       name="incidencia_id"
+                       class="form-control mb-2"
+                       placeholder="ID incidència"
+                       required>
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold">
+                    Buscar
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
 </main>
 
-
-<?php include_once "footer.php"?>
+<?php include_once "footer.php"; ?>
