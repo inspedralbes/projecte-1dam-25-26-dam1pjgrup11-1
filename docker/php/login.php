@@ -31,7 +31,7 @@ if ($user && $password === $user['password']) {
     $_SESSION['rol'] = $user['rol'];
 
     if ($user['rol'] === 'professor'){
-    header("Location: crear.php");
+    header("Location: professor.php?usuari_id=" . $user['usuari_id']);
     exit;
     }elseif ($user['rol'] === 'tecnic'){
          header("Location: tecnic.php");

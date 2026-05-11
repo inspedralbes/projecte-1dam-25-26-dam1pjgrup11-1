@@ -51,7 +51,7 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
             <?php if (isset($_SESSION['rol'])): ?>
 
                 <?php if ($_SESSION['rol'] === 'professor'): ?>
-                    <a href="crear.php">Professor</a>
+                    <a href="professor.php">Professor</a>
                 <?php elseif ($_SESSION['rol'] === 'tecnic'): ?>
                     <a href="tecnic.php">Tècnic</a>
                 <?php elseif ($_SESSION['rol'] === 'admin'): ?>
