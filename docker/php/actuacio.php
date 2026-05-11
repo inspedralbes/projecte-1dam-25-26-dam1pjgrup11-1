@@ -43,7 +43,7 @@ function crear_actuacio($conn)
     if (strlen($descripcio) < 20) return "<p class='alert alert-danger'>Mínim 20 caràcters.</p>";
 
     if ($finalitzada == 1) {
-        $sql_update = "UPDATE incidencia SET data_final = NOW() WHERE incidencia_id = ?";
+        $sql_update = "UPDATE incidencia SET data_final = NOW(), estat = 'Finalitzada' WHERE incidencia_id = ?";
         $stmt_up = $conn->prepare($sql_update);
         $stmt_up->bind_param("i", $incidencia_id);
         $stmt_up->execute();
