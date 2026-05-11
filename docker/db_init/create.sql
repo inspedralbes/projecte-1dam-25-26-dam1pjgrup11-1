@@ -4,11 +4,14 @@ CREATE DATABASE IF NOT EXISTS incidencies
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
+USE incidencies;
+
 GRANT ALL PRIVILEGES ON incidencies.* TO 'usuari'@'%';
 FLUSH PRIVILEGES;
 
-USE incidencies;
-
+-- ======================
+-- DROP (ordre correcte)
+-- ======================
 DROP TABLE IF EXISTS actuacio;
 DROP TABLE IF EXISTS incidencia;
 DROP TABLE IF EXISTS tecnic;
@@ -20,23 +23,6 @@ DROP TABLE IF EXISTS usuari;
 -- TAULES
 -- ======================
 
-CREATE TABLE departament (
-    departament_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(200)
-);
-
-CREATE TABLE tipologia (
-    tipologia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(200)
-);
-
-CREATE TABLE tecnic (
-    tecnic_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(200),
-    cognom VARCHAR(200),
-    usuari_id INT(11)
-);
-
 CREATE TABLE usuari (
     usuari_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -44,87 +30,58 @@ CREATE TABLE usuari (
     rol ENUM('admin', 'tecnic', 'professor') NOT NULL
 );
 
+CREATE TABLE departament (
+    departament_id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200)
+);
+
+CREATE TABLE tipologia (
+    tipologia_id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200)
+);
+
+CREATE TABLE tecnic (
+    tecnic_id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(200),
+    cognom VARCHAR(200),
+    usuari_id INT,
+    FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id)
+);
+
 CREATE TABLE incidencia (
-    incidencia_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    departament_id INT(11),
-    usuari_id INT(11),
+    incidencia_id INT AUTO_INCREMENT PRIMARY KEY,
+    departament_id INT,
+    usuari_id INT,
     descripcio_incidencia VARCHAR(200),
     data_incidencia DATE,
     data_final DATE,
     prioritat ENUM('Alta', 'Mitja', 'Baixa'),
     estat ENUM('Oberta', 'En Curs', 'Finalitzada') DEFAULT 'Oberta',
-    tecnic_id INT(11),
-    tipologia_id INT(11)
+    tecnic_id INT,
+    tipologia_id INT,
+    FOREIGN KEY (departament_id) REFERENCES departament(departament_id),
+    FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id),
+    FOREIGN KEY (tipologia_id) REFERENCES tipologia(tipologia_id),
+    FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id)
 );
 
 CREATE TABLE actuacio (
-    actuacio_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    incidencia_id INT(11),
-    tecnic_id INT(11),
+    actuacio_id INT AUTO_INCREMENT PRIMARY KEY,
+    incidencia_id INT,
+    tecnic_id INT,
     temps VARCHAR(30),
     data_actuacio DATE,
     descripcio_actuacio VARCHAR(200),
-    visible INT(1)
+    visible INT(1),
+    FOREIGN KEY (incidencia_id) REFERENCES incidencia(incidencia_id),
+    FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id)
 );
-
--- ======================
--- CLAUS FORANES
--- ======================
-
-ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_departament
-    FOREIGN KEY (departament_id) REFERENCES departament(departament_id);
-
-ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_tecnic
-    FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id);
-
-ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_tipologia
-    FOREIGN KEY (tipologia_id) REFERENCES tipologia(tipologia_id);
-
-ALTER TABLE incidencia
-    ADD CONSTRAINT fk_incidencia_usuari
-    FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id);
-
-ALTER TABLE tecnic
-    ADD CONSTRAINT fk_tecnic_usuari
-    FOREIGN KEY (usuari_id) REFERENCES usuari(usuari_id);
-
-ALTER TABLE actuacio
-    ADD CONSTRAINT fk_actuacio_tecnic
-    FOREIGN KEY (tecnic_id) REFERENCES tecnic(tecnic_id);
-
-ALTER TABLE actuacio
-    ADD CONSTRAINT fk_actuacio_incidencia
-    FOREIGN KEY (incidencia_id) REFERENCES incidencia(incidencia_id);
 
 -- ======================
 -- DADES
 -- ======================
 
-INSERT INTO departament (nom) VALUES
-('Informàtica'),('Anglès'),('Manteniment'),('Matemàtiques'),
-('Ciències Naturals'),('Física i Química'),('Educació Física'),
-('Administració'),('Orientació'),('Biblioteca'),
-('Secretaria'),('Direcció');
-
-INSERT INTO tipologia (nom) VALUES
-('Maquinari'),('Programari'),('Xarxes'),('Impressió'),
-('Accés d’usuaris'),('Servidor'),('Seguretat'),
-('Audiovisuals'),('Connexió Internet'),('Manteniment general');
-
-INSERT INTO tecnic (nom, cognom, usuari_id) VALUES
-('Joan','Pérez',1),
-('Maria','García',2),
-('Arnau','López',3),
-('Laia','Martínez',4),
-('Pau','Soler',5),
-('Marc','Ferrer',6),
-('Clara','Vila',7),
-('Jordi','Roca',8);
-
--- USUARIS
+-- USUARIS (primer de tot!)
 INSERT INTO usuari (email, password, rol) VALUES
 ('joan.perez@incidencies.cat','pass123','tecnic'),
 ('maria.garcia@incidencies.cat','pass123','tecnic'),
@@ -149,10 +106,31 @@ INSERT INTO usuari (email, password, rol) VALUES
 ('prof.educaciofisica1@incidencies.cat','pass123','professor'),
 ('prof.educaciofisica2@incidencies.cat','pass123','professor');
 
--- ======================
--- INCIDÈNCIES
--- ======================
+-- DEPARTAMENTS
+INSERT INTO departament (nom) VALUES
+('Informàtica'),('Anglès'),('Manteniment'),('Matemàtiques'),
+('Ciències Naturals'),('Física i Química'),('Educació Física'),
+('Administració'),('Orientació'),('Biblioteca'),
+('Secretaria'),('Direcció');
 
+-- TIPOLOGIA
+INSERT INTO tipologia (nom) VALUES
+('Maquinari'),('Programari'),('Xarxes'),('Impressió'),
+('Accés d’usuaris'),('Servidor'),('Seguretat'),
+('Audiovisuals'),('Connexió Internet'),('Manteniment general');
+
+-- TÈCNICS (ara sí, perquè ja existeixen usuaris)
+INSERT INTO tecnic (nom, cognom, usuari_id) VALUES
+('Joan','Pérez',1),
+('Maria','García',2),
+('Arnau','López',3),
+('Laia','Martínez',4),
+('Pau','Soler',5),
+('Marc','Ferrer',6),
+('Clara','Vila',7),
+('Jordi','Roca',8);
+
+-- INCIDÈNCIES
 INSERT INTO incidencia (
     departament_id,
     usuari_id,
@@ -168,10 +146,7 @@ INSERT INTO incidencia (
 (2,12,'WiFi inestable','2026-04-02',NULL,'Alta','Oberta',2,3),
 (3,13,'Projector avariat','2026-04-03','2026-04-06','Mitja','Finalitzada',3,8);
 
--- ======================
 -- ACTUACIONS
--- ======================
-
 INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
 VALUES
 (1,1,'120','2026-04-01','Reinstal·lació SO',1),
