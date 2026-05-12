@@ -24,6 +24,11 @@ if(($_SESSION['rol'] !== 'admin')){
 include_once "header.php";
 
 $filtre = $_GET['filtre'] ?? 'sense_assignar';
+$start = isset($_GET['start']) ? (int)$_GET['start'] : 1;
+
+$limit = 20;
+$page = ($start - 1) * $limit;
+
 $result = null;
 $stmt = null;
 ?>
@@ -72,7 +77,8 @@ $stmt = null;
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 ORDER BY i.prioritat,
                 i.data_incidencia DESC, 
-                i.incidencia_id";
+                i.incidencia_id
+                LIMIT ? OFFSET ?";
 
     } else if ($filtre == 'sense_assignar') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -83,7 +89,8 @@ $stmt = null;
                 WHERE i.estat = 'Oberta'
                 ORDER BY i.prioritat,
                 i.data_incidencia DESC, 
-                i.incidencia_id";
+                i.incidencia_id
+                LIMIT ? OFFSET ?";
 
     } else if ($filtre == 'assignades') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -94,7 +101,8 @@ $stmt = null;
                 WHERE i.estat = 'En Curs'
                 ORDER BY i.prioritat,
                 i.data_incidencia DESC, 
-                i.incidencia_id";
+                i.incidencia_id
+                LIMIT ? OFFSET ?";
 
     } else if ($filtre == 'finalitzades') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -105,10 +113,12 @@ $stmt = null;
                 WHERE i.estat = 'Finalitzada'
                 ORDER BY i.prioritat,
                 i.data_incidencia DESC, 
-                i.incidencia_id";
+                i.incidencia_id
+                LIMIT ? OFFSET ?";
     }
 
     $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $limit, $page);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -197,8 +207,23 @@ $stmt = null;
             </tbody>
         </table>
 
+        <div class="mt-3">
+            <?php if ($start > 1): ?>
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" class="btn btn-secondary">
+                    Anterior
+                </a>
+            <?php endif; ?>
+
+            <a href="?filtre=<?= $filtre ?>&start=<?= $start + 1 ?>" class="btn btn-secondary">
+                Següent
+            </a>
+        </div>
+
     <?php else: ?>
         <div class="alert alert-info">No hi ha incidències.</div>
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" class="btn btn-secondary">
+                    Anterior
+                </a>
     <?php endif; ?>
 
     <?php
