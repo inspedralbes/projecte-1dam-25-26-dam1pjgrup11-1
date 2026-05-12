@@ -1,38 +1,60 @@
-<?php 
+<?php
+
 include_once "header.php";
 require_once "connexio.php";
 
-$sql = "SELECT tecnic_id, nom, cognom FROM tecnic ORDER BY nom";
-$result = $conn->query($sql);
-?>
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
 
+$usuari_id = $_SESSION['user_id'];
+
+$sql = "SELECT t.tecnic_id, t.nom, t.cognom, t.usuari_id
+        FROM tecnic t
+        INNER JOIN usuari u ON u.usuari_id = t.usuari_id
+        WHERE u.usuari_id = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $usuari_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$row = $result->fetch_assoc();
+
+$stmt->close();
+?>
 
 <div class="d-flex justify-content-center" style="padding-top: 60px;">
 
     <div class="text-center w-50">
 
-        <h1 class="mb-3">Quin tècnic es vol connectar?</h1>
-        <h4 class="mb-4">Selecciona el teu tècnic:</h4>
+        <h1 class="mb-3">
+            Benvingut, <?= htmlspecialchars($row['nom']) . ' ' . htmlspecialchars($row['cognom']) ?>
+        </h1>
+
+        <h4 class="mb-4">
+            Aquí pots veure les incidències que tens assignades:
+        </h4>
 
         <form action="llistar.php" method="GET">
 
-            <select name="tecnic_id" id="tecnic_id" class="form-select mb-3" style="background-color: #F5F7F8; color:#495E57">
-                <option style="color:#495E57" value="">-- Tria un tècnic --</option>
+            <!-- ENVIEM EL TECNIC ID -->
+            <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($row['tecnic_id']) ?>">
 
-                <?php
-                while ($row = $result->fetch_assoc()) {
-                    echo '<option value="' . $row['tecnic_id'] . '">' . htmlspecialchars($row['nom']) . " " . htmlspecialchars($row['cognom']) . '</option>';
-                }
-                ?>
-            </select>
+            <input
+                type="submit"
+                value="Llistar les incidències"
+                class="btn btn-success btn-lg rounded w-100"
+            >
 
-            <input type="submit" value="Llistar les incidències" class="btn btn-success btn-lg rounded w-100">
         </form>
 
     </div>
 
 </div>
 
-<?php 
+<?php
 $conn->close();
-include_once "footer.php";?>
+include_once "footer.php";
+?>

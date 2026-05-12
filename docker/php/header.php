@@ -28,7 +28,6 @@ include_once 'logger.php';
             <img src="../img/logo.png" alt="Logo" style="height:50px;">
         </a>
 
-        <!-- USUARIO -->
         <div class="ms-3">
             <?php if (isset($_SESSION['user'])): ?>
 
@@ -43,7 +42,6 @@ include_once 'logger.php';
             <?php endif; ?>
         </div>
 
-        <!-- MENU -->
         <nav class="menu_header ms-auto d-flex gap-3">
 
             <?php if (isset($_SESSION['rol'])): ?>
