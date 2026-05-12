@@ -131,6 +131,7 @@ INSERT INTO tecnic (nom, cognom, usuari_id) VALUES
 ('Jordi','Roca',8);
 
 -- INCIDÈNCIES
+
 INSERT INTO incidencia (
     departament_id,
     usuari_id,
@@ -142,13 +143,126 @@ INSERT INTO incidencia (
     tecnic_id,
     tipologia_id
 ) VALUES
-(1,11,'PC aula 1 no arrenca','2026-04-01',NULL,'Alta','Oberta',1,1),
-(2,12,'WiFi inestable','2026-04-02',NULL,'Alta','Oberta',2,3),
-(3,13,'Projector avariat','2026-04-03','2026-04-06','Mitja','Finalitzada',3,8);
+
+-- ======================
+-- INFORMÀTICA (5)
+-- ======================
+(1,11,'PC aula 3 no arrenca','2026-04-25',NULL,'Alta',NULL,NULL,NULL),
+(1,11,'Problema login xarxa alumnes','2026-04-26',NULL,'Mitja','Oberta',1,5),
+(1,12,'Fallada servidor virtual','2026-04-27',NULL,'Alta','Oberta',NULL,6),
+(1,13,'Actualització Windows fallida','2026-04-28',NULL,'Alta','Oberta',2,2),
+(1,14,'Tall DHCP aula informàtica','2026-04-29',NULL,'Mitja','Oberta',NULL,3),
+
+-- ======================
+-- ANGLÈS (2)
+-- ======================
+(2,12,'WiFi aula anglès inestable','2026-04-25',NULL,'Mitja','Oberta',NULL,3),
+(2,13,'Ordinador professor anglès no encén','2026-04-26',NULL,'Baixa','Oberta',2,1),
+
+-- ======================
+-- MANTENIMENT (3)
+-- ======================
+(3,14,'Llums passadís no funcionen','2026-04-25',NULL,'Mitja','Oberta',NULL,10),
+(3,15,'Porta aula tancament trencat','2026-04-26',NULL,'Alta','Oberta',5,NULL),
+(3,16,'Aire condicionat soroll excessiu','2026-04-27','2026-04-28','Baixa','Finalitzada',5,10),
+
+-- ======================
+-- MATEMÀTIQUES (3)
+-- ======================
+(4,15,'Projector aula matemàtiques defectuós','2026-04-25',NULL,'Alta','Oberta',NULL,8),
+(4,16,'Software calculadores error','2026-04-26',NULL,'Mitja','Oberta',3,2),
+(4,17,'Impressora exàmens no imprimeix','2026-04-27',NULL,'Mitja','Oberta',NULL,4),
+
+-- ======================
+-- CIÈNCIES NATURALS (2)
+-- ======================
+(5,17,'Microscopi digital no connecta','2026-04-25',NULL,'Alta','Oberta',3,1),
+(5,18,'Ordinador laboratori molt lent','2026-04-26',NULL,'Mitja','Oberta',NULL,NULL),
+
+-- ======================
+-- FÍSICA I QUÍMICA (2)
+-- ======================
+(6,18,'Sensor temperatura error','2026-04-25',NULL,'Alta','Oberta',6,1),
+(6,19,'Programari simulació no obre','2026-04-26',NULL,'Mitja','Oberta',NULL,2),
+
+-- ======================
+-- EDUCACIÓ FÍSICA (1)
+-- ======================
+(7,19,'Altaveus gimnàs distorsionen so','2026-04-25',NULL,'Baixa','Oberta',NULL,8),
+
+-- ======================
+-- ADMINISTRACIÓ (2)
+-- ======================
+(8,20,'Impressora secretaria bloquejada','2026-04-25','2026-04-26','Alta','Finalitzada',4,4),
+(8,20,'Error gestió expedients alumnes','2026-04-26',NULL,'Mitja','Oberta',NULL,5),
+
+-- ======================
+-- ORIENTACIÓ (1)
+-- ======================
+(9,11,'Ordinador orientació molt lent','2026-04-25',NULL,'Baixa','Oberta',NULL,NULL),
+
+-- ======================
+-- BIBLIOTECA (1)
+-- ======================
+(10,12,'Catàleg digital no respon','2026-04-25',NULL,'Alta','Oberta',7,6),
+
+-- ======================
+-- SECRETARIA (1)
+-- ======================
+(11,13,'Sistema matrícula amb errors','2026-04-24','2026-04-25','Alta','Finalitzada',4,5),
+
+-- ======================
+-- DIRECCIÓ (2)
+-- ======================
+(12,14,'Email direcció no envia correus','2026-04-25',NULL,'Alta','Oberta',1,5),
+(12,15,'Problema accés informes direcció','2026-04-26',NULL,'Mitja','Oberta',NULL,NULL);
 
 -- ACTUACIONS
-INSERT INTO actuacio (incidencia_id, tecnic_id, temps, data_actuacio, descripcio_actuacio, visible)
-VALUES
-(1,1,'120','2026-04-01','Reinstal·lació SO',1),
-(2,2,'60','2026-04-02','Configuració router',1),
-(3,3,'90','2026-04-03','Canvi projector',1);
+
+-- ACTUACIONS
+
+INSERT INTO actuacio (
+    incidencia_id,
+    tecnic_id,
+    temps,
+    data_actuacio,
+    descripcio_actuacio,
+    visible
+) VALUES
+
+      (1,1,'60','2026-04-25','Diagnosi PC aula 3','1'),
+      (2,2,'45','2026-04-26','Revisió login xarxa i permisos','1'),
+      (3,3,'90','2026-04-27','Reinici i restauració servidor virtual','1'),
+      (4,2,'120','2026-04-28','Reinstal·lació actualització Windows','1'),
+      (5,3,'50','2026-04-29','Reconfiguració DHCP aula informàtica','1'),
+
+      (6,5,'40','2026-04-25','Revisió xarxa WiFi aula anglès','1'),
+      (7,2,'30','2026-04-26','Canvi cable alimentació ordinador','1'),
+
+      (8,5,'60','2026-04-25','Reparació sistema enllumenat','1'),
+      (9,5,'80','2026-04-26','Reparació porta aula i ajust','1'),
+      (10,5,'100','2026-04-27','Substitució components aire condicionat','1'),
+
+      (11,3,'70','2026-04-25','Revisió projector matemàtiques','1'),
+      (12,3,'55','2026-04-26','Correcció error programari calculadores','1'),
+      (13,4,'65','2026-04-27','Reparació impressora exàmens','1'),
+
+      (14,3,'90','2026-04-25','Reparació microscopi digital','1'),
+      (15,6,'45','2026-04-26','Optimització ordinador laboratori','1'),
+
+      (16,6,'80','2026-04-25','Calibració sensor temperatura','1'),
+      (17,3,'50','2026-04-26','Reinstal·lació programari simulació','1'),
+
+      (18,7,'35','2026-04-25','Substitució altaveus gimnàs','1'),
+
+      (19,4,'60','2026-04-25','Reparació impressora secretaria','1'),
+      (20,4,'75','2026-04-26','Correcció error expedients','1'),
+
+      (21,7,'40','2026-04-25','Neteja sistema orientació','1'),
+
+      (22,7,'55','2026-04-25','Reparació servidor biblioteca digital','1'),
+
+      (23,4,'90','2026-04-25','Revisió sistema matrícula','1'),
+
+      (24,1,'65','2026-04-25','Reparació servidor email direcció','1'),
+      (25,2,'50','2026-04-26','Revisió accés informes direcció','1');

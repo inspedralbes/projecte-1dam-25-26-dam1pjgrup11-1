@@ -427,7 +427,7 @@ $resultat_rols = $collection->aggregate($accessos_rols);
 
         <!-- Taula departaments -->
         <div class="card">
-            <div class="card-header">Incidències per departament</div>
+            <div class="card-header">Incidències finalitzades per departament</div>
             <div class="card-body">
                 <table>
                     <thead>
