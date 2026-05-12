@@ -1,5 +1,4 @@
 <?php
-
 require 'vendor/autoload.php';
 $client = new MongoDB\Client("mongodb://root:example@mongo:27017");
 date_default_timezone_set('Europe/Madrid');
