@@ -23,16 +23,24 @@ require_once "header.php";
 
 // 1. Incidències per departament
 $sql_departaments = "SELECT
-    i.departament_id,
-    d.nom AS nom,
-    COUNT(DISTINCT i.incidencia_id) AS num_incidencies,
-    COALESCE(SUM(a.temps), 0) AS temps_total,
-    ROUND(AVG(a.temps), 1) AS temps_mitja
-FROM incidencia i
-LEFT JOIN departament d ON i.departament_id = d.departament_id
-LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
-WHERE i.data_final IS NOT NULL
-GROUP BY i.departament_id, d.nom
+    sub.departament_id,
+    sub.nom,
+    COUNT(*) AS num_incidencies,
+    COALESCE(SUM(sub.temps_incidencia), 0) AS temps_total,
+    ROUND(AVG(sub.temps_incidencia), 1) AS temps_mitja
+FROM (
+    SELECT
+        i.incidencia_id,
+        i.departament_id,
+        d.nom,
+        COALESCE(SUM(a.temps), 0) AS temps_incidencia
+    FROM incidencia i
+    LEFT JOIN departament d ON i.departament_id = d.departament_id
+    LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
+    WHERE i.data_final IS NOT NULL
+    GROUP BY i.incidencia_id, i.departament_id, d.nom
+) sub
+GROUP BY sub.departament_id, sub.nom
 ORDER BY num_incidencies DESC";
 
 $stmnt_dep = $conn->prepare($sql_departaments);
@@ -168,26 +176,6 @@ $pagines_visitades = [
     ]
 ];
 $resultat_pagines = $collection->aggregate($pagines_visitades);
-
-$usuaris_actius = [
-    [
-        '$match' => [
-            'url' => '/'
-            ]
-    ],
-    [
-        '$group' => [
-            '_id' => '$ip_origin', 'accessos' => ['$sum' => 1]
-            ]
-    ],
-    [
-        '$sort' => ['accessos' => -1]
-    ],
-    [
-        '$limit' => 5
-    ]
-];
-$resultat_usuaris = $collection->aggregate($usuaris_actius);
 
 $accessos_per_dia = [
     ['$match' => [
@@ -479,7 +467,7 @@ $resultat_rols = $collection->aggregate($accessos_rols);
 
         <!-- Taula departaments -->
         <div class="card">
-            <div class="card-header">Incidències per departament</div>
+            <div class="card-header">Incidències finalitzades per departament</div>
             <div class="card-body">
                 <table>
                     <thead>
