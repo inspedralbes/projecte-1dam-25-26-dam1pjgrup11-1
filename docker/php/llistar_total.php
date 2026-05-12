@@ -1,5 +1,14 @@
-<?php include_once "header.php";
+<?php
+session_start();
+
 require_once 'connexio.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+include_once "header.php";
 
 $filtre = $_GET['filtre'] ?? 'sense_assignar';
 $result = null;

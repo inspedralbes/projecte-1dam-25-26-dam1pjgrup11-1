@@ -1,8 +1,16 @@
 <?php
+session_start();
+
 require_once 'connexio.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
 require_once 'header.php';
 
-$usuari_id = $_GET['usuari_id'] ?? 0;
+$usuari_id = $_SESSION['user_id'];
 
 function crear_incidencia($conn, $usuari_id)
 {

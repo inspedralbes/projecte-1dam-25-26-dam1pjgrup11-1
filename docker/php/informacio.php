@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once "connexio.php";
 require_once "header.php";
 
@@ -93,7 +93,7 @@ $sql_total_resoltes = "SELECT COUNT(*) AS resoltes FROM incidencia WHERE data_fi
 $result_resoltes = $conn->query($sql_total_resoltes);
 $total_resoltes = $result_resoltes->fetch_assoc()['resoltes'];
 
-$sql_temps_mitja_global = "SELECT ROUND(AVG(temps_total_incidencia), 1) AS mitja_hores 
+$sql_temps_mitja_global = "SELECT ROUND(AVG(temps_total_incidencia), 1) AS mitja_hores
 FROM (
     SELECT i.incidencia_id, COALESCE(SUM(a.temps), 0) AS temps_total_incidencia
     FROM incidencia i
@@ -145,6 +145,26 @@ $accessos_per_dia = [
     ['$limit' => 7]
 ];
 $resultat_dies = $collection->aggregate($accessos_per_dia);
+
+$usuaris_actius = [
+    [
+        '$group' => [
+            '_id' => [
+                'id' => '$usuari_id',
+                'email' => '$usuari_email'
+            ],
+            'accessos' => ['$sum' => 1]
+        ]
+    ],
+    [
+        '$sort' => ['accessos' => -1]
+    ],
+    [
+        '$limit' => 10
+    ]
+];
+
+$resultat_usuaris = $collection->aggregate($usuaris_actius);
 ?>
 
 <!DOCTYPE html>
@@ -158,7 +178,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             margin: 20px;
             background-color: #f0f0f0;
         }
-        
+
         .container {
             width: 1200px;
             margin: 0 auto;
@@ -166,18 +186,18 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             padding: 20px;
             border: 1px solid #ddd;
         }
-        
+
         h1 {
             color: #0066cc;
             text-align: center;
             margin-bottom: 10px;
         }
-        
+
         .targetes {
             width: 100%;
             margin-bottom: 20px;
         }
-        
+
         .targeta {
             width: 23%;
             display: inline-block;
@@ -189,114 +209,114 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             border-radius: 10px;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        
+
         .targeta:hover {
             background-color: #005bb5;
             transform: scale(1.05);
         }
-        
+
         .targeta.numero {
             font-size: 32px;
             font-weight: bold;
         }
-        
+
         .targeta.verda {
             background-color: #28a745;
         }
         .targeta.verda:hover {
             background-color: #218838;
         }
-        
+
         .targeta.blava {
             background-color: #17a2b8;
         }
         .targeta.blava:hover {
             background-color: #117a8b;
         }
-        
+
         .targeta.gris {
             background-color: #343a40;
         }
         .targeta.gris:hover {
             background-color: #292d32;
         }
-        
+
         .col-esquerra {
             width: 48%;
             float: left;
             margin-right: 2%;
         }
-        
+
         .col-dreta {
             width: 48%;
             float: left;
         }
-        
+
         .clearfix {
             clear: both;
         }
-        
+
         .card {
             background-color: white;
             border: 1px solid #ddd;
             margin-bottom: 20px;
         }
-        
+
         .card-header {
             background-color: #f8f9fa;
             padding: 10px;
             border-bottom: 1px solid #ddd;
             font-weight: bold;
         }
-        
+
         .card-body {
             padding: 0;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         th, td {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        
+
         th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
-        
+
         .text-center {
             text-align: center;
         }
-        
+
         .fw-bold {
             font-weight: bold;
         }
-        
+
         .fw-semibold {
             font-weight: 600;
         }
-        
+
         .text-muted {
             color: #6c757d;
         }
-        
+
         .text-danger {
             color: #dc3545;
         }
-        
+
         .small {
             font-size: 12px;
         }
-        
+
         .text-nowrap {
             white-space: nowrap;
         }
-        
+
         .chart-container {
             width: 100%;
             height: 500px;
@@ -307,18 +327,18 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             max-width: 100%;
             height: 100% !important;
         }
-        
+
         code {
             font-family: monospace;
             background-color: #f8f9fa;
             padding: 2px 4px;
         }
-        
+
         .taula-scroll {
             max-height: 400px;
             overflow-y: auto;
         }
-        
+
         .sticky-top {
             position: sticky;
             top: 0;
@@ -329,13 +349,13 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
 <body>
 
 <div class="container">
-    
+
     <div class="titol">
         <h1>Dashboard d'Incidències</h1>
         <p style="text-align: center; color: #666;">Panell de control complet amb informació, taules i gràfics</p>
         <hr>
     </div>
-    
+
     <div class="targetes">
         <div class="targeta">
             <div>Total incidències</div>
@@ -354,12 +374,12 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             <div class="numero"><?= $total_accessos_valor ?></div>
         </div>
     </div>
-    
+
     <div class="clearfix"></div>
-    
+
     <!-- COLUMNA ESQUERRA -->
     <div class="col-esquerra">
-        
+
         <!-- Grafic quesito -->
         <div class="card">
             <div class="card-header">Distribució d'incidències per departament</div>
@@ -369,7 +389,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
                 </div>
             </div>
         </div>
-        
+
         <!-- Taula departaments -->
         <div class="card">
             <div class="card-header">Incidències per departament</div>
@@ -403,10 +423,10 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </div>
         </div>
     </div>
-    
+
     <!-- COLUMNA DRETA -->
     <div class="col-dreta">
-        
+
         <!-- Taula tecnics -->
         <div class="card">
             <div class="card-header">Incidències per tècnic</div>
@@ -440,7 +460,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
                 </table>
             </div>
         </div>
-        
+
         <!-- Historial -->
         <div class="card">
             <div class="card-header">Historial d'incidències resoltes (últimes 10)</div>
@@ -485,11 +505,11 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </div>
         </div>
     </div>
-    
+
     <div class="clearfix"></div>
-    
+
     <!-- Estadistiques MongoDB -->
-    
+
     <!-- Pagines mes visitades -->
     <div class="card" style="margin-top: 20px;">
         <div class="card-header">Pàgines més visitades</div>
@@ -502,9 +522,9 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     $has_pagines = false;
-                    foreach ($resultat_pagines as $doc): 
+                    foreach ($resultat_pagines as $doc):
                         $has_pagines = true;
                     ?>
                         <tr>
@@ -527,37 +547,42 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </table>
         </div>
     </div>
-    
-    <!-- Usuaris mes actius -->
-    <div class="card" style="margin-top: 20px;">
-        <div class="card-header">Usuaris més actius</div>
-        <div class="card-body">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Adreça IP</th>
-                        <th width="100" class="text-center">Accessos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    $has_usuaris = false;
-                    foreach ($resultat_usuaris as $doc): 
-                        $has_usuaris = true;
-                    ?>
-                        <tr>
-                            <td><code><?= htmlspecialchars($doc['_id'] ?? 'Desconegut') ?></code></td>
-                            <td class="text-center"><?= $doc['accessos'] ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <?php if (!$has_usuaris): ?>
-                        <tr><td colspan="2" class="text-center">No hi ha dades</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
+
+   <div class="card" style="margin-top: 20px;">
+       <div class="card-header">Usuaris més actius</div>
+       <div class="card-body">
+           <table>
+               <thead>
+                   <tr>
+                       <th>Usuari</th>
+                       <th class="text-center">Accessos</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <?php
+                   $has_usuaris = false;
+                   foreach ($resultat_usuaris as $doc):
+                       $has_usuaris = true;
+                   ?>
+                       <tr>
+                           <td>
+                               <?= htmlspecialchars($doc['_id']['email'] ?? 'Anònim') ?>
+                           </td>
+                           <td class="text-center">
+                               <?= $doc['accessos'] ?>
+                           </td>
+                       </tr>
+                   <?php endforeach; ?>
+                   <?php if (!$has_usuaris): ?>
+                       <tr>
+                           <td colspan="2" class="text-center">No hi ha dades</td>
+                       </tr>
+                   <?php endif; ?>
+               </tbody>
+           </table>
+       </div>
+   </div>
+
     <!-- Accessos per dia -->
     <div class="card" style="margin-top: 20px;">
         <div class="card-header">Accessos per dia</div>
@@ -570,9 +595,9 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     $has_dies = false;
-                    foreach ($resultat_dies as $doc): 
+                    foreach ($resultat_dies as $doc):
                         $has_dies = true;
                     ?>
                         <tr>
@@ -587,7 +612,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
             </table>
         </div>
     </div>
-    
+
 </div>
 
 <script>
