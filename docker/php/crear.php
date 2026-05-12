@@ -1,5 +1,6 @@
 <?php
 require_once 'connexio.php';
+
 require_once 'header.php';
 
 $usuari_id = $_SESSION['user_id'] ?? 0;
@@ -36,8 +37,6 @@ function crear_incidencia($conn, $usuari_id)
 ?>
 
 <div class="container mt-5">
-    <h1 class="fw-bold mb-4 text-center">Crear una incidència</h1>
-
     <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo crear_incidencia($conn, $usuari_id);

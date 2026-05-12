@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once "connexio.php";
-require_once "header.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -20,19 +19,28 @@ if(($_SESSION['rol'] !== 'admin')){
     }
 
 }
+require_once "header.php";
 
 // 1. Incidències per departament
 $sql_departaments = "SELECT
-    i.departament_id,
-    d.nom AS nom,
-    COUNT(DISTINCT i.incidencia_id) AS num_incidencies,
-    COALESCE(SUM(a.temps), 0) AS temps_total,
-    ROUND(AVG(a.temps), 1) AS temps_mitja
-FROM incidencia i
-LEFT JOIN departament d ON i.departament_id = d.departament_id
-LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
-WHERE i.data_final IS NOT NULL
-GROUP BY i.departament_id, d.nom
+    sub.departament_id,
+    sub.nom,
+    COUNT(*) AS num_incidencies,
+    COALESCE(SUM(sub.temps_incidencia), 0) AS temps_total,
+    ROUND(AVG(sub.temps_incidencia), 1) AS temps_mitja
+FROM (
+    SELECT
+        i.incidencia_id,
+        i.departament_id,
+        d.nom,
+        COALESCE(SUM(a.temps), 0) AS temps_incidencia
+    FROM incidencia i
+    LEFT JOIN departament d ON i.departament_id = d.departament_id
+    LEFT JOIN actuacio a ON i.incidencia_id = a.incidencia_id
+    WHERE i.data_final IS NOT NULL
+    GROUP BY i.incidencia_id, i.departament_id, d.nom
+) sub
+GROUP BY sub.departament_id, sub.nom
 ORDER BY num_incidencies DESC";
 
 $stmnt_dep = $conn->prepare($sql_departaments);
@@ -126,42 +134,74 @@ $temps_mitja_global = $result_temps->fetch_assoc()['mitja_hores'] ?? 0;
 
 // 6. Estadístiques MongoDB
 $total_accessos = [
-    ['$match' => ['url' => '/']],
-    ['$group' => ['_id' => null, 'total' => ['$sum' => 1]]]
+    [
+        '$match' => [
+            'url' => '/'
+            ]
+    ],
+    [
+        '$group' => [
+            '_id' => null,
+            'total' => ['$sum' => 1]
+            ]
+    ]
 ];
 $total = iterator_to_array($collection->aggregate($total_accessos));
 $total_accessos_valor = !empty($total) ? $total[0]['total'] : 0;
 
 $pagines_visitades = [
-    ['$match' => ['url' => ['$ne' => '/informacio.php']]],
-    ['$project' => ['url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]]],
-    ['$group' => ['_id' => '$url_neta', 'total' => ['$sum' => 1]]],
-    ['$sort' => ['total' => -1, '_id' => 1]],
-    ['$limit' => 5]
+    [
+        '$match' => [
+            'url' => ['$ne' => '/informacio.php']
+            ]
+    ],
+    [
+        '$project' => [
+            'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
+            ]
+    ],
+    [
+        '$group' => [
+            '_id' => '$url_neta', 'total' => ['$sum' => 1]
+            ]
+    ],
+    [
+        '$sort' => [
+            'total' => -1, 
+            '_id' => 1
+            ]
+    ],
+    [
+        '$limit' => 5
+    ]
 ];
 $resultat_pagines = $collection->aggregate($pagines_visitades);
 
-$usuaris_actius = [
-    ['$match' => ['url' => '/']],
-    ['$group' => ['_id' => '$ip_origin', 'accessos' => ['$sum' => 1]]],
-    ['$sort' => ['accessos' => -1]],
-    ['$limit' => 5]
-];
-$resultat_usuaris = $collection->aggregate($usuaris_actius);
-
 $accessos_per_dia = [
-    ['$match' => ['url' => '/']],
+    ['$match' => [
+        'url' => '/'
+        ]
+    ],
     ['$group' => [
         '_id' => [
             '$dateToString' => [
                 'format' => '%Y-%m-%d',
-                'date' => ['$dateFromString' => ['dateString' => '$date', 'timezone' => 'Europe/Madrid']]
+                'date' => [
+                    '$dateFromString' => ['dateString' => '$date', 'timezone' => 'Europe/Madrid']
+                    ]
             ]
         ],
-        'total' => ['$sum' => 1]
-    ]],
-    ['$sort' => ['_id' => -1]],
-    ['$limit' => 7]
+        'total' => [
+            '$sum' => 1
+            ]
+    ]
+    ],
+    [
+        '$sort' => ['_id' => -1]
+    ],
+    [
+        '$limit' => 7
+    ]
 ];
 $resultat_dies = $collection->aggregate($accessos_per_dia);
 
