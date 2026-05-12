@@ -1,6 +1,27 @@
-<?php include_once "header.php"?>
 <?php
-require_once 'connexio.php';
+session_start();
+require_once "connexio.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+if(($_SESSION['rol'] !== 'tecnic')){
+    if(($_SESSION['rol'] == 'professor')){
+        header("Location: professor.php");
+        exit;
+    }elseif(($_SESSION['rol'] == 'admin')){
+        header("Location: llistar_total.php");
+        exit;
+    }else{
+        header("Location: index.php");
+        exit;
+    }
+
+}
+
+ include_once "header.php"?>
+<?php
 
 $tecnic_id = isset($_GET['tecnic_id']) ? intval($_GET['tecnic_id']) : 0;
 

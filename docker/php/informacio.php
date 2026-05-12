@@ -1,6 +1,25 @@
 <?php
+session_start();
 require_once "connexio.php";
 require_once "header.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+if(($_SESSION['rol'] !== 'admin')){
+    if(($_SESSION['rol'] == 'professor')){
+        header("Location: professor.php");
+        exit;
+    }elseif(($_SESSION['rol'] == 'tecnic')){
+        header("Location: tecnic.php");
+        exit;
+    }else{
+        header("Location: index.php");
+        exit;
+    }
+
+}
 
 // 1. Incidències per departament
 $sql_departaments = "SELECT

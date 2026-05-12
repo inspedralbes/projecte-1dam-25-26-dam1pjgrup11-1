@@ -6,6 +6,19 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
+if(($_SESSION['rol'] !== 'tecnic')){
+    if(($_SESSION['rol'] == 'professor')){
+        header("Location: professor.php");
+        exit;
+    }elseif(($_SESSION['rol'] == 'admin')){
+        header("Location: llistar_total.php");
+        exit;
+    }else{
+        header("Location: index.php");
+        exit;
+    }
+
+}
 include_once "header.php";
 
 $usuari_id = $_SESSION['user_id'];
