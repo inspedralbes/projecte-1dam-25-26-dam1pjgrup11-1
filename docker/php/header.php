@@ -22,9 +22,7 @@ include_once 'logger.php';
 
 <body>
 
-<?php
-$paginaActual = basename($_SERVER['PHP_SELF']);
-?>
+<?php $paginaActual = basename($_SERVER['SCRIPT_NAME']);?>
 
 <header class="bg-white shadow-sm py-3 mb-3">
     <div class="container d-flex align-items-center gap-3">
@@ -66,8 +64,12 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
     </div>
 </header>
 
-<?php if ($paginaActual === 'crear.php' || $paginaActual === 'llistar_total.php'): ?>
-    <a href="index.php" class="button tornar">Tornar</a>
-<?php elseif ($paginaActual !== 'index.php'): ?>
+<?php if ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'professor'): ?>
+    <a href="professor.php" class="button tornar">Tornar</a>
+<?php elseif ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'tecnic'): ?>
+    <a href="tecnic.php" class="button tornar">Tornar</a>
+<?php elseif ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'admin'): ?>
+    <a href="llistar_total.php" class="button tornar">Tornar</a>
+<?php elseif ($paginaActual !== 'index.php' && $paginaActual !== 'professor.php' && $paginaActual !== 'llistar_total.php'): ?>
     <a href="javascript:history.back()" class="button tornar">Tornar</a>
 <?php endif; ?>

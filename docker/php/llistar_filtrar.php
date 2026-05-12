@@ -1,9 +1,9 @@
 <?php
 
 require_once 'connexio.php';
+require_once 'header.php';
 
 $id = $_GET['id'] ?? null;
-
 
 if (!$id) {
     header("Location: error_id.php");
@@ -53,18 +53,16 @@ $tipologies = $conn->query($sql2);
 
 ?>
 
-<?php include_once "header.php"; ?>
-
 
 <div class="container mt-4">
 
     <h1 class="mb-3">Modificar incidència #<?php echo $incidencia['incidencia_id']; ?></h1>
 <br>
-<h5 style="color: #405c53; font-weight: bold;" class="mb-4"><?php echo $incidencia['descripcio_incidencia']; ?></h4>
+<h4 style="color: #405c53; font-weight: bold;" class="mb-4"><?php echo $incidencia['descripcio_incidencia']; ?></h4>
 <br>
 
     <form action="actualitzar_incidencia.php" method="POST">
-
+    
         <input type="hidden" name="id"
                value="<?php echo $incidencia['incidencia_id']; ?>">
 
@@ -93,9 +91,9 @@ $tipologies = $conn->query($sql2);
             <label for="tecnic" class="fs-4" style="color: #396355; font-weight: bold;">Tècnic:</label>
             <select name="tecnic_id" id="tecnic" class="form-control form-select" required>
                 <option value=""> Selecciona un tècnic </option>
-
                 <?php while ($tec = $tecnics->fetch_assoc()) { ?>
-                    <option value="<?= $tec['tecnic_id'] ?>">
+                    <option value="<?= $tec['tecnic_id'] ?>"
+                        <?= ($incidencia['tecnic_id'] == $tec['tecnic_id']) ? 'selected' : '' ?>>
                         <?= htmlspecialchars($tec['tecnic_nom']) ?> <?= htmlspecialchars($tec['cognom']) ?>
                     </option>
                 <?php } ?>
@@ -106,9 +104,9 @@ $tipologies = $conn->query($sql2);
             <label for="tipologia" class="fs-4" style="color: #396355; font-weight: bold;">Tipologia:</label>
             <select name="tipologia_id" id="tipologia" class="form-control form-select" required>
                 <option value=""> Selecciona una tipologia </option>
-
                 <?php while ($tip = $tipologies->fetch_assoc()) { ?>
-                    <option value="<?= $tip['tipologia_id'] ?>">
+                    <option value="<?= $tip['tipologia_id'] ?>"
+                        <?= ($incidencia['tipologia_id'] == $tip['tipologia_id']) ? 'selected' : '' ?>>
                         <?= htmlspecialchars($tip['tipologia_nom']) ?>
                     </option>
                 <?php } ?>
