@@ -8,6 +8,19 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
+if(($_SESSION['rol'] !== 'professor')){
+    if(($_SESSION['rol'] == 'admin')){
+        header("Location: llistar_total.php");
+        exit;
+    }elseif(($_SESSION['rol'] == 'tecnic')){
+        header("Location: tecnic.php");
+        exit;
+    }else{
+        header("Location: index.php");
+        exit;
+    }
+
+}
 
 require_once 'header.php';
 
