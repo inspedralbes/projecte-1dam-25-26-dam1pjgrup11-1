@@ -7,10 +7,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit;
-}
 if(($_SESSION['rol'] !== 'admin')){
     if(($_SESSION['rol'] == 'professor')){
         header("Location: professor.php");

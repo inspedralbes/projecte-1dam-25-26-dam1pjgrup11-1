@@ -1,5 +1,25 @@
 <?php
 require_once 'connexio.php';
+
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+if(($_SESSION['rol'] !== 'professor')){
+    if(($_SESSION['rol'] == 'admin')){
+        header("Location: admin.php");
+        exit;
+    }elseif(($_SESSION['rol'] == 'tecnic')){
+        header("Location: tecnic.php");
+        exit;
+    }else{
+        header("Location: index.php");
+        exit;
+    }
+
+}
+
 require_once 'header.php';
 
 $usuari_id = $_SESSION['user_id'] ?? 0;

@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once "connexio.php";
-require_once "header.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -20,6 +19,7 @@ if(($_SESSION['rol'] !== 'admin')){
     }
 
 }
+require_once "header.php";
 
 // 1. Incidències per departament
 $sql_departaments = "SELECT
