@@ -90,10 +90,10 @@ $tipologies = $conn->query($sql2);
             <label for="tecnic" class="fs-4" style="color: #396355; font-weight: bold;">Tècnic:</label>
             <select name="tecnic_id" id="tecnic" class="form-control form-select" required>
                 <option value=""> Selecciona un tècnic </option>
-                <?php while ($tec = $tecnics->fetch_assoc()) { ?>
-                    <option value="<?= $tec['tecnic_id'] ?>"
-                        <?= ($incidencia['tecnic_id'] == $tec['tecnic_id']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($tec['tecnic_nom']) ?> <?= htmlspecialchars($tec['cognom']) ?>
+                <?php while ($tecnic = $tecnics->fetch_assoc()) { ?>
+                    <option value="<?= $tecnic['tecnic_id'] ?>"
+                        <?= ($incidencia['tecnic_id'] == $tecnic['tecnic_id']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($tecnic['tecnic_nom']) ?> <?= htmlspecialchars($tecnic['cognom']) ?>
                     </option>
                 <?php } ?>
             </select>
@@ -103,10 +103,10 @@ $tipologies = $conn->query($sql2);
             <label for="tipologia" class="fs-4" style="color: #396355; font-weight: bold;">Tipologia:</label>
             <select name="tipologia_id" id="tipologia" class="form-control form-select" required>
                 <option value=""> Selecciona una tipologia </option>
-                <?php while ($tip = $tipologies->fetch_assoc()) { ?>
-                    <option value="<?= $tip['tipologia_id'] ?>"
-                        <?= ($incidencia['tipologia_id'] == $tip['tipologia_id']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($tip['tipologia_nom']) ?>
+                <?php while ($tipologia = $tipologies->fetch_assoc()) { ?>
+                    <option value="<?= $tipologia['tipologia_id'] ?>"
+                        <?= ($incidencia['tipologia_id'] == $tipologia['tipologia_id']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($tipologia['tipologia_nom']) ?>
                     </option>
                 <?php } ?>
             </select>
