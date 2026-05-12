@@ -43,39 +43,47 @@ $stmt = null;
     <?php
 
     if ($filtre == 'total') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
                        t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
-                ORDER BY i.prioritat";
+                ORDER BY i.prioritat,
+                i.data_incidencia DESC, 
+                i.incidencia_id";
 
     } else if ($filtre == 'sense_assignar') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
                        t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'Oberta'
-                ORDER BY i.prioritat";
+                ORDER BY i.prioritat,
+                i.data_incidencia DESC, 
+                i.incidencia_id";
 
     } else if ($filtre == 'assignades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
                        t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'En Curs'
-                ORDER BY i.prioritat";
+                ORDER BY i.prioritat,
+                i.data_incidencia DESC, 
+                i.incidencia_id";
 
     } else if ($filtre == 'finalitzades') {
-        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.prioritat, i.estat,
+        $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
                        t.nom AS tipologia_nom, te.nom AS tecnic_nom, te.cognom AS tecnic_cognom
                 FROM incidencia i
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'Finalitzada'
-                ORDER BY i.prioritat";
+                ORDER BY i.prioritat,
+                i.data_incidencia DESC, 
+                i.incidencia_id";
     }
 
     $stmt = $conn->prepare($sql);
@@ -91,6 +99,7 @@ $stmt = null;
                 <tr>
                     <th>ID</th>
                     <th>Descripció</th>
+                    <th>Data</th>
                     <th>Tipologia</th>
                     <th>Prioritat</th>
                     <th>Estat</th>
@@ -121,6 +130,10 @@ $stmt = null;
 
                         <td>
                             <?= htmlspecialchars($row['descripcio_incidencia'] ?? '—') ?>
+                        </td>
+
+                        <td class="text-center">
+                            <?= date('d/m/Y', strtotime($row['data_incidencia'])) ?>
                         </td>
 
                         <td class="text-center">

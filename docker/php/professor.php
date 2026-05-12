@@ -2,82 +2,9 @@
 require_once 'connexio.php';
 require_once 'header.php';
 
-$usuari_id = $_GET['usuari_id'] ?? 0;
-
-function crear_incidencia($conn, $usuari_id)
-{
-    $departament_id = $_POST['departament_id'] ?? '';
-    $descripcio = trim($_POST['descripcio_incidencia'] ?? '');
-
-    if (empty($departament_id) || empty($descripcio)) {
-
-        return "
-        <div class='alert alert-danger'>
-            Tots els camps són obligatoris.
-        </div>";
-    }
-
-    $sql = "INSERT INTO incidencia (
-                usuari_id,
-                departament_id,
-                descripcio_incidencia,
-                data_incidencia,
-                estat
-            )
-            VALUES (?, ?, ?, NOW(), 'oberta')";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param(
-        "iis",
-        $usuari_id,
-        $departament_id,
-        $descripcio
-    );
-
-    if ($stmt->execute()) {
-
-        $last_id = $conn->insert_id;
-
-        $output = "
-        <div class='alert alert-success'>
-            <p class='mb-1'>
-                Incidència creada amb èxit!
-            </p>
-
-            <p>
-                El teu número és 
-                <strong>$last_id</strong>
-            </p>
-        </div>";
-
-        $output .= "
-        <form method='GET' action='buscar_id.php'>
-
-            <input type='hidden'
-                   name='incidencia_id'
-                   value='$last_id'>
-
-            <button type='submit'
-                    class='btn btn-primary'>
-
-                Veure la teva incidència
-
-            </button>
-
-        </form>";
-
-        return $output;
-    }
-
-    return "
-    <div class='alert alert-danger'>
-        Error: " . htmlspecialchars($stmt->error) . "
-    </div>";
-}
+$usuari_id = $_SESSION['user_id'] ?? 0;
 
 // LLISTAT INCIDÈNCIES
-
 $sql = "SELECT 
             i.incidencia_id,
             i.descripcio_incidencia,
@@ -92,31 +19,13 @@ $sql = "SELECT
             ON i.departament_id = d.departament_id
         WHERE i.usuari_id = ?
         ORDER BY 
-            CASE 
-                WHEN i.estat IN ('oberta', 'en curs') THEN 0
-                ELSE 1
-            END,
-            i.data_incidencia DESC";
+            i.data_incidencia DESC,
+            i.incidencia_id DESC";
 
 $stmt = $conn->prepare($sql);
-
 $stmt->bind_param("i", $usuari_id);
-
 $stmt->execute();
-
 $result = $stmt->get_result();
-
-//FORMULARI
-
-$old_departament = $_POST['departament_id'] ?? '';
-$old_descripcio = $_POST['descripcio_incidencia'] ?? '';
-
-$incidencia_creada = false;
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    echo crear_incidencia($conn, $usuari_id);
-    $incidencia_creada = true;
-}
 
 $sql = "SELECT 
             departament_id,
@@ -131,10 +40,10 @@ $departaments = $conn->query($sql);
 
 <div class="container-fluid">
     <div class="row">
-        <!-- BARRA LATERAL -->
+
+        <!-- Barra lateral incidencies -->
         <div class="col-md-3 p-3">
-            <div style="background: white;color:black; padding:20px; border-radius:10px; position:sticky; top:20px; height:92vh; overflow-y:auto;
-            ">
+            <div style="background: white; color:black; padding:20px; border-radius:10px; position:sticky; top:20px; height:92vh; overflow-y:auto;">
                 <h4 style="margin-bottom:20px;">
                     Les teves incidències
                 </h4>
@@ -143,23 +52,15 @@ $departaments = $conn->query($sql);
                         <?php
                         $estat = strtolower($row['estat']);
                         $color = '#6c757d';
-                        if ($estat == 'oberta') {
-                            $color = '#dc3545';
-                        }
-                        if ($estat == 'en curs') {
-                            $color = '#ffc107';
-                        }
-                        if ($estat == 'finalitzada') {
-                            $color = '#198754';
-                        }
+                        if ($estat == 'oberta') $color = '#dc3545';
+                        if ($estat == 'en curs') $color = '#ffc107';
+                        if ($estat == 'finalitzada') $color = '#198754';
                         ?>
                         <a href="buscar_id.php?incidencia_id=<?= $row['incidencia_id'] ?>"
-                           style="text-decoration:none;color:black;">
-                            <div style="background: #e0bb12; border-radius:8px; padding:12px; margin-bottom:12px;">
-                                <div style="display:flex; justify-content:space-between;align-items:flex-start;">
-
+                           style="text-decoration:none; color:black;">
+                            <div style="background: lightgray; border-radius:8px; padding:12px; margin-bottom:12px;">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                                     <div>
-
                                         <div style="font-weight:bold; margin-bottom:5px;">
                                             <?= $row['incidencia_id'] ?>
                                         </div>
@@ -167,8 +68,7 @@ $departaments = $conn->query($sql);
                                             <?= htmlspecialchars($row['descripcio_incidencia']) ?>
                                         </div>
                                     </div>
-                                    <span style="
-                                        background:<?= $color ?>; color:white; padding:4px 8px; border-radius:5px; font-size:12px;">
+                                    <span style="background:<?= $color ?>; color:white; padding:4px 8px; border-radius:5px; font-size:12px;">
                                         <?= htmlspecialchars($row['estat']) ?>
                                     </span>
                                 </div>
@@ -183,50 +83,43 @@ $departaments = $conn->query($sql);
             </div>
         </div>
 
-        <!-- CONTINGUT -->
+        <!-- Crear incidencia -->
         <div class="col-md-9 p-5">
             <h1 class="fw-bold mb-4 text-center">
                 Crear una incidència
             </h1>
-                <?php if (!$incidencia_creada): ?>
-                <div class="card shadow-sm mx-auto" style="max-width: 600px;" id="formulari_incidencia">
+            <div class="card shadow-sm mx-auto" style="max-width: 600px;" id="formulari_incidencia">
                 <div class="card-body">
-                <form method="POST" action="crear.php" name="guardar_incidencia">
-                    <div class="mb-3">
-                        <label for="departament" class="form-label">Departament</label>
-                        <select name="departament_id" id="departament" class="form-select" style="background-color: #F5F7F8; color:#495E57" required>
-                            <option value="">Selecciona</option>
-                            <?php while ($dep = $departaments->fetch_assoc()) { ?>
-                                <option value="<?= $dep['departament_id'] ?>"
-                                    <?= ($old_departament == $dep['departament_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($dep['nom']) ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="descripcio" class="form-label">Descripció del problema</label>
-                        <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" id="descripcio" name="descripcio_incidencia"rows="5"placeholder="Explica el problema amb el màxim detall possible" required><?= htmlspecialchars($old_descripcio) ?></textarea>
-                    </div>
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success">Crear incidència</button>
-                    </div>
-                </form>
+                    <form method="POST" action="crear.php" name="guardar_incidencia">
+                        <div class="mb-3">
+                            <label for="departament" class="form-label">Departament</label>
+                            <select name="departament_id" id="departament" class="form-select" style="background-color: #F5F7F8; color:#495E57" required>
+                                <option value="">Selecciona</option>
+                                <?php while ($dep = $departaments->fetch_assoc()) { ?>
+                                    <option value="<?= $dep['departament_id'] ?>">
+                                        <?= htmlspecialchars($dep['nom']) ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcio" class="form-label">Descripció del problema</label>
+                            <textarea style="background-color: #F5F7F8; color:#495E57" class="form-control" id="descripcio" name="descripcio_incidencia" rows="5" placeholder="Explica el problema amb el màxim detall possible" required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Crear incidència</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-            <?php endif; ?>
         </div>
 
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php
-$stmt->close();
-$conn->close();
 require_once 'footer.php';
 ?>
 
