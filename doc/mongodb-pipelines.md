@@ -1,35 +1,31 @@
-# Documentació Pipelines d'Agregació MongoDB
+# Pipelines d'Agregació MongoDB
 
-## 1. `$total_accessos` — Contar documents amb `url = '/'`
+---
 
-**Pipeline:** `$match → $group (_id: null, $sum: 1)`
+### 1. `$total_accessos`
 
-- **`$match`**: filtra documents on `url === '/'`. Redueix el conjunt abans del `$group` (eficient si hi ha índex sobre `url`).
-- **`$group`** amb `_id: null`: col·lapsa tots els documents en un sol, acumulant `$sum: 1` a `total`.
-- `iterator_to_array()` materialitza el cursor; el ternari gestiona el cas de col·lecció buida (`$total[0]['total']`).
+Compta tots els accessos a `url = '/'`.
+
+- `$match` filtra per `url = '/'`
+- `$group` amb `_id: null` col·lapsa tot en un sol resultat i suma amb `$sum: 1`
 
 ```php
 $total_accessos = [
     ['$match' => ['url' => '/']],
     ['$group' => ['_id' => null, 'total' => ['$sum' => 1]]]
 ];
-$total = iterator_to_array($collection->aggregate($total_accessos));
-$total_accessos_valor = !empty($total) ? $total[0]['total'] : 0;
 ```
 
 ---
 
-## 2. `$pagines_visitades` — Top 5 URLs normalitzades
+### 2. `$pagines_visitades`
 
-**Pipeline:** `$match → $project ($split + $arrayElemAt) → $group → $sort → $limit`
+Top 5 pàgines més visitades, excloent `/informacio.php` i netejant els query params.
 
-- **`$match`**: exclou `url = '/informacio.php'` amb `$ne`.
-- **`$project`**: construeix `url_neta` amb una expressió encadenada:
-  - `$split: ['$url', '?']` → genera un array `['path', 'querystring']`
-  - `$arrayElemAt: [..., 0]` → extreu l'element `[0]`, descartant els query params
-- **`$group`** per `url_neta`: agrega visites per URL neta (`$sum: 1`).
-- **`$sort`** compost: primer per `total: -1`, desempat per `_id: 1` (ordre alfabètic).
-- **`$limit: 5`**: talla el resultat.
+- `$match` exclou `/informacio.php` amb `$ne`
+- `$project` separa la URL pel caràcter `?` amb `$split` i agafa la part esquerra amb `$arrayElemAt`
+- `$group` agrupa per URL neta i compta visites
+- `$sort` per total descendent, `$limit` a 5
 
 ```php
 $pagines_visitades = [
@@ -45,13 +41,13 @@ $pagines_visitades = [
 
 ---
 
-## 3. `$usuaris_actius` v1 — Top 5 IPs a `'/'`
+### 3. `$usuaris_actius` v1 — per IP
 
-**Pipeline:** `$match → $group ($ip_origin) → $sort → $limit`
+Top 5 IPs amb més accessos a `'/'`.
 
-- **`$match`**: filtra `url = '/'`.
-- **`$group`** per `ip_origin`: cada IP única és un `_id`, `accessos: $sum: 1` compta les seves peticions.
-- **`$sort` + `$limit`**: retorna les 5 IPs amb més hit count.
+- `$match` filtra per `url = '/'`
+- `$group` per `ip_origin`, compta accessos per IP
+- `$sort` descendent, `$limit` a 5
 
 ```php
 $usuaris_actius = [
@@ -64,17 +60,13 @@ $usuaris_actius = [
 
 ---
 
-## 4. `$accessos_per_dia` — Sèrie temporal dels últims 7 dies a `'/'`
+### 4. `$accessos_per_dia`
 
-**Pipeline:** `$match → $group ($dateToString ∘ $dateFromString) → $sort → $limit`
+Accessos a `'/'` agrupats per dia, últims 7 dies.
 
-- **`$match`**: filtra `url = '/'`.
-- **`$group`** amb expressió de data encadenada:
-  - **`$dateFromString`**: parseja el camp `date` (string) a tipus `Date` BSON aplicant `timezone: 'Europe/Madrid'` → gestiona correctament DST.
-  - **`$dateToString`** amb `format: '%Y-%m-%d'`: trunca a granularitat de dia.
-  - El resultat és un `_id` de tipus string `"YYYY-MM-DD"`.
-- **`$sort: {_id: -1}`**: ordre descendent cronològic.
-- **`$limit: 7`**: finestra dels últims 7 dies amb activitat (no necessàriament consecutius).
+- `$match` filtra per `url = '/'`
+- `$group` converteix el camp `date` (string) a `Date` BSON amb `$dateFromString` (timezone `Europe/Madrid`), i el trunca a `YYYY-MM-DD` amb `$dateToString`
+- `$sort` descendent per data, `$limit` a 7
 
 ```php
 $accessos_per_dia = [
@@ -97,15 +89,13 @@ $accessos_per_dia = [
 
 ---
 
-## 5. `$usuaris_actius` v2 — Top 10 usuaris autenticats
+### 5. `$usuaris_actius` v2 — per usuari autenticat
 
-**Pipeline:** `$group (_id composta) → $sort → $limit`
+Top 10 usuaris identificats per `id` + `email`. Sobreescriu la variable del pas 3.
 
-- **Sense `$match` previ**: opera sobre tota la col·lecció.
-- **`$group`** amb `_id` composta `{id, email}`: clau única per usuari autenticat.
-- Permet correlacionar `usuari_id` ↔ `usuari_email` en el resultat sense `$lookup` addicional.
-- **`$sort` + `$limit`**: top 10 per volum d'accessos.
-- ⚠️ **Sobreescriu** la variable `$usuaris_actius` definida al pas 3.
+- Sense `$match`, opera sobre tota la col·lecció
+- `$group` amb `_id` composta `{usuari_id, usuari_email}`
+- `$sort` descendent, `$limit` a 10
 
 ```php
 $usuaris_actius = [
@@ -120,14 +110,13 @@ $usuaris_actius = [
 
 ---
 
-## 6. `$accessos_rols` — Distribució d'accessos per rol
+### 6. `$accessos_rols`
 
-**Pipeline:** `$group ($rol) → $sort → $limit`
+Accessos agrupats per rol (admin, editor, usuari...).
 
-- **Sense `$match` previ**: opera sobre tota la col·lecció.
-- **`$group`** per `$rol`: cardinalitat baixa esperada (admin, editor, usuari...).
-- Útil per a anàlisi de patrons d'ús per perfil.
-- **`$sort` + `$limit`**: retorna els 10 rols amb més activitat (en pràctica retorna tots si n'hi ha menys de 10).
+- Sense `$match`, opera sobre tota la col·lecció
+- `$group` per camp `$rol`
+- `$sort` descendent, `$limit` a 10
 
 ```php
 $accessos_rols = [
