@@ -1,4 +1,5 @@
 <?php
+
 require_once 'connexio.php';
 
 $id = $_GET['id'] ?? null;
