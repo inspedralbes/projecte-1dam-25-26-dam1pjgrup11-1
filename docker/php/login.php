@@ -30,6 +30,8 @@ if ($user && $password === $user['password']) {
     $_SESSION['user_id'] = $user['usuari_id'];
     $_SESSION['rol'] = $user['rol'];
 
+    include_once 'logger.php';
+
     if ($user['rol'] === 'professor'){
     header("Location: professor.php?usuari_id=" . $user['usuari_id']);
     exit;
