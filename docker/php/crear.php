@@ -1,25 +1,6 @@
 <?php
 require_once 'connexio.php';
 
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit;
-}
-if(($_SESSION['rol'] !== 'professor')){
-    if(($_SESSION['rol'] == 'admin')){
-        header("Location: admin.php");
-        exit;
-    }elseif(($_SESSION['rol'] == 'tecnic')){
-        header("Location: tecnic.php");
-        exit;
-    }else{
-        header("Location: index.php");
-        exit;
-    }
-
-}
-
 require_once 'header.php';
 
 $usuari_id = $_SESSION['user_id'] ?? 0;
@@ -56,8 +37,6 @@ function crear_incidencia($conn, $usuari_id)
 ?>
 
 <div class="container mt-5">
-    <h1 class="fw-bold mb-4 text-center">Crear una incidència</h1>
-
     <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo crear_incidencia($conn, $usuari_id);
