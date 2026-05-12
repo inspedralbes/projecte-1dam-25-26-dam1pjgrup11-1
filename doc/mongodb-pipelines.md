@@ -136,16 +136,3 @@ $accessos_rols = [
     ['$limit' => 10]
 ];
 ```
-
----
-
-## Resum comparatiu
-
-| Pipeline | `$match` inicial | Camp d'agrupació | Limit |
-|---|---|---|---|
-| `$total_accessos` | `url = '/'` | `null` (tot) | — |
-| `$pagines_visitades` | `url ≠ '/informacio.php'` | `url_neta` (normalitzada) | 5 |
-| `$usuaris_actius` v1 | `url = '/'` | `ip_origin` | 5 |
-| `$accessos_per_dia` | `url = '/'` | data truncada a dia | 7 |
-| `$usuaris_actius` v2 | cap | `{usuari_id, usuari_email}` | 10 |
-| `$accessos_rols` | cap | `rol` | 10 |
