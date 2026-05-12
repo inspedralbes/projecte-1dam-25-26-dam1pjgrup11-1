@@ -182,8 +182,24 @@ $usuaris_actius = [
         '$limit' => 10
     ]
 ];
-
 $resultat_usuaris = $collection->aggregate($usuaris_actius);
+
+$accessos_rols = [
+    [
+        '$group' => [
+            '_id' => '$rol',
+            'accessos' => ['$sum' => 1]
+        ]
+    ],
+    [
+        '$sort' => ['accessos' => -1]
+    ],
+    [
+        '$limit' => 10
+    ]
+];
+$resultat_rols = $collection->aggregate($accessos_rols);
+
 ?>
 
 <!DOCTYPE html>
@@ -567,6 +583,7 @@ $resultat_usuaris = $collection->aggregate($usuaris_actius);
         </div>
     </div>
 
+    <!--- Usuaris mes actius --->
    <div class="card" style="margin-top: 20px;">
        <div class="card-header">Usuaris més actius</div>
        <div class="card-body">
@@ -601,6 +618,43 @@ $resultat_usuaris = $collection->aggregate($usuaris_actius);
            </table>
        </div>
    </div>
+
+   <!--- Rols mes actius --->
+   <div class="card" style="margin-top: 20px;">
+       <div class="card-header">Rols més actius</div>
+       <div class="card-body">
+           <table>
+               <thead>
+                   <tr>
+                       <th>Rol</th>
+                       <th class="text-center">Accessos</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <?php
+                   $has_rols = false;
+                   foreach ($resultat_rols as $doc):
+                       $has_rols = true;
+                   ?>
+                       <tr>
+                           <td>
+                               <?= htmlspecialchars($doc['_id'] ?? 'Anònim') ?>
+                           </td>
+                           <td class="text-center">
+                               <?= $doc['accessos'] ?>
+                           </td>
+                       </tr>
+                   <?php endforeach; ?>
+                   <?php if (!$has_rols): ?>
+                       <tr>
+                           <td colspan="2" class="text-center">No hi ha dades</td>
+                       </tr>
+                   <?php endif; ?>
+               </tbody>
+           </table>
+       </div>
+   </div>
+   
 
     <!-- Accessos per dia -->
     <div class="card" style="margin-top: 20px;">

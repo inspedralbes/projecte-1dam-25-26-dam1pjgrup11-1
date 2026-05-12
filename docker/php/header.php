@@ -64,12 +64,12 @@ include_once 'logger.php';
     </div>
 </header>
 
-<?php if ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'professor'): ?>
+<?php if ($paginaActual === 'buscar_id.php' && ($_SESSION['rol'] ?? '') === 'professor'): ?>
     <a href="professor.php" class="button tornar">Tornar</a>
-<?php elseif ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'tecnic'): ?>
+<?php elseif ($paginaActual === 'buscar_id.php' && ($_SESSION['rol'] ?? '') === 'tecnic'): ?>
     <a href="tecnic.php" class="button tornar">Tornar</a>
-<?php elseif ($paginaActual === 'buscar_id.php' && $_SESSION['rol'] === 'admin'): ?>
+<?php elseif ($paginaActual === 'buscar_id.php' && ($_SESSION['rol'] ?? '') === 'admin'): ?>
     <a href="llistar_total.php" class="button tornar">Tornar</a>
-<?php elseif ($paginaActual !== 'index.php' && $paginaActual !== 'professor.php' && $paginaActual !== 'llistar_total.php'): ?>
+<?php elseif ($paginaActual !== 'index.php' && $paginaActual !== 'professor.php' && $paginaActual !== 'llistar_total.php' && $paginaActual !== 'tecnic.php'): ?>
     <a href="javascript:history.back()" class="button tornar">Tornar</a>
 <?php endif; ?>
