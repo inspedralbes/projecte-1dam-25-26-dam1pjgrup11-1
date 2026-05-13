@@ -52,16 +52,16 @@ $stmt = null;
                 Sense assignar
             </option>
 
-            <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
-                Total
-            </option>
-
             <option value="assignades" <?= $filtre == 'assignades' ? 'selected' : '' ?>>
                 Assignades
             </option>
 
             <option value="finalitzades" <?= $filtre == 'finalitzades' ? 'selected' : '' ?>>
                 Finalitzades
+            </option>
+
+            <option value="total" <?= $filtre == 'total' ? 'selected' : '' ?>>
+                Total
             </option>
 
         </select>
