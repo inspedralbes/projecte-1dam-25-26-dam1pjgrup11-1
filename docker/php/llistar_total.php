@@ -76,9 +76,11 @@ $stmt = null;
                 LEFT JOIN tipologia t ON i.tipologia_id = t.tipologia_id
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 ORDER BY i.prioritat,
-                i.data_incidencia DESC, 
+                i.data_incidencia DESC,
                 i.incidencia_id
                 LIMIT ? OFFSET ?";
+
+        $countSql = "SELECT COUNT(*) as total FROM incidencia";
 
     } else if ($filtre == 'sense_assignar') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -88,9 +90,13 @@ $stmt = null;
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'Oberta'
                 ORDER BY i.prioritat,
-                i.data_incidencia DESC, 
+                i.data_incidencia DESC,
                 i.incidencia_id
                 LIMIT ? OFFSET ?";
+
+        $countSql = "SELECT COUNT(*) as total
+                     FROM incidencia
+                     WHERE estat = 'Oberta'";
 
     } else if ($filtre == 'assignades') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -100,9 +106,13 @@ $stmt = null;
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'En Curs'
                 ORDER BY i.prioritat,
-                i.data_incidencia DESC, 
+                i.data_incidencia DESC,
                 i.incidencia_id
                 LIMIT ? OFFSET ?";
+
+        $countSql = "SELECT COUNT(*) as total
+                     FROM incidencia
+                     WHERE estat = 'En Curs'";
 
     } else if ($filtre == 'finalitzades') {
         $sql = "SELECT i.incidencia_id, i.descripcio_incidencia, i.data_incidencia, i.prioritat, i.estat,
@@ -112,15 +122,25 @@ $stmt = null;
                 LEFT JOIN tecnic te ON i.tecnic_id = te.tecnic_id
                 WHERE i.estat = 'Finalitzada'
                 ORDER BY i.prioritat,
-                i.data_incidencia DESC, 
+                i.data_incidencia DESC,
                 i.incidencia_id
                 LIMIT ? OFFSET ?";
+
+        $countSql = "SELECT COUNT(*) as total
+                     FROM incidencia
+                     WHERE estat = 'Finalitzada'";
     }
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $limit, $page);
     $stmt->execute();
     $result = $stmt->get_result();
+
+    // Aqui es es fa el recompte gracies al COUNT
+    $countResult = $conn->query($countSql);
+    $totalRows = $countResult->fetch_assoc()['total'];
+
+    $totalPages = ceil($totalRows / $limit);
 
     ?>
 
@@ -183,6 +203,7 @@ $stmt = null;
                         <td class="text-center">
                             <?= htmlspecialchars($row['tecnic_nom'] ?? '—') ?> <?= htmlspecialchars($row['tecnic_cognom'] ?? '—') ?>
                         </td>
+
                         <td class="text-center">
 
                             <a class="btn btn-sm btn-outline-primary"
@@ -200,30 +221,56 @@ $stmt = null;
                                 </button>
                             </form>
 
-</td>
+                        </td>
                     </tr>
 
                 <?php endwhile; ?>
             </tbody>
         </table>
 
-        <div class="mt-3 text-center">
+        <div class="mt-4 d-flex justify-content-center align-items-center gap-2 flex-wrap">
+
             <?php if ($start > 1): ?>
-                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>"style="background-color:#e5e6e3; border-color:#000000;" class="btn text-dark fw-bold">
-                    <img src="../img/flechal.png" alt="flecha Izquierda" style="height:30px; padding:5px"> Anterior
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" class="btn btn-outline-dark">
+                    <img src="../img/flechal.png" alt="Flecha Izquierda" style="height:30px; padding:5px"> Anterior
                 </a>
             <?php endif; ?>
 
-            <a href="?filtre=<?= $filtre ?>&start=<?= $start + 1 ?>" style="background-color:#cbf05b; border-color:#000000;" class="btn btn-success text-dark fw-bold">
-                Següent <img src="../img/flechad.png" alt="Flecha Derecha" style="height:30px; padding:5px">
-            </a>
+            <?php
+            $maxButtons = 5;
+
+            $inicio = max(1, $start - 2); //max 1 hace que no pueda bajar de 1, start - 2 es para que la pagina en la que estes este justo en medio de las 5, ej 8 tiene 6 y 7 detras, 9 y 10 delante
+            $fin = min($totalPages, $inicio + $maxButtons - 1); //Esto sirve para dejarlo en medio
+            $inicio = max(1, $fin - $maxButtons + 1); //Esto le assigna los valores actuales a inicio otra vez
+
+            //FOr que cuenta los 5 votones
+
+            for ($i = $inicio; $i <= $fin; $i++):
+            ?>
+                <a href="?filtre=<?= $filtre ?>&start=<?= $i ?>"
+                   class="btn <?= ($i == $start) ? 'btn-success text-dark fw-bold' : 'btn-outline-success' ?>">
+                    <?= $i ?>
+                </a>
+
+            <?php endfor; ?>
+
+            <?php if ($start < $totalPages): ?>
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start + 1 ?>" class="btn btn-outline-dark"> Següent
+                    <img src="../img/flechad.png" alt="Flecha Derecha" style="height:30px; padding:5px">
+                </a>
+            <?php endif; ?>
+
         </div>
 
     <?php else: ?>
         <div class="alert alert-info">No hi ha incidències.</div>
-                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" style="background-color:#e5e6e3; border-color:#000000;" class="btn text-dark fw-bold">
-                    <img src="../img/flechal.png" alt="Flecha Izquierda" style="height:30px; padding:5px"> Anterior
-                </a>
+
+        <?php if ($start > 1): ?>
+            <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" style="background-color:#e5e6e3; border-color:#000000;" class="btn text-dark fw-bold">
+                <img src="../img/flechal.png" alt="Flecha Izquierda" style="height:30px; padding:5px"> Anterior
+            </a>
+        <?php endif; ?>
+
     <?php endif; ?>
 
     <?php
