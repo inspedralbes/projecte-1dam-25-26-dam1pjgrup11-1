@@ -147,64 +147,64 @@ INSERT INTO incidencia (
 -- ======================
 -- INFORMÀTICA (5)
 -- ======================
-(1,11,'PC aula 3 no arrenca','2026-04-25',NULL,'Alta',NULL,NULL,NULL),
-(1,11,'Problema login xarxa alumnes','2026-04-26',NULL,'Mitja','Oberta',1,5),
-(1,12,'Fallada servidor virtual','2026-04-27',NULL,'Alta','Oberta',NULL,6),
-(1,13,'Actualització Windows fallida','2026-04-28',NULL,'Alta','Oberta',2,2),
-(1,14,'Tall DHCP aula informàtica','2026-04-29',NULL,'Mitja','Oberta',NULL,3),
+(1,11,'PC aula 3 no arrenca','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
+(1,11,'Problema login xarxa alumnes','2026-04-26',NULL,'Mitja','En Curs',1,5),
+(1,12,'Fallada servidor virtual','2026-04-27',NULL,NULL,'Oberta',NULL,NULL),
+(1,13,'Actualització Windows fallida','2026-04-28',NULL,'Alta','En Curs',2,2),
+(1,14,'Tall DHCP aula informàtica','2026-04-29',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- ANGLÈS (2)
 -- ======================
-(2,12,'WiFi aula anglès inestable','2026-04-25',NULL,'Mitja','Oberta',NULL,3),
-(2,13,'Ordinador professor anglès no encén','2026-04-26',NULL,'Baixa','Oberta',2,1),
+(2,12,'WiFi aula anglès inestable','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
+(2,13,'Ordinador professor anglès no encén','2026-04-26',NULL,'Baixa','En Curs',2,1),
 
 -- ======================
 -- MANTENIMENT (3)
 -- ======================
-(3,14,'Llums passadís no funcionen','2026-04-25',NULL,'Mitja','Oberta',NULL,10),
-(3,15,'Porta aula tancament trencat','2026-04-26',NULL,'Alta','Oberta',5,NULL),
+(3,14,'Llums passadís no funcionen','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
+(3,15,'Porta aula tancament trencat','2026-04-26',NULL,'Alta','En Curs',5,10),
 (3,16,'Aire condicionat soroll excessiu','2026-04-27','2026-04-28','Baixa','Finalitzada',5,10),
 
 -- ======================
 -- MATEMÀTIQUES (3)
 -- ======================
-(4,15,'Projector aula matemàtiques defectuós','2026-04-25',NULL,'Alta','Oberta',NULL,8),
-(4,16,'Software calculadores error','2026-04-26',NULL,'Mitja','Oberta',3,2),
-(4,17,'Impressora exàmens no imprimeix','2026-04-27',NULL,'Mitja','Oberta',NULL,4),
+(4,15,'Projector aula matemàtiques defectuós','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
+(4,16,'Software calculadores error','2026-04-26',NULL,'Mitja','En Curs',3,2),
+(4,17,'Impressora exàmens no imprimeix','2026-04-27',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- CIÈNCIES NATURALS (2)
 -- ======================
-(5,17,'Microscopi digital no connecta','2026-04-25',NULL,'Alta','Oberta',3,1),
-(5,18,'Ordinador laboratori molt lent','2026-04-26',NULL,'Mitja','Oberta',NULL,NULL),
+(5,17,'Microscopi digital no connecta','2026-04-25',NULL,'Alta','En Curs',3,1),
+(5,18,'Ordinador laboratori molt lent','2026-04-26',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- FÍSICA I QUÍMICA (2)
 -- ======================
-(6,18,'Sensor temperatura error','2026-04-25',NULL,'Alta','Oberta',6,1),
-(6,19,'Programari simulació no obre','2026-04-26',NULL,'Mitja','Oberta',NULL,2),
+(6,18,'Sensor temperatura error','2026-04-25',NULL,'Alta','En Curs',6,1),
+(6,19,'Programari simulació no obre','2026-04-26',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- EDUCACIÓ FÍSICA (1)
 -- ======================
-(7,19,'Altaveus gimnàs distorsionen so','2026-04-25',NULL,'Baixa','Oberta',NULL,8),
+(7,19,'Altaveus gimnàs distorsionen so','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- ADMINISTRACIÓ (2)
 -- ======================
 (8,20,'Impressora secretaria bloquejada','2026-04-25','2026-04-26','Alta','Finalitzada',4,4),
-(8,20,'Error gestió expedients alumnes','2026-04-26',NULL,'Mitja','Oberta',NULL,5),
+(8,20,'Error gestió expedients alumnes','2026-04-26',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- ORIENTACIÓ (1)
 -- ======================
-(9,11,'Ordinador orientació molt lent','2026-04-25',NULL,'Baixa','Oberta',NULL,NULL),
+(9,11,'Ordinador orientació molt lent','2026-04-25',NULL,NULL,'Oberta',NULL,NULL),
 
 -- ======================
 -- BIBLIOTECA (1)
 -- ======================
-(10,12,'Catàleg digital no respon','2026-04-25',NULL,'Alta','Oberta',7,6),
+(10,12,'Catàleg digital no respon','2026-04-25',NULL,'Alta','En Curs',7,6),
 
 -- ======================
 -- SECRETARIA (1)
@@ -214,8 +214,8 @@ INSERT INTO incidencia (
 -- ======================
 -- DIRECCIÓ (2)
 -- ======================
-(12,14,'Email direcció no envia correus','2026-04-25',NULL,'Alta','Oberta',1,5),
-(12,15,'Problema accés informes direcció','2026-04-26',NULL,'Mitja','Oberta',NULL,NULL);
+(12,14,'Email direcció no envia correus','2026-04-25',NULL,'Alta','En Curs',1,5),
+(12,15,'Problema accés informes direcció','2026-04-26',NULL,NULL,'Oberta',NULL,NULL);
 
 -- ACTUACIONS
 
