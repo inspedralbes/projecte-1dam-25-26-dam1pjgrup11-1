@@ -35,6 +35,7 @@ if (!$id) {
                 i.prioritat,
                 i.tipologia_id,
                 i.tecnic_id,
+                i.estat,
                 t.nom AS tipologia_nom,
                 te.nom AS tecnic_nom
             FROM incidencia i
@@ -131,6 +132,23 @@ $tipologies = $conn->query($sql2);
                 <?php } ?>
             </select>
         </div>
+
+        <?php if ($incidencia['estat'] !== 'Oberta') { ?>
+            <div class="mb-3">
+                <label for="estat" class="fs-4" style="color: #396355; font-weight: bold;">Estat:</label>
+                <select name="estat" id="estat" class="form-control form-select" required>
+                    <option value=""> Selecciona un estat </option>
+                    <option value="En Curs"
+                        <?php if($incidencia["estat"]=="En Curs") echo "selected"; ?>>
+                        En Curs
+                    </option>
+                    <option value="Finalitzada"
+                        <?php if($incidencia["estat"]=="Finalitzada") echo "selected"; ?>>
+                        Finalitzada
+                    </option>
+                </select>
+            </div>
+        <?php } ?>
 
         <button type="submit" class="btn btn-success">
             Guardar canvis

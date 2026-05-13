@@ -5,14 +5,15 @@ $id = $_POST["id"];
 $prioritat = $_POST["prioritat"];
 $tecnic_id = $_POST["tecnic_id"];
 $tipologia_id = $_POST["tipologia_id"];
+$estat = $_POST["estat"];
 
 $sentencia = $conn->prepare("
     UPDATE incidencia
-    SET prioritat = ?, tecnic_id = ?, tipologia_id = ?, estat = 'En Curs'
+    SET prioritat = ?, tecnic_id = ?, tipologia_id = ?, estat = ?
     WHERE incidencia_id = ?
 ");
 
-$sentencia->bind_param("siii", $prioritat, $tecnic_id, $tipologia_id, $id);
+$sentencia->bind_param("siisi", $prioritat, $tecnic_id, $tipologia_id, $estat, $id);
 
 $sentencia->execute();
 

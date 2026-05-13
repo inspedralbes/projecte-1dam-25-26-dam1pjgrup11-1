@@ -134,7 +134,7 @@ $temps_mitja_global = $result_temps->fetch_assoc()['mitja_hores'] ?? 0;
 
 // 6. Estadístiques MongoDB
 // Filtre base per només mostrar usuaris loguejats
-$filtre_autenticat = [
+$filtre_loguejat = [
     'usuari_email' => ['$ne' => 'unknown'],
     'usuari_id'    => ['$ne' => null],
     'rol'          => ['$ne' => 'unknown'],
@@ -142,7 +142,7 @@ $filtre_autenticat = [
 
 // Total d'accesos
 $total_accessos = [
-    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => ['_id' => null, 'total' => ['$sum' => 1]]]
 ];
 $total = iterator_to_array($collection->aggregate($total_accessos));
@@ -150,7 +150,7 @@ $total_accessos_valor = !empty($total) ? $total[0]['total'] : 0;
 
 // Pàgines visitades
 $pagines_visitades = [
-    ['$match' => array_merge($filtre_autenticat, ['url' => ['$ne' => '/informacio.php']])],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$ne' => '/informacio.php']])],
     ['$project' => [
         'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
     ]],
@@ -162,7 +162,7 @@ $resultat_pagines = $collection->aggregate($pagines_visitades);
 
 // Accessos per dia
 $accessos_per_dia = [
-    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => [
         '_id' => ['$dateToString' => [
             'format' => '%Y-%m-%d',
@@ -180,7 +180,7 @@ $resultat_dies = $collection->aggregate($accessos_per_dia);
 
 // Usuaris més actius
 $usuaris_actius = [
-    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => [
         '_id'     => ['id' => '$usuari_id', 'email' => '$usuari_email'],
         'accessos' => ['$sum' => 1]
@@ -192,7 +192,7 @@ $resultat_usuaris = $collection->aggregate($usuaris_actius);
 
 // Accessos per rol
 $accessos_rols = [
-    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => ['_id' => '$rol', 'accessos' => ['$sum' => 1]]],
     ['$sort'  => ['accessos' => -1]],
     ['$limit' => 10]
