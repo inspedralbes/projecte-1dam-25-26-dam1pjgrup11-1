@@ -2,16 +2,28 @@
 
 ---
 
+### Filtre loguejat
+
+Filtre base per només mostrar usuaris loguejats que utilitzo per controlar el accessos
+
+```
+$filtre_loguejat = [
+    'usuari_email' => ['$ne' => 'unknown'],
+    'usuari_id'    => ['$ne' => null],
+    'rol'          => ['$ne' => 'unknown'],
+];
+```
+
 ### 1. $total_accessos
 
 Compta tots els accessos a url = '/'.
 
-- $match filtra per url = '/'
+- $match array_merge combina el filtres, filtra per url = '/login.php' i '/index.php' per comptar com acces quan es logueja i mentre navega per la web, i si esta loguejat
 - $group amb _id: null col·lapsa tot en un sol resultat i suma amb $sum: 1
-```
 
+```
 $total_accessos = [
-    ['$match' => ['url' => '/']],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => ['_id' => null, 'total' => ['$sum' => 1]]]
 ];
 ```
@@ -41,68 +53,69 @@ $pagines_visitades = [
 
 ---
 
-### 4. $accessos_per_dia
+### 3. $accessos_per_dia
 
 Accessos a '/' agrupats per dia, últims 7 dies.
 
-- $match filtra per url = '/'
+- $match array_merge combina el filtres, filtra per url = '/login.php' i '/index.php' per comptar com acces quan es logueja i mentre navega per la web, i si esta loguejat
 - $group converteix el camp date (string) a Date BSON amb $dateFromString (timezone Europe/Madrid), i el trunca a YYYY-MM-DD amb $dateToString
 - $sort descendent per data, $limit a 7
 
 ```
 $accessos_per_dia = [
-    ['$match' => ['url' => '/']],
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => [
-        '_id' => [
-            '$dateToString' => [
-                'format' => '%Y-%m-%d',
-                'date' => [
-                    '$dateFromString' => ['dateString' => '$date', 'timezone' => 'Europe/Madrid']
-                ]
-            ]
-        ],
+        '_id' => ['$dateToString' => [
+            'format' => '%Y-%m-%d',
+            'date'   => ['$dateFromString' => [
+                'dateString' => '$date',
+                'timezone'   => 'Europe/Madrid'
+            ]]
+        ]],
         'total' => ['$sum' => 1]
     ]],
-    ['$sort' => ['_id' => -1]],
+    ['$sort'  => ['_id' => -1]],
     ['$limit' => 7]
 ];
 ```
 
 ---
 
-### 5. $usuaris_actius
+### 4. $usuaris_actius
 
 Top 10 usuaris identificats per id + email.
 
-- Sense $match, opera sobre tota la col·lecció
+- $match array_merge combina el filtres, filtra per url = '/login.php' i '/index.php' per comptar com acces quan es logueja i mentre navega per la web, i si esta loguejat
 - $group amb _id composta {usuari_id, usuari_email}
 - $sort descendent, $limit a 10
 
 ```
 $usuaris_actius = [
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => [
-        '_id' => ['id' => '$usuari_id', 'email' => '$usuari_email'],
+        '_id'     => ['id' => '$usuari_id', 'email' => '$usuari_email'],
         'accessos' => ['$sum' => 1]
     ]],
-    ['$sort' => ['accessos' => -1]],
+    ['$sort'  => ['accessos' => -1]],
     ['$limit' => 10]
 ];
 ```
 
 ---
 
-### 6. $accessos_rols
+### 5. $accessos_rols
 
 Accessos agrupats per rol (admin, tecnic, professor).
 
-- Sense $match, opera sobre tota la col·lecció
+- $match array_merge combina el filtres, filtra per url = '/login.php' i '/index.php' per comptar com acces quan es logueja i mentre navega per la web, i si esta loguejat
 - $group per camp $rol
 - $sort descendent, $limit a 10
 
 ```
 $accessos_rols = [
+    ['$match' => array_merge($filtre_loguejat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => ['_id' => '$rol', 'accessos' => ['$sum' => 1]]],
-    ['$sort' => ['accessos' => -1]],
+    ['$sort'  => ['accessos' => -1]],
     ['$limit' => 10]
 ];
 ```
