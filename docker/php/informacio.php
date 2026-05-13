@@ -133,110 +133,69 @@ $result_temps = $conn->query($sql_temps_mitja_global);
 $temps_mitja_global = $result_temps->fetch_assoc()['mitja_hores'] ?? 0;
 
 // 6. Estadístiques MongoDB
+// Filtre base per només mostrar usuaris loguejats
+$filtre_autenticat = [
+    'usuari_email' => ['$ne' => 'unknown'],
+    'usuari_id'    => ['$ne' => null],
+    'rol'          => ['$ne' => 'unknown'],
+];
+
+// Total d'accesos
 $total_accessos = [
-    [
-        '$match' => [
-            'url' => '/'
-            ]
-    ],
-    [
-        '$group' => [
-            '_id' => null,
-            'total' => ['$sum' => 1]
-            ]
-    ]
+    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$group' => ['_id' => null, 'total' => ['$sum' => 1]]]
 ];
 $total = iterator_to_array($collection->aggregate($total_accessos));
 $total_accessos_valor = !empty($total) ? $total[0]['total'] : 0;
 
+// Pàgines visitades
 $pagines_visitades = [
-    [
-        '$match' => [
-            'url' => ['$ne' => '/informacio.php']
-            ]
-    ],
-    [
-        '$project' => [
-            'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
-            ]
-    ],
-    [
-        '$group' => [
-            '_id' => '$url_neta', 'total' => ['$sum' => 1]
-            ]
-    ],
-    [
-        '$sort' => [
-            'total' => -1, 
-            '_id' => 1
-            ]
-    ],
-    [
-        '$limit' => 5
-    ]
+    ['$match' => array_merge($filtre_autenticat, ['url' => ['$ne' => '/informacio.php']])],
+    ['$project' => [
+        'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
+    ]],
+    ['$group' => ['_id' => '$url_neta', 'total' => ['$sum' => 1]]],
+    ['$sort'  => ['total' => -1, '_id' => 1]],
+    ['$limit' => 5]
 ];
 $resultat_pagines = $collection->aggregate($pagines_visitades);
 
+// Accessos per dia
 $accessos_per_dia = [
-    ['$match' => [
-        'url' => '/'
-        ]
-    ],
+    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
     ['$group' => [
-        '_id' => [
-            '$dateToString' => [
-                'format' => '%Y-%m-%d',
-                'date' => [
-                    '$dateFromString' => ['dateString' => '$date', 'timezone' => 'Europe/Madrid']
-                    ]
-            ]
-        ],
-        'total' => [
-            '$sum' => 1
-            ]
-    ]
-    ],
-    [
-        '$sort' => ['_id' => -1]
-    ],
-    [
-        '$limit' => 7
-    ]
+        '_id' => ['$dateToString' => [
+            'format' => '%Y-%m-%d',
+            'date'   => ['$dateFromString' => [
+                'dateString' => '$date',
+                'timezone'   => 'Europe/Madrid'
+            ]]
+        ]],
+        'total' => ['$sum' => 1]
+    ]],
+    ['$sort'  => ['_id' => -1]],
+    ['$limit' => 7]
 ];
 $resultat_dies = $collection->aggregate($accessos_per_dia);
 
+// Usuaris més actius
 $usuaris_actius = [
-    [
-        '$group' => [
-            '_id' => [
-                'id' => '$usuari_id',
-                'email' => '$usuari_email'
-            ],
-            'accessos' => ['$sum' => 1]
-        ]
-    ],
-    [
-        '$sort' => ['accessos' => -1]
-    ],
-    [
-        '$limit' => 10
-    ]
+    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$group' => [
+        '_id'     => ['id' => '$usuari_id', 'email' => '$usuari_email'],
+        'accessos' => ['$sum' => 1]
+    ]],
+    ['$sort'  => ['accessos' => -1]],
+    ['$limit' => 10]
 ];
 $resultat_usuaris = $collection->aggregate($usuaris_actius);
 
+// Accessos per rol
 $accessos_rols = [
-    [
-        '$group' => [
-            '_id' => '$rol',
-            'accessos' => ['$sum' => 1]
-        ]
-    ],
-    [
-        '$sort' => ['accessos' => -1]
-    ],
-    [
-        '$limit' => 10
-    ]
+    ['$match' => array_merge($filtre_autenticat, ['url' => ['$in' => ['/login.php', '/index.php']]])],
+    ['$group' => ['_id' => '$rol', 'accessos' => ['$sum' => 1]]],
+    ['$sort'  => ['accessos' => -1]],
+    ['$limit' => 10]
 ];
 $resultat_rols = $collection->aggregate($accessos_rols);
 
