@@ -207,22 +207,22 @@ $stmt = null;
             </tbody>
         </table>
 
-        <div class="mt-3">
+        <div class="mt-3 text-center">
             <?php if ($start > 1): ?>
-                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" class="btn btn-secondary">
-                    Anterior
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>"style="background-color:#e5e6e3; border-color:#000000;" class="btn text-dark fw-bold">
+                    <img src="../img/flechal.png" alt="flecha Izquierda" style="height:30px; padding:5px"> Anterior
                 </a>
             <?php endif; ?>
 
-            <a href="?filtre=<?= $filtre ?>&start=<?= $start + 1 ?>" class="btn btn-secondary">
-                Següent
+            <a href="?filtre=<?= $filtre ?>&start=<?= $start + 1 ?>" style="background-color:#cbf05b; border-color:#000000;" class="btn btn-success text-dark fw-bold">
+                Següent <img src="../img/flechad.png" alt="Flecha Derecha" style="height:30px; padding:5px">
             </a>
         </div>
 
     <?php else: ?>
         <div class="alert alert-info">No hi ha incidències.</div>
-                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" class="btn btn-secondary">
-                    Anterior
+                <a href="?filtre=<?= $filtre ?>&start=<?= $start - 1 ?>" style="background-color:#e5e6e3; border-color:#000000;" class="btn text-dark fw-bold">
+                    <img src="../img/flechal.png" alt="Flecha Izquierda" style="height:30px; padding:5px"> Anterior
                 </a>
     <?php endif; ?>
 
