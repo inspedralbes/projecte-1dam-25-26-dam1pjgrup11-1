@@ -150,7 +150,7 @@ $total_accessos_valor = !empty($total) ? $total[0]['total'] : 0;
 
 // Pàgines visitades
 $pagines_visitades = [
-    ['$match' => array_merge($filtre_loguejat, ['url' => ['$ne' => '/informacio.php']])],
+    ['$match' => array_merge($filtre_loguejat,['url' => ['$nin' => ['/informacio.php', '/login.php', '/index.php' ]]])],
     ['$project' => [
         'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
     ]],
