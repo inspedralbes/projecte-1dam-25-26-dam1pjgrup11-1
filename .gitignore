@@ -1,8 +1,4 @@
-docker/.env
-docker/php/vendor
 docker/db_data
-docker/db_data_old_old/
-docker/db_data_old/
 docker/db_data1
 docker/db_data2
 docker/db_data3
@@ -12,6 +8,13 @@ docker/db_data6
 docker/db_data7
 docker/db_data8
 docker/db_data9
+.idea
+docker/php/vendor/composer
+docker/php/vendor
+docker/php/vendor/autoload.php
+docker/db_data_old_old
+docker/db_data_old
+docker/php/.env
 docker/db_data10
 docker/db_data11
 docker/db_data12
@@ -24,5 +27,3 @@ docker/db_data18
 docker/db_data19
 docker/db_data20
 docker/db_data21
-docker/db_data15
-.idea/
