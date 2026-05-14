@@ -19,8 +19,6 @@ if(($_SESSION['rol'] !== 'admin')){
     }
 
 }
-require_once 'header.php';
-
 
 $id = $_GET['id'] ?? null;
 
@@ -57,6 +55,8 @@ if (!$incidencia) {
     header("Location: error_incidencia.php");
     exit;
 }
+
+require_once "header.php";
 
 $sql1 = "SELECT tecnic_id, nom AS tecnic_nom, cognom
          FROM tecnic

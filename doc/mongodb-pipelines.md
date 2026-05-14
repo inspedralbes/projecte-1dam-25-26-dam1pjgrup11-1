@@ -34,19 +34,19 @@ $total_accessos = [
 
 Top 5 pàgines més visitades, excloent /informacio.php i netejant els parametres d'entrada.
 
-- $match exclou /informacio.php amb $ne
+- $match array_merge combina el filtres, filtra per url = '/informacio.php', '/login.php' i '/index.php' per comptar com acces quan es logueja i mentre navega per la web, i si esta loguejat
 - $project separa la URL pel caràcter ? amb $split i agafa la part esquerra amb $arrayElemAt
 - $group agrupa per URL neta i compta visites
 - $sort per total descendent, $limit a 5
 
 ```
 $pagines_visitades = [
-    ['$match' => ['url' => ['$ne' => '/informacio.php']]],
+    ['$match' => array_merge($filtre_loguejat,['url' => ['$nin' => ['/informacio.php', '/login.php', '/index.php' ]]])],
     ['$project' => [
         'url_neta' => ['$arrayElemAt' => [['$split' => ['$url', '?']], 0]]
     ]],
     ['$group' => ['_id' => '$url_neta', 'total' => ['$sum' => 1]]],
-    ['$sort' => ['total' => -1, '_id' => 1]],
+    ['$sort'  => ['total' => -1, '_id' => 1]],
     ['$limit' => 5]
 ];
 ```
