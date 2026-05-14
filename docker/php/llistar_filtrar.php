@@ -147,7 +147,10 @@ $tipologies = $conn->query($sql2);
                     </option>
                 </select>
             </div>
-        <?php } ?>
+        <?php }else{ ?>
+            <input type="hidden" name="estat" value="Oberta">
+        <?php
+        } ?>
 
         <button type="submit" class="btn btn-success">
             Guardar canvis

@@ -201,11 +201,13 @@ button:hover {
     box-shadow: 0 3px 8px rgba(0,0,0,0.12);
 }
 
-.btn-panel:hover {
-    background-color: #F5F7F8;
+.btn-panel:hover{
+    background-color: #c9d6db;
     color: black !important;
+    text-decoration: none;
     transform: translateY(-2px);
 }
+
 
 /* =========================
    BOTÓN VOLVER
