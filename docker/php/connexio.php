@@ -4,12 +4,16 @@
 // incloure aquest fitxer al principi del codi PHP.
 // Un cop inclòs, podreu utilitzar la variable $conn per a fer les consultes a la base de dades.
 // require_once  'connexio.php';
+require($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php');
 
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 // Configuració de la connexió a la base de dades
 $servername = "db"; // Nom del servei definit al docker-compose.yaml
-$username = "usuari"; // Usuari definit al docker-compose.yaml
-$password = "usuari12345";// Contrasenya definida al docker-compose.yaml
+$username = $_ENV['MYSQL_USER']; // Usuari definit al docker-compose.yaml
+$password = $_ENV['MYSQL_PASSWORD'];// Contrasenya definida al docker-compose.yaml
 $dbname = "incidencies"; // Nom de la base de dades
 
 // Quan ja tingueu un codi una mica depurat, i vulgueu fer la gestió dels errors

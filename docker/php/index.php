@@ -44,7 +44,7 @@ include_once "header.php";
 
         </div>
 
-        <div class="card shadow-sm p-4 w-100" style="max-width: 350px; opacity: 0.9;">
+        <div class="card shadow-sm p-4 w-100" style="max-width: 350px;">
 
             <h4 class="text-center mb-4" style="color: black !important;">Buscar incidència</h4>
 
