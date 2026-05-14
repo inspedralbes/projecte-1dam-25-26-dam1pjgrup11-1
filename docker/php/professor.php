@@ -112,7 +112,7 @@ $departaments = $conn->query($sql);
             </h1>
             <div class="card shadow-sm mx-auto" style="max-width: 600px;" id="formulari_incidencia">
                 <div class="card-body">
-                    <form method="POST" action="crear.php" name="guardar_incidencia">
+                    <form method="POST" action="crear.php" name="guardar_incidencia" id="guardar_incidencia">
                         <div class="mb-3">
                             <label for="departament" class="form-label">Departament</label>
                             <select name="departament_id" id="departament" class="form-select" style="background-color: #F5F7F8; color:#495E57" required>
