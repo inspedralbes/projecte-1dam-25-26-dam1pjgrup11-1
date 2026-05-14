@@ -7,14 +7,14 @@ include_once "header.php";
 
     <div class="text-center mb-5">
         <h1 class="fw-bold">GI3P</h1>
-        <h3 class="text-muted">Gestió d’incidències informàtiques Institut Pedralbes</h3>
+        <h3>Gestió d’incidències informàtiques Institut Pedralbes</h3>
     </div>
 
     <div class="d-flex justify-content-center gap-4 flex-wrap">
 
         <div class="card shadow-sm p-4 w-100" style="max-width: 350px;">
 
-            <h4 class="text-center mb-3">Iniciar sessió</h4>
+            <h4 class="text-center mb-3" style="color: black !important;">Iniciar sessió</h4>
 
             <?php if (isset($_SESSION['login_error'])): ?>
                 <div class="alert alert-danger">
@@ -45,7 +45,7 @@ include_once "header.php";
 
         <div class="card shadow-sm p-4 w-100" style="max-width: 350px; opacity: 0.9;">
 
-            <h4 class="text-center mb-4">Buscar incidència</h4>
+            <h4 class="text-center mb-4" style="color: black !important;">Buscar incidència</h4>
 
             <form method="GET" action="buscar_id.php">
 

@@ -66,7 +66,7 @@ $departaments = $conn->query($sql);
         <!-- Barra lateral incidencies -->
         <div class="col-md-3 p-3">
             <div style="background: white; color:black; padding:20px; border-radius:10px; position:sticky; top:20px; height:92vh; overflow-y:auto;">
-                <h4 style="margin-bottom:20px;">
+                <h4 style="margin-bottom:20px; color: black;">
                     Les teves incidències
                 </h4>
                 <?php if ($result->num_rows > 0): ?>

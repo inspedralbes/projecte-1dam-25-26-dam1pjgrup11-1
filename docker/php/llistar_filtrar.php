@@ -78,16 +78,15 @@ $tipologies = $conn->query($sql2);
 
     <h1 class="mb-3">Modificar incidència #<?php echo $incidencia['incidencia_id']; ?></h1>
 <br>
-<h4 style="color: #405c53; font-weight: bold;" class="mb-4"><?php echo $incidencia['descripcio_incidencia']; ?></h4>
+<h3  class="mb-4 titulo-incidencia"><?php echo $incidencia['descripcio_incidencia']; ?></h3>
 <br>
-
     <form action="actualitzar_incidencia.php" method="POST">
     
         <input type="hidden" name="id"
                value="<?php echo $incidencia['incidencia_id']; ?>">
 
         <div class="mb-3">
-            <label for="prioritat" class="fs-4" style="color: #396355; font-weight: bold;">Prioritat</label>
+            <label for="prioritat" class="fs-4 titulo-incidencia" style="font-weight: bold;">Prioritat</label>
             <select name="prioritat" id="prioritat" class="form-control form-select" required>
 
                 <option value="" >Selecciona una prioritat</option>
@@ -108,7 +107,7 @@ $tipologies = $conn->query($sql2);
         </div>
 
         <div class="mb-3">
-            <label for="tecnic" class="fs-4" style="color: #396355; font-weight: bold;">Tècnic:</label>
+            <label for="tecnic" class="fs-4 titulo-incidencia" style="font-weight: bold;">Tècnic:</label>
             <select name="tecnic_id" id="tecnic" class="form-control form-select" required>
                 <option value=""> Selecciona un tècnic </option>
                 <?php while ($tecnic = $tecnics->fetch_assoc()) { ?>
@@ -121,7 +120,7 @@ $tipologies = $conn->query($sql2);
         </div>
 
         <div class="mb-3">
-            <label for="tipologia" class="fs-4" style="color: #396355; font-weight: bold;">Tipologia:</label>
+            <label for="tipologia" class="fs-4 titulo-incidencia" style="font-weight: bold;">Tipologia:</label>
             <select name="tipologia_id" id="tipologia" class="form-control form-select" required>
                 <option value=""> Selecciona una tipologia </option>
                 <?php while ($tipologia = $tipologies->fetch_assoc()) { ?>
@@ -135,7 +134,7 @@ $tipologies = $conn->query($sql2);
 
         <?php if ($incidencia['estat'] !== 'Oberta') { ?>
             <div class="mb-3">
-                <label for="estat" class="fs-4" style="color: #396355; font-weight: bold;">Estat:</label>
+                <label for="estat" class="fs-4 titulo-incidencia" style="font-weight: bold;">Estat:</label>
                 <select name="estat" id="estat" class="form-control form-select" required>
                     <option value=""> Selecciona un estat </option>
                     <option value="En Curs"

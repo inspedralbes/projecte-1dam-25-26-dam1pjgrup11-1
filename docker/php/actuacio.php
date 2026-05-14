@@ -116,8 +116,8 @@ if ($incidencia_id) {
 <div class="container mt-5">
 
     <h1 class="fw-bold mb-2 text-center">Actuació realitzada</h1>
-    <h5 class="text-center mb-4">Incidència #<?= htmlspecialchars($incidencia_id) ?></h5>
-    <p class="text-center text-muted mb-4"><?= htmlspecialchars($descripcio_incidencia) ?></p>
+    <h4 class="text-center mb-4">Incidència #<?= htmlspecialchars($incidencia_id) ?></h4>
+    <p class="text-center mb-4" ><?= htmlspecialchars($descripcio_incidencia) ?></p>
 
     <?php
     $old_descripcio = $_POST['descripcio_actuacio'] ?? '';

@@ -50,14 +50,19 @@ include_once 'logger.php';
             <?php if (isset($_SESSION['rol'])): ?>
 
                 <?php if ($_SESSION['rol'] === 'professor'): ?>
-                    <a href="professor.php">Professor</a>
+                    <a href="professor.php" style="color:#000000;">Professor</a>
                 <?php elseif ($_SESSION['rol'] === 'tecnic'): ?>
-                    <a href="tecnic.php">Tècnic</a>
+                    <a href="tecnic.php" style="color:#000000;">Tècnic</a>
                 <?php elseif ($_SESSION['rol'] === 'admin'): ?>
-                    <a href="llistar_total.php">Admin</a>
+                    <a href="llistar_total.php" style="color:#000000;">Admin</a>
                 <?php endif; ?>
 
             <?php endif; ?>
+
+            <label id="switch" class="ms-3">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
 
         </nav>
 

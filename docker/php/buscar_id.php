@@ -48,7 +48,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
 ?>
 <!-- mostrar informacio incidencia i temps invertit-->
         <div class="card shadow-sm p-4">
-            <h3 class="mb-3 fw-bold ">Resultat de la incidència</h3>
+            <h3 class="mb-3 fw-bold " style="color: black !important;">Resultat de la incidència</h3>
                 <div class="mb-3 p-3 border rounded bg-light">
                     <p><strong>ID:</strong> <?= $row['incidencia_id'] ?></p>
                     <p><strong>Descripció:</strong> <?= htmlspecialchars($row['descripcio_incidencia']) ?></p>
@@ -64,7 +64,7 @@ if (isset($_GET['incidencia_id']) && !empty($_GET['incidencia_id'])) {
         <br>
 
         <div class="card shadow-sm p-4">
-            <h3 class="mb-3 fw-bold ">Descripció de les actuacions</h3>
+            <h3 class="mb-3 fw-bold " style="color: black !important;">Descripció de les actuacions</h3>
         <?php
         // info actuacio
         $sql_actuacio = "SELECT 

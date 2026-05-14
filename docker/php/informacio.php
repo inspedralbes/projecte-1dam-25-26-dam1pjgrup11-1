@@ -205,7 +205,7 @@ $resultat_rols = $collection->aggregate($accessos_rols);
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard d'Incidències</title>
+    <title >Dashboard d'Incidències</title>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -384,8 +384,9 @@ $resultat_rols = $collection->aggregate($accessos_rols);
 
 <div class="container">
 
+
     <div class="titol">
-        <h1>Dashboard d'Incidències</h1>
+        <h1 style="color: black !important;">Dashboard d'Incidències</h1>
         <p style="text-align: center; color: #666;">Panell de control complet amb informació, taules i gràfics</p>
         <hr>
     </div>
