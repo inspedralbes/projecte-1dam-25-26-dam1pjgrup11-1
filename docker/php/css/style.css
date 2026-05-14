@@ -214,6 +214,8 @@ button:hover {
 ========================= */
 
 .tornar {
+    display: inline-block;
+    width: fit-content;
     top: 10px;
     left: 10px;
     background-color: #F4CE14;
