@@ -19,11 +19,17 @@ if(($_SESSION['rol'] !== 'tecnic')){
     }
 
 }
-
- include_once "header.php"?>
+?>
 <?php
 
 $tecnic_id = isset($_GET['tecnic_id']) ? intval($_GET['tecnic_id']) : 0;
+
+if ($tecnic_id != $_SESSION['tecnic_id']) {
+    header("Location: index.php");
+    exit;
+}
+
+require_once "header.php";
 
 if ($tecnic_id == 0) {
 ?>

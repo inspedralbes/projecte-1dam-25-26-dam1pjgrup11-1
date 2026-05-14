@@ -80,3 +80,14 @@ document.addEventListener("DOMContentLoaded", () => {
     formInc.style.display = "none";
   }
 });
+
+
+const img = document.getElementById("imagencambiante");
+
+img.addEventListener("click", () => {
+  if (img.src.includes("imagen1.jpg")) {
+    img.src = "imagen2.jpg";
+  } else {
+    img.src = "imagen1.jpg";
+  }
+});

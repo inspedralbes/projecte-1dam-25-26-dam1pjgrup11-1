@@ -16,7 +16,10 @@ if (empty($email) || empty($password)) {
     exit;
 }
 
-$sql = "SELECT usuari_id, email, password, rol FROM usuari WHERE email = ?";
+$sql = "SELECT u.usuari_id, u.email, u.password, u.rol, t.tecnic_id
+        FROM usuari u
+        LEFT JOIN tecnic t ON u.usuari_id = t.usuari_id
+        WHERE u.email = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -29,6 +32,7 @@ if ($user && $password === $user['password']) {
     $_SESSION['user'] = $user['email'];
     $_SESSION['user_id'] = $user['usuari_id'];
     $_SESSION['rol'] = $user['rol'];
+    $_SESSION['tecnic_id'] = $user['tecnic_id'] ?? null;
 
     include_once 'logger.php';
 
