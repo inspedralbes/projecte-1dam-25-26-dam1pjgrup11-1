@@ -55,11 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 const img = document.getElementById("imagencambiante");
-
+let bool1=true;
 img.addEventListener("click", () => {
-  if (img.src.includes("imagen1.jpg")) {
-    img.src = "imagen2.jpg";
+  if (bool1) {
+    img.src = "../img/oscuridad.png";
+    bool1=false;
   } else {
-    img.src = "imagen1.jpg";
+    img.src = "../img/luz.png";
+    bool1=true;
   }
 });
+
