@@ -59,7 +59,8 @@ include_once 'logger.php';
 
             <?php endif; ?>
 
-            <label id="switch" class="ms-3">
+            <label id="switch" class="ms-3" style="color:#000000"> Canviar Tema
+                <img id="imagencambiante" src="imagen1.jpg" alt="imagen" width="300">
                 <input type="checkbox">
                 <span class="slider round"></span>
             </label>
