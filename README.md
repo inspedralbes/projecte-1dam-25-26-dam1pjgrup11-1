@@ -20,4 +20,4 @@ https://tree.taiga.io/project/a25vicrioqui-projecte-1dam-25-26-dam1pjgrup11-1/ti
 http://g11.dam.inspedralbes.cat/
 
 
- * Estat: Finalitzat
+Estat: Finalitzat
