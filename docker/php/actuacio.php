@@ -133,7 +133,7 @@ if ($incidencia_id) {
     <div class="card shadow-sm mx-auto" style="max-width: 600px;">
         <div class="card-body">
 
-            <form method="POST" action="actuacio.php">
+            <form method="POST" action="actuacio.php" id="formulari_actuacio">
 
                 <input type="hidden" name="incidencia_id" value="<?= htmlspecialchars($incidencia_id) ?>">
                 <input type="hidden" name="tecnic_id" value="<?= htmlspecialchars($tecnic_id) ?>">

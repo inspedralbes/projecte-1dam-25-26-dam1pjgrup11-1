@@ -45,24 +45,44 @@ document.addEventListener("DOMContentLoaded", () => {
           }
       });
   }
-  // ocultar formulario incidencia
-  const formInc = document.getElementById("formularioIncidencia");
-
-  if (formInc) {
-    formInc.style.display = "none";
-  }
-});
-
+  // validación formulari actuacions
+  const form = document.getElementById("formulari_actuacio");
+  if (form) {
+      form.addEventListener("submit", function(e) {
+          const camps = this.querySelectorAll("input, select, textarea");
+          for (let camp of camps) {
+              if (camp.type === "hidden" || camp.type === "checkbox") continue;
+              if (camp.value.trim() === "") {
+                  e.preventDefault();
+                  alert("Tots els camps son obligatoris.");
+                  camp.focus();
+                  return;
+              }
+              if (camp.type === "date" && camp.value.trim() === "") {
+                  e.preventDefault();
+                  alert("La data és obligatòria.");
+                  camp.focus();
+                  return;
+              }
+              if (camp.tagName === "TEXTAREA" && camp.value.trim().length < 20) {
+                  e.preventDefault();
+                  alert("La descripció ha de tenir com a mínim 20 caràcters.");
+                  camp.focus();
+                  return;
+              }
+          }
+      });
+  };
+  // ocultar formulari incidencia
 
 const img = document.getElementById("imagencambiante");
-let bool1=true;
+
 img.addEventListener("click", () => {
-  if (bool1) {
-    img.src = "../img/oscuridad.png";
-    bool1=false;
+  if (img.src.includes("imagen1.jpg")) {
+    img.src = "imagen2.jpg";
   } else {
-    img.src = "../img/luz.png";
-    bool1=true;
+    img.src = "imagen1.jpg";
   }
 });
 
+});
