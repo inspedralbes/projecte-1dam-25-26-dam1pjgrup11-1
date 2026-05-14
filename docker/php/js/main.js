@@ -72,15 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
               }
           }
       });
-  }
-  // ocultar formulario incidencia
-  const formInc = document.getElementById("formularioIncidencia");
-
-  if (formInc) {
-    formInc.style.display = "none";
-  }
-});
-
+  };
+  // ocultar formulari incidencia
 
 const img = document.getElementById("imagencambiante");
 
@@ -90,4 +83,6 @@ img.addEventListener("click", () => {
   } else {
     img.src = "imagen1.jpg";
   }
+});
+
 });
