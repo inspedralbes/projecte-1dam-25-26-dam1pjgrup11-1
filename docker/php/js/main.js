@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const checkbox = document.querySelector('#switch input[type="checkbox"]');
   const img = document.getElementById("imagencambiante");
-//CAMBIAR IMAGEN
+  //cambiar imatge
   function setTheme(isDark) {
     document.body.classList.toggle("dark-mode", isDark);
 
@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setTheme(savedTheme);
 
+
+  // Validació de formulari incidencia
   const formIncidencia = document.getElementById("guardar_incidencia");
 
   if (formIncidencia) {
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Validació de formulari actuacio
   const formActuacio = document.getElementById("formulari_actuacio");
 
   if (formActuacio) {
