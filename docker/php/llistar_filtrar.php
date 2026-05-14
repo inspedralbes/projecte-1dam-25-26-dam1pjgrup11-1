@@ -148,7 +148,7 @@ $tipologies = $conn->query($sql2);
                 </select>
             </div>
         <?php }else{ ?>
-            <input type="hidden" name="estat" value="Oberta">
+            <input type="hidden" name="estat" value="En Curs">
         <?php
         } ?>
 
