@@ -45,6 +45,34 @@ document.addEventListener("DOMContentLoaded", () => {
           }
       });
   }
+  // validación formulari actuacions
+  const form = document.getElementById("formulari_actuacio");
+  if (form) {
+      form.addEventListener("submit", function(e) {
+          const camps = this.querySelectorAll("input, select, textarea");
+          for (let camp of camps) {
+              if (camp.type === "hidden" || camp.type === "checkbox") continue;
+              if (camp.value.trim() === "") {
+                  e.preventDefault();
+                  alert("Tots els camps son obligatoris.");
+                  camp.focus();
+                  return;
+              }
+              if (camp.type === "date" && camp.value.trim() === "") {
+                  e.preventDefault();
+                  alert("La data és obligatòria.");
+                  camp.focus();
+                  return;
+              }
+              if (camp.tagName === "TEXTAREA" && camp.value.trim().length < 20) {
+                  e.preventDefault();
+                  alert("La descripció ha de tenir com a mínim 20 caràcters.");
+                  camp.focus();
+                  return;
+              }
+          }
+      });
+  }
   // ocultar formulario incidencia
   const formInc = document.getElementById("formularioIncidencia");
 
