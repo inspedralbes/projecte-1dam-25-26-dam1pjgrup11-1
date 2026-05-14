@@ -12,20 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("tema", isDark ? "dark" : "light");
   }
-
   if (checkbox) {
     checkbox.addEventListener("change", () => {
       setTheme(checkbox.checked);
     });
   }
-
-  // cargar tema guardado
+  // cargar tema guardat
   const savedTheme = localStorage.getItem("tema") === "dark";
-
   if (checkbox) {
     checkbox.checked = savedTheme;
   }
-
   setTheme(savedTheme);
 
 
