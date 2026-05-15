@@ -1,0 +1,25 @@
+Tecnics
+joan.perez@incidencies.cat — pass123
+maria.garcia@incidencies.cat — pass123
+arnau.lopez@incidencies.cat — pass123
+laia.martinez@incidencies.cat — pass123
+pau.soler@incidencies.cat — pass123
+marc.ferrer@incidencies.cat — pass123
+clara.vila@incidencies.cat — pass123
+jordi.roca@incidencies.cat — pass123
+
+Admins
+admin1@incidencies.cat — admin123
+admin2@incidencies.cat — admin123
+
+Professors
+prof.informatica1@incidencies.cat — pass123
+prof.informatica2@incidencies.cat — pass123
+prof.angles@incidencies.cat — pass123
+prof.manteniment@incidencies.cat — pass123
+prof.matematiques1@incidencies.cat — pass123
+prof.matematiques2@incidencies.cat — pass123
+prof.naturals@incidencies.cat — pass123
+prof.fisicaquimica@incidencies.cat — pass123
+prof.educaciofisica1@incidencies.cat — pass123
+prof.educaciofisica2@incidencies.cat — pass123
