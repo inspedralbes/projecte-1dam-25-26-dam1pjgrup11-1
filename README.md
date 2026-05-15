@@ -24,6 +24,6 @@ http://g11.dam.inspedralbes.cat/
 
 Finalitzat
 
-## 🛠️ Tecnologies utilitzades
+## Tecnologies utilitzades
 
 [![My Skills](https://skillicons.dev/icons?i=js,html,css,php,mongodb,bootstrap,vscode,mysql)](https://skillicons.dev)
