@@ -1,16 +1,29 @@
-# transversals
-Esquema mínim de carpetes pels projectes transversals
+# Projecte de grup 11
 
-És obligatori seguir aquesta estructura tot i que la podeu ampliar.
+## Integrants del projecte
+- Eduard Hernández Yagüe
+- Victor Rios Quilez
 
-## Atenció
-Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre projecte (utilitzant markdown)
+## Gestió incidències informàtiques Institut Pedralbes
 
-# Aquest fitxer ha de contenir com a mínim:
- * Nom dels integrants
- * Nom del projecte
- * Petita descripció
- * Adreça del gestor de tasques (taiga, jira, trello...)
- * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
- * URL de producció (quan la tingueu)
- * Estat: (explicació d'en quin punt està)
+### Descripció del projecte
+
+Desenvolupar una aplicació web de gestor d'incidencies per l'Institut Pedralbes, on es poden crear incidencies, assignar-las i resoldre-las.
+
+## Taiga
+
+https://tree.taiga.io/project/a25vicrioqui-projecte-1dam-25-26-dam1pjgrup11-1/timeline
+
+ 
+## URL Producció
+
+http://g11.dam.inspedralbes.cat/
+
+
+## Estat: 
+
+Finalitzat
+
+## Tecnologies utilitzades
+
+[![My Skills](https://skillicons.dev/icons?i=js,html,css,php,mongodb,bootstrap,vscode,mysql)](https://skillicons.dev)
