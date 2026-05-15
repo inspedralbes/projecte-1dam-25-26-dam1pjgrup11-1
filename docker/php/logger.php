@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php');
 $client = new MongoDB\Client("mongodb://root:example@mongo:27017");
 date_default_timezone_set('Europe/Madrid');
 $collection = $client->demo->users;
